@@ -8,12 +8,16 @@ local spec = {
       "MunifTanjim/nui.nvim",
     },
     init = function()
+      vim.opt.listchars:append({ precedes = "…", extends = "…" })
       vim.g.neo_tree_remove_legacy_commands = true
     end,
     keys = {
       {
         "<leader>nt",
         "<cmd>Neotree toggle<cr>",
+        -- function()
+        --   require("neo-tree.command").execute({ source = "filesystem", toggle = true, dir = vim.loop.cwd() })
+        -- end,
         desc = "General: [t]oggle the [f]olders explorer",
       },
       {
@@ -180,11 +184,11 @@ local spec = {
             required_width = 64, -- min width of window required to show this column
           },
           type = {
-            enabled = false,
+            enabled = true,
             required_width = 110, -- min width of window required to show this column
           },
           last_modified = {
-            enabled = false,
+            enabled = true,
             required_width = 88, -- min width of window required to show this column
           },
           created = {
@@ -236,6 +240,7 @@ local spec = {
         window = {
           position = "left",
           width = 40,
+          height = 15,
           auto_expand_width = false,
           --width = require("wuelnerdotexe.plugin.util").get_sidebar_width(),
           insert_as = "sibling",

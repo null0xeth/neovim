@@ -19,116 +19,11 @@ local spec = {
           "aerial",
           "markdown",
           "dashboard",
+          "neo-tree",
         },
         setopt = true, -- Whether to set the 'statuscolumn' option, may be set to false for those who
         relculright = true, -- whether to right-align the cursor line number with 'relativenumber' set
         segments = {
-          -- { text = { builtin.foldfunc } },
-          -- {
-          --   sign = { name = { "Diagnostic" }, maxwidth = 1, auto = true },
-          --   click = "v:lua.ScSa",
-          -- },
-          -- {
-          --   sign = { name = { "Diagnostic" }, maxwidth = 1 },
-          --   click = "v:lua.ScSa",
-          -- },
-
-          --{ text = { builtin.lnumfunc, " " }, click = "v:lua.ScLa" },
-          -- {
-          --   sign = { namespace = { "gitsigns" }, colwidth = 1 },
-          --   click = "v:lua.ScSa",
-          -- },
-          -- {
-          --   sign = { name = { ".*" }, maxwidth = 2, colwidth = 1 },
-          --   click = "v:lua.ScSa",
-          -- },
-
-          -- {
-          --   sign = { namespace = { ".*" } },
-          --   click = "v:lua.ScSa",
-          -- },
-          -- {
-          --   text = {
-          --     function(args)
-          --       args.fold.close = ""
-          --       args.fold.open = ""
-          --       args.fold.sep = " "
-          --       return builtin.foldfunc(args)
-          --     end,
-          --   },
-          --   click = "v:lua.ScFa",
-          -- },
-          -- {
-          --   text = { builtin.lnumfunc },
-          --   condition = { true, builtin.not_empty },
-          --   click = "v:lua.ScLa",
-          -- },
-          -- {
-          --   sign = { namespace = { "gitsigns" }, colwidth = 1, wrap = true },
-          --   click = "v:lua.ScSa",
-          -- },
-          -- {
-          --   --text = { "%s" },
-          --   sign = {
-          --     namespace = { "gitsigns" },
-          --     maxwidth = 2,
-          --     colwidth = 2,
-          --     auto = true,
-          --     wrap = true,
-          --   },
-          --   condition = { builtin.notempty },
-          --   click = "v:lua.ScSa",
-          -- },
-
-          -- {
-          --   text = { builtin.foldfunc, " " },
-          --   condition = { builtin.notempty },
-          --   click = "v:lua.ScFa",
-          -- },
-          -- {
-          --   --text = { "%s" },
-          --   click = "v:lua.ScSa",
-          --   condition = { builtin.notempty },
-          --   sign = {
-          --     name = { "DiagnosticSign.*" },
-          --     maxwidth = 1,
-          --     colwidth = 2,
-          --     auto = true,
-          --     wrap = true,
-          --   },
-          -- },
-          -- {
-          --   text = { builtin.lnumfunc, " " },
-          --   click = "v:lua.ScLa",
-          -- },
-          -- {
-          --   --text = { "%s" },
-          --   click = "v:lua.ScSa",
-          --   condition = { builtin.notempty },
-          --   sign = {
-          --     name = { "DiagnosticSign.*" },
-          --     maxwidth = 1,
-          --     colwidth = 2,
-          --     auto = true,
-          --     wrap = true,
-          --   },
-          -- },
-          -- {
-          --   --text = { "%s" },
-          --   click = "v:lua.ScSa",
-          --   condition = { builtin.notempty },
-          --   sign = {
-          --     name = { "Dap.*" },
-          --     maxwidth = 1,
-          --     colwidth = 2,
-          --     auto = true,
-          --     wrap = true,
-          --   },
-          -- },
-          -- {
-          --   sign = { name = { "DiagnosticSign*" }, maxwidth = 1, colwidth = 2, auto = true },
-          --   click = "v:lua.ScSa",
-          -- },
           {
             text = { builtin.foldfunc, " " },
             condition = { builtin.notempty },
@@ -143,10 +38,6 @@ local spec = {
             text = { builtin.lnumfunc, " " },
             click = "v:lua.ScLa",
           },
-          -- {
-          --   sign = { name = { "Dap.*" }, maxwidth = 1, wrap = true, auto = true },
-          --   click = "v:lua.ScSa",
-          -- },
         },
         --})
       }
@@ -300,16 +191,6 @@ local spec = {
       { "nvim-tree/nvim-web-devicons" },
       --{ "SmiteshP/nvim-navic" },
     },
-    -- init = function()
-    --   vim.g.lualine_laststatus = vim.o.laststatus
-    --   if vim.fn.argc(-1) > 0 then
-    --     -- set an empty statusline till lualine loads
-    --     vim.o.statusline = " "
-    --   else
-    --     -- hide the statusline on the starter page
-    --     vim.o.laststatus = 0
-    --   end
-    -- end,
     config = function()
       local statuslinecontroller = require("framework.controller.statuslinecontroller"):new()
       statuslinecontroller:setup()

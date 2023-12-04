@@ -257,6 +257,7 @@ local spec = {
   },
   {
     "nvim-focus/focus.nvim",
+    enabled = false,
     cmd = { "FocusSplitNicely", "FocusSplitLeft", "FocusSplitRight", "FocusSplitDown" },
     version = false,
     config = function()
@@ -269,7 +270,7 @@ local spec = {
           -- height = 0, -- Force height for the focused window
           -- minwidth = 0, -- Force minimum width for the unfocused window
           -- minheight = 0, -- Force minimum height for the unfocused window
-          height_quickfix = 10, -- Set the height of quickfix panel
+          --height_quickfix = 10, -- Set the height of quickfix panel
         },
         split = {
           bufnew = false, -- Create blank buffer for new split windows
@@ -381,43 +382,58 @@ local spec = {
             filter = function(buf)
               return vim.b[buf].neo_tree_source == "filesystem"
             end,
+            open = "Neotree",
+            pinned = true,
             size = {
-              height = 0.5,
-              width = function()
-                return get_sidebar_width()
-              end,
+              height = 0.7,
+            },
+            wo = {
+              winbar = true,
+            },
+          },
+          {
+            title = "Neo-Tree Buffers",
+            ft = "neo-tree",
+            size = { height = 0.15 },
+            filter = function(buf)
+              return vim.b[buf].neo_tree_source == "buffers"
+            end,
+            pinned = true,
+            open = "Neotree position=top buffers",
+            wo = {
+              winbar = true,
             },
           },
           {
             title = "Neo-Tree Git",
             ft = "neo-tree",
+            size = { height = 0.15 },
             filter = function(buf)
-              --return vim.api.nvim_buf_get_var(buf, "neo_tree_source") == "git_status"
               return vim.b[buf].neo_tree_source == "git_status"
             end,
-            size = {
-              width = function()
-                return get_sidebar_width()
-              end,
-            },
+            pinned = true,
             open = "Neotree position=right git_status",
-            pinned = true,
-          },
-          {
-            title = "Neo-Tree Buffers",
-            ft = "neo-tree",
-            filter = function(buf)
-              return vim.b[buf].neo_tree_source == "buffers"
-            end,
-            size = {
-              width = function()
-                return get_sidebar_width()
-              end,
+            wo = {
+              winbar = true,
             },
-            pinned = true,
-            open = "Neotree position=top buffers",
           },
-          "neo-tree",
+
+          -- {
+          --   title = "Neo-Tree Git",
+          --   ft = "neo-tree",
+          --   filter = function(buf)
+          --     --return vim.api.nvim_buf_get_var(buf, "neo_tree_source") == "git_status"
+          --     return vim.b[buf].neo_tree_source == "git_status"
+          --   end,
+          --   size = {
+          --     width = function()
+          --       return get_sidebar_width()
+          --     end,
+          --   },
+          --   open = "Neotree position=right git_status",
+          --   pinned = true,
+          -- },
+          -- "neo-tree",
         },
 
         -- left = {
@@ -440,10 +456,10 @@ local spec = {
           },
         },
         options = {
-          left = { size = 30 },
-          bottom = { size = 10 },
+          left = { size = 35 },
+          bottom = { size = 15 },
           right = { size = 30 },
-          top = { size = 10 },
+          top = { size = 15 },
         },
         -- edgebar animations
         animate = {
@@ -476,9 +492,10 @@ local spec = {
           -- Setting to `false`, won't set any winbar.
           -- Setting to a string, will set the winbar to that string.
           winbar = true,
-          winfixwidth = true,
+          winfixwidth = false,
           winfixheight = false,
-          winhighlight = "WinBar:EdgyWinBar,Normal:EdgyNormal",
+          --winhighlight = "WinBar:EdgyWinBar,Normal:EdgyNormal",
+          winhighlight = "WinBar:EdgyWinBar",
           spell = false,
           signcolumn = "no",
         },

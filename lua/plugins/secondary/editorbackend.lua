@@ -105,6 +105,7 @@ local spec = {
         "dapui_stacks",
         "dap-repl",
         "neo-tree",
+        "edgy",
       },
     },
   },
