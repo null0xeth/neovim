@@ -6,6 +6,7 @@ local spec = {
       "nvim-lua/plenary.nvim",
       "nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
       "MunifTanjim/nui.nvim",
+      "saifulapm/neotree-file-nesting-config",
     },
     init = function()
       vim.g.neo_tree_remove_legacy_commands = true
@@ -38,6 +39,7 @@ local spec = {
       require("neo-tree").setup({
         sources = { "filesystem", "buffers", "git_status" },
         open_files_do_not_replace_types = { "terminal", "Trouble", "trouble", "qf", "Outline", "edgy" }, -- and edgy?
+        nesting_rules = require("neotree-file-nesting-config").nesting_rules,
         auto_clean_after_session_restore = true,
         close_if_last_window = true,
         popup_border_style = "rounded",
