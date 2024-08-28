@@ -82,16 +82,19 @@ local spec = {
   },
   {
     "gbprod/cutlass.nvim",
-    opts = {
-      cut_key = "x",
-      override_del = true,
-      exclude = {},
-      registers = {
-        select = "s",
-        delete = "d",
-        change = "c",
-      },
-    },
+    event = "KindaLazy",
+    config = function(_, opts)
+      require("cutlass").setup({
+        cut_key = "x",
+        override_del = true,
+        exclude = {},
+        registers = {
+          select = "s",
+          delete = "d",
+          change = "c",
+        },
+      })
+    end,
   },
   {
     "numToStr/FTerm.nvim",
