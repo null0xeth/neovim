@@ -38,13 +38,11 @@ end
 
 local function fetch_cmp_sources()
   return {
-    { name = "path", priority_weight = 110 },
-    { name = "crates", priority_weight = 110 },
-    { name = "dotenv", priority_weight = 90, max_item_count = 5 },
+    { name = "copilot", group_index = 0 },
+    { name = "lazydev", group_index = 1, keyword_length = 2 },
     {
       name = "nvim_lsp",
-      max_item_count = 20,
-      priority_weight = 100,
+      group_index = 2,
       entry_filter = function(entry, ctx)
         -- fifteen = snippet, 23 = event
         if entry:get_kind() == 23 or entry:get_kind() == 15 then
@@ -53,16 +51,43 @@ local function fetch_cmp_sources()
         return true
       end,
     },
-    { name = "nvim_lua", priority_weight = 90 },
-    { name = "luasnip", priority_weight = 80 },
-    {
-      name = "buffer",
-      max_item_count = 5,
-      priority_weight = 50,
-      entry_filter = function(entry)
-        return not entry.exact
-      end,
-    },
+    { name = "path", group_index = 2, keyword_length = 2 },
+    --{ name = "luasnip", group_index = 2 },
+    { name = "dotenv", group_index = 3, max_item_count = 5 },
+    -- {
+    --   name = "buffer",
+    --   group_index = 3,
+    --   keyword_length = 3,
+    --   max_item_count = 5,
+    --   entry_filter = function(entry)
+    --     return not entry.exact
+    --   end,
+    -- },
+    -- { name = "path", priority_weight = 110 },
+    -- { name = "crates", priority_weight = 110 },
+    -- { name = "dotenv", priority_weight = 90, max_item_count = 5 },
+    -- {
+    --   name = "nvim_lsp",
+    --   max_item_count = 20,
+    --   priority_weight = 100,
+    --   entry_filter = function(entry, ctx)
+    --     -- fifteen = snippet, 23 = event
+    --     if entry:get_kind() == 23 or entry:get_kind() == 15 then
+    --       return false
+    --     end
+    --     return true
+    --   end,
+    -- },
+    -- { name = "nvim_lua", priority_weight = 90 },
+    -- { name = "luasnip", priority_weight = 80 },
+    -- {
+    --   name = "buffer",
+    --   max_item_count = 5,
+    --   priority_weight = 50,
+    --   entry_filter = function(entry)
+    --     return not entry.exact
+    --   end,
+    -- },
   }
 end
 
@@ -70,46 +95,86 @@ local function fetch_cmp_mappings()
   local cmp = get_module("cmp", "cmp")
 
   local mappings = {
-    ["<C-k>"] = cmp.mapping.select_prev_item(),
-    ["<C-j>"] = cmp.mapping.select_next_item(),
-    ["<C-b>"] = cmp.mapping(cmp.mapping.scroll_docs(-1), { "i", "c" }),
-    ["<C-f>"] = cmp.mapping(cmp.mapping.scroll_docs(1), { "i", "c" }),
-    ["<C-Space>"] = cmp.mapping(cmp.mapping.complete(), { "i", "c" }),
+    ["<PageUp>"] = function()
+      for _ = 1, 10 do
+        cmp.mapping.select_prev_item()(nil)
+      end
+    end,
+    ["<PageDown>"] = function()
+      for _ = 1, 10 do
+        cmp.mapping.select_next_item()(nil)
+      end
+    end,
+    ["<C-p>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }),
+    ["<C-n>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }),
+    ["<C-d>"] = cmp.mapping.scroll_docs(-4),
+    ["<C-f>"] = cmp.mapping.scroll_docs(4),
+    ["<C-s>"] = cmp.mapping.complete({
+      config = {
+        sources = {
+          { name = "copilot" },
+        },
+      },
+    }),
     ["<C-e>"] = cmp.mapping.close(),
     ["<CR>"] = cmp.mapping.confirm({
-      behavior = cmp.ConfirmBehavior.Replace,
-      select = false,
+      behavior = cmp.ConfirmBehavior.Insert,
+      -- select = false,
     }),
-    ["<C-Tab>"] = cmp.mapping(function(fallback)
-      local luasnip = get_module("luasnip", "luasnip")
-      if cmp.visible() then
-        cmp.select_next_item()
-      elseif luasnip.expand_or_jumpable() then
-        luasnip.expand_or_jump()
-      elseif luasnip.jumpable() then
-        luasnip.jump_next()
+    ["<Tab>"] = function(fallback)
+      if cmp.visible() and has_words_before() then
+        cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
       else
         fallback()
       end
-    end, {
-      "i",
-      "c",
-    }),
-    ["`"] = cmp.mapping(function(fallback)
-      local luasnip = get_module("luasnip", "luasnip")
+    end,
+    ["<S-Tab>"] = vim.schedule_wrap(function(fallback)
       if cmp.visible() then
-        cmp.select_prev_item()
-      elseif luasnip.jumpable(-1) then
-        luasnip.jump(-1)
-      elseif luasnip.jumpable(true) then
-        luasnip.jump_prev()
+        cmp.select_prev_item({ behavior = cmp.SelectBehavior.Select })
       else
         fallback()
       end
-    end, {
-      "i",
-      "c",
-    }),
+    end),
+    -- ["<C-k>"] = cmp.mapping.select_prev_item(),
+    -- ["<C-j>"] = cmp.mapping.select_next_item(),
+    -- ["<C-b>"] = cmp.mapping(cmp.mapping.scroll_docs(-1), { "i", "c" }),
+    -- ["<C-f>"] = cmp.mapping(cmp.mapping.scroll_docs(1), { "i", "c" }),
+    -- ["<C-Space>"] = cmp.mapping(cmp.mapping.complete(), { "i", "c" }),
+    -- ["<C-e>"] = cmp.mapping.close(),
+    -- ["<CR>"] = cmp.mapping.confirm({
+    --   behavior = cmp.ConfirmBehavior.Replace,
+    --   select = false,
+    -- }),
+    -- ["<C-Tab>"] = cmp.mapping(function(fallback)
+    --   local luasnip = get_module("luasnip", "luasnip")
+    --   if cmp.visible() then
+    --     cmp.select_next_item()
+    --   elseif luasnip.expand_or_jumpable() then
+    --     luasnip.expand_or_jump()
+    --   elseif luasnip.jumpable() then
+    --     luasnip.jump_next()
+    --   else
+    --     fallback()
+    --   end
+    -- end, {
+    --   "i",
+    --   "c",
+    -- }),
+    -- ["`"] = cmp.mapping(function(fallback)
+    --   local luasnip = get_module("luasnip", "luasnip")
+    --   if cmp.visible() then
+    --     cmp.select_prev_item()
+    --   elseif luasnip.jumpable(-1) then
+    --     luasnip.jump(-1)
+    --   elseif luasnip.jumpable(true) then
+    --     luasnip.jump_prev()
+    --   else
+    --     fallback()
+    --   end
+    -- end, {
+    --   "i",
+    --   "c",
+    --}),
   }
   return mappings
 end
@@ -128,16 +193,19 @@ local function fetch_cmp_formatting()
         preset = "codicons",
         maxwidth = 60,
         menu = {
-          buffer = "[BUF]",
-          dotenv = "[ENV]",
+          copilot = "[GHCP]",
+          lazydev = "[LDEV]",
           nvim_lsp = "[LSP]",
-          nvim_lua = "[NLUA]",
-          luasnip = "[SNIP]",
-          crates = "[CRATE]",
+          dotenv = "[ENV]",
+          --nvim_lua = "[NLUA]",
+          --luasnip = "[SNIP]",
+          path = "[PATH]",
+          --crates = "[CRATE]",
           cmdline_history = "[HIST]",
           cmdline = "[CMD]",
-          path = "[PATH]",
-          dap = "[DAP]",
+          --buffer = "[BUF]",
+
+          --dap = "[DAP]",
         },
       })(entry, vim_item)
 
@@ -148,62 +216,98 @@ local function fetch_cmp_formatting()
   }
 end
 
+local has_cmp_comparators, copilot_cmp = pcall(require, "copilot_cmp.comparators")
+
+local has_words_before = function()
+  if vim.api.nvim_get_option_value("buftype", { buf = 0 }) == "prompt" then
+    return false
+  end
+  local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+  return col ~= 0 and vim.api.nvim_buf_get_text(0, line - 1, 0, line - 1, col, {})[1]:match("^%s*$") == nil
+end
+
 local function fetch_cmp_sorting()
-  local compare = get_module("cmp.config.compare", "compare")
+  local compare = get_module("compare", "compare")
   local types = require("cmp.types")
 
-  local priority_map = {
-    [types.lsp.CompletionItemKind.EnumMember] = 1,
-    [types.lsp.CompletionItemKind.Variable] = 2,
-    [types.lsp.CompletionItemKind.Text] = 100,
-  }
+  -- local priority_map = {
+  --   [types.lsp.CompletionItemKind.EnumMember] = 1,
+  --   [types.lsp.CompletionItemKind.Variable] = 2,
+  --   [types.lsp.CompletionItemKind.Text] = 100,
+  -- }
 
-  local kind = function(entry1, entry2)
-    local kind1 = entry1:get_kind()
-    local kind2 = entry2:get_kind()
-    kind1 = priority_map[kind1] or kind1
-    kind2 = priority_map[kind2] or kind2
-    if kind1 ~= kind2 then
-      if kind1 == types.lsp.CompletionItemKind.Snippet then
-        return true
-      end
-      if kind2 == types.lsp.CompletionItemKind.Snippet then
-        return false
-      end
-      local diff = kind1 - kind2
-      if diff < 0 then
-        return true
-      elseif diff > 0 then
-        return false
-      end
-    end
-  end
+  -- local kind = function(entry1, entry2)
+  --   local kind1 = entry1:get_kind()
+  --   local kind2 = entry2:get_kind()
+  --   kind1 = priority_map[kind1] or kind1
+  --   kind2 = priority_map[kind2] or kind2
+  --   if kind1 ~= kind2 then
+  --     if kind1 == types.lsp.CompletionItemKind.Snippet then
+  --       return true
+  --     end
+  --     if kind2 == types.lsp.CompletionItemKind.Snippet then
+  --       return false
+  --     end
+  --     local diff = kind1 - kind2
+  --     if diff < 0 then
+  --       return true
+  --     elseif diff > 0 then
+  --       return false
+  --     end
+  --   end
+  -- end
 
   return {
-    priority_weight = 100,
-    comparators = {
-      compare.offset,
+    priority_weight = 2,
+    comparators = vim.tbl_filter(function(v)
+      return v ~= nil
+    end, {
+      -- order matters here
       compare.exact,
+      compare.offset,
+      has_cmp_comparators and copilot_cmp.prioritize or nil,
+      has_cmp_comparators and copilot_cmp.score or nil,
+      -- compare.scopes, --this is commented in nvim-cmp too
       compare.score,
-
-      function(entry1, entry2)
-        local _, entry1_under = entry1.completion_item.label:find("^_+")
-        local _, entry2_under = entry2.completion_item.label:find("^_+")
-        entry1_under = entry1_under or 0
-        entry2_under = entry2_under or 0
-        if entry1_under > entry2_under then
-          return false
-        elseif entry1_under < entry2_under then
-          return true
-        end
-      end,
-
-      kind,
+      compare.recently_used,
+      compare.locality,
+      compare.kind,
       compare.sort_text,
       compare.length,
       compare.order,
-    },
+      -- personal settings:
+      -- compare.recently_used,
+      -- compare.offset,
+      -- compare.score,
+      -- compare.sort_text,
+      -- compare.length,
+      -- compare.order,
+    }),
+    preselect = cmp.PreselectMode.Item,
   }
+  -- comparators = {
+  --   compare.offset,
+  --   compare.exact,
+  --   compare.score,
+
+  --   function(entry1, entry2)
+  --     local _, entry1_under = entry1.completion_item.label:find("^_+")
+  --     local _, entry2_under = entry2.completion_item.label:find("^_+")
+  --     entry1_under = entry1_under or 0
+  --     entry2_under = entry2_under or 0
+  --     if entry1_under > entry2_under then
+  --       return false
+  --     elseif entry1_under < entry2_under then
+  --       return true
+  --     end
+  --   end,
+
+  --   kind,
+  --   compare.sort_text,
+  --   compare.length,
+  --   compare.order,
+  -- },
+  --}
 end
 
 local function fetch_cmp_window()
@@ -214,6 +318,10 @@ local function fetch_cmp_window()
       side_padding = 0,
       border = "rounded",
       scrollbar = nil,
+      autocomplete = {
+        require("cmp.types").cmp.TriggerEvent.InsertEnter,
+        require("cmp.types").cmp.TriggerEvent.TextChanged,
+      },
     },
 
     documentation = {
@@ -262,6 +370,7 @@ end
 local function generate_cmp_cmdline_template(identifier, opts)
   local cmp = get_module("cmp", "cmp")
   cmp.setup.cmdline(identifier, opts)
+  vim.api.nvim_set_hl(0, "CmpItemKindCopilot", { fg = "#6CC644" })
 end
 
 local function generate_cmp_filetype_template(filetype, opts)

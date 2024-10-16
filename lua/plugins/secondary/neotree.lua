@@ -31,7 +31,7 @@ local spec = {
         end,
         desc = "General: [t]oggle the [s]ymbols explorer",
       },
-      { "<c-n>", "<leader>nt", desc = "Explorer NeoTree (root dir)", remap = true },
+      { "<leader>n", desc = "Explorer NeoTree (root dir)", remap = true },
     },
     cmd = "Neotree",
 

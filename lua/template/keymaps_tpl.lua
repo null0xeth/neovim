@@ -1,8 +1,8 @@
 return {
   { "n", "<C-a>", "gg<S-v>G", "Select all" },
-  { "n", "<C-s>", ":wq<CR>", "Write/Quit" },
-  { "n", "<C-w>", ":wa<CR>", "Write/Quit all" },
-  { "n", "<C-q>", ":q!<CR>", "Force Quit" },
+  -- { "n", "<C-s>", ":wq<CR>", "Write/Quit" },
+  -- { "n", "<C-w>", ":wa<CR>", "Write/Quit all" },
+  -- { "n", "<C-q>", ":q!<CR>", "Force Quit" },
   { "n", "p", "P", "Better Paste" },
   { "n", "<S-h>", ":bprevious<CR>", "Previous Buffer" },
   { "n", "<S-l>", ":bnext<CR>", "Next Buffer" },
