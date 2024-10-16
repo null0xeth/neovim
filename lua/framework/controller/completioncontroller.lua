@@ -227,6 +227,7 @@ local has_words_before = function()
 end
 
 local function fetch_cmp_sorting()
+  local cmp = require("cmp")
   -- local compare = get_module("compare", "compare")
   -- local types = require("cmp.types")
 
