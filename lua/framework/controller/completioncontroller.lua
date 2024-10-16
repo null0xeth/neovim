@@ -40,20 +40,16 @@ local cmp = require("cmp")
 local has_cmp_comparators, copilot_cmp = pcall(require, "copilot_cmp.comparators")
 
 local function has_words_before()
-  if vim.api.nvim_get_option_value("buftype", { buf = 0 }) == "prompt" then
-    return false
-  end
   local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-  return col ~= 0 and vim.api.nvim_buf_get_text(0, line - 1, 0, line - 1, col, {})[1]:match("^%s*$") == nil
+  return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
 end
 
 local function fetch_cmp_sources()
   return {
-    { name = "copilot", group_index = 0 },
-    { name = "lazydev", group_index = 1, keyword_length = 2 },
+    { name = "lazydev", group_index = 0, keyword_length = 2 },
     {
       name = "nvim_lsp",
-      group_index = 2,
+      group_index = 1,
       entry_filter = function(entry, ctx)
         -- fifteen = snippet, 23 = event
         if entry:get_kind() == 23 or entry:get_kind() == 15 then
@@ -120,32 +116,57 @@ local function fetch_cmp_mappings()
     ["<C-n>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }),
     ["<C-d>"] = cmp.mapping.scroll_docs(-4),
     ["<C-f>"] = cmp.mapping.scroll_docs(4),
-    ["<C-s>"] = cmp.mapping.complete({
-      config = {
-        sources = {
-          { name = "copilot" },
-        },
-      },
-    }),
+    ["<C-s>"] = cmp.mapping(cmp.mapping.complete(), { "i", "c" }),
     ["<C-e>"] = cmp.mapping.close(),
     ["<CR>"] = cmp.mapping.confirm({
       behavior = cmp.ConfirmBehavior.Insert,
       -- select = false,
     }),
-    ["<Tab>"] = function(fallback)
-      if cmp.visible() and has_words_before() then
-        cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
-      else
-        fallback()
-      end
-    end,
-    ["<S-Tab>"] = vim.schedule_wrap(function(fallback)
+    ["<Esc>"] = cmp.mapping.abort(),
+    ["<C-]>"] = cmp.mapping(function(fallback)
       if cmp.visible() then
-        cmp.select_prev_item({ behavior = cmp.SelectBehavior.Select })
+        cmp.close()
+      elseif require("copilot.suggestion").is_visible() then
+        require("copilot.suggestion").dismiss()
       else
         fallback()
       end
     end),
+    ["<Tab>"] = cmp.mapping(function(fallback)
+      if require("copilot.suggestion").is_visible() then
+        require("copilot.suggestion").accept()
+      elseif cmp.visible() then
+        cmp.select_next_item({ behavior = cmp.SelectBehavior.Insert })
+      elseif luasnip.expandable() then
+        luasnip.expand()
+      elseif has_words_before() then
+        cmp.complete({ reason = cmp.ContextReason.Manual })
+      else
+        fallback()
+      end
+    end, { "i", "s" }),
+    -- ["<Tab>"] = cmp.mapping(function(fallback)
+    --   if cmp.visible() and has_words_before() then
+    --     cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
+    --   else
+    --     fallback()
+    --   end
+    -- end),
+    ["<S-Tab>"] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_prev_item({ behavior = cmp.SelectBehavior.Insert })
+      else
+        fallback()
+      end
+    end, { "i", "s" }),
+    -- ["<S-Tab>"] = vim.schedule_wrap(function(fallback)
+    --   if cmp.visible() then
+    --     cmp.select_prev_item({ behavior = cmp.SelectBehavior.Select })
+    --   else
+    --     fallback()
+    --   end
+    -- end),
+
     -- ["<C-k>"] = cmp.mapping.select_prev_item(),
     -- ["<C-j>"] = cmp.mapping.select_next_item(),
     -- ["<C-b>"] = cmp.mapping(cmp.mapping.scroll_docs(-1), { "i", "c" }),
@@ -204,7 +225,6 @@ local function fetch_cmp_formatting()
         preset = "codicons",
         maxwidth = 60,
         menu = {
-          copilot = "[GHCP]",
           lazydev = "[LDEV]",
           nvim_lsp = "[LSP]",
           dotenv = "[ENV]",
@@ -212,8 +232,8 @@ local function fetch_cmp_formatting()
           --luasnip = "[SNIP]",
           path = "[PATH]",
           --crates = "[CRATE]",
-          cmdline_history = "[HIST]",
-          cmdline = "[CMD]",
+          --cmdline_history = "[HIST]",
+          --cmdline = "[CMD]",
           --buffer = "[BUF]",
 
           --dap = "[DAP]",
@@ -319,10 +339,11 @@ local function fetch_cmp_window()
       side_padding = 0,
       border = "rounded",
       scrollbar = nil,
-      autocomplete = {
-        require("cmp.types").cmp.TriggerEvent.InsertEnter,
-        require("cmp.types").cmp.TriggerEvent.TextChanged,
-      },
+      autocomplete = false,
+      --   {
+      --   require("cmp.types").cmp.TriggerEvent.InsertEnter,
+      --   require("cmp.types").cmp.TriggerEvent.TextChanged,
+      -- },
     },
 
     documentation = {
@@ -337,7 +358,7 @@ local function fetch_cmp_snippet()
   local luasnip = get_module("luasnip", "luasnip")
   local snippet = {
     expand = function(args)
-      luasnip.lsp_expand(args.body)
+      require("luasnip").lsp_expand(args.body)
     end,
   }
 
@@ -371,7 +392,6 @@ end
 local function generate_cmp_cmdline_template(identifier, opts)
   local cmp = get_module("cmp", "cmp")
   cmp.setup.cmdline(identifier, opts)
-  vim.api.nvim_set_hl(0, "CmpItemKindCopilot", { fg = "#6CC644" })
 end
 
 local function generate_cmp_filetype_template(filetype, opts)
@@ -435,7 +455,8 @@ local function register_crates_keys()
 end
 
 function CompletionController:initialize_cmp()
-  vim.api.nvim_set_hl(0, "CmpGhostText", { link = "Comment", default = true })
+  --vim.api.nvim_set_hl(0, "CmpGhostText", { link = "Comment", default = true })
+  vim.api.nvim_set_hl(0, "CmpItemKindCopilot", { fg = "#6CC644" })
   local cmp = get_module("cmp", "cmp")
   local cmp_opts = generate_cmp_template()
 
@@ -447,11 +468,11 @@ function CompletionController:initialize_cmp()
     sources = {
       { name = "buffer" },
     },
-    formatting = {
-      fields = {
-        cmp.ItemField.Abbr,
-      },
-    },
+    -- formatting = {
+    --   fields = {
+    --     cmp.ItemField.Abbr,
+    --   },
+    -- },
     -- {
     --   { name = "cmdline_history" },
     -- },
@@ -477,24 +498,32 @@ function CompletionController:initialize_cmp()
         cmp.ItemField.Abbr,
       },
     },
-    --   { name = "buffer" },
-    -- }, {
-    --   { name = "cmdline_history" },
-    --}),
-    -- }, {
-    --   { name = "cmdline" },
-    --}),
+    -- --   { name = "buffer" },
+    --  }, {
+    --    { name = "cmdline_history" },
+    --  }),
+    --  }, {
+    --    { name = "cmdline" },
+    --  }),
   })
 
-  generate_cmp_filetype_template("gitcommit", {
-    sources = cmp.config.sources({
-      --{ name = "git" },
-      { name = "buffer" },
-      { name = "luasnip" },
-    }),
-  })
+  -- generate_cmp_filetype_template("gitcommit", {
+  --   sources = cmp.config.sources({
+  --     --{ name = "git" },
+  --     { name = "buffer" },
+  --     { name = "luasnip" },
+  --   }),
+  -- })
 
   setup_cmp_autopairs()
+
+  cmp.event:on("menu_opened", function()
+    vim.api.nvim_buf_set_var(0, "copilot_suggestion_hidden", true)
+  end)
+
+  cmp.event:on("menu_closed", function()
+    vim.api.nvim_buf_set_var(0, "copilot_suggestion_hidden", false)
+  end)
 end
 
 function CompletionController:initialize_crates()

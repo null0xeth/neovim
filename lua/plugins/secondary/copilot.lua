@@ -2,8 +2,12 @@ local spec = {
   {
     "zbirenbaum/copilot.lua",
     cmd = "Copilot",
-    build = ":Copilot auth",
+    event = "InsertEnter",
+    --build = ":Copilot auth",
     config = function()
+      vim.bo[event.buf].buflisted = false
+      local keymapcontroller = get_obj("framework.controller.keymapcontroller", "keymapcontroller")
+
       require("copilot").setup({
         panel = {
           enabled = false,
@@ -21,35 +25,47 @@ local spec = {
           },
         },
         suggestion = {
-          enabled = false,
+          --enabled = false,
           auto_trigger = false,
-          hide_during_completion = true,
-          debounce = 75,
+          --hide_during_completion = true,
+          --debounce = 75,
           keymap = {
-            accept = "<M-l>",
-            accept_word = false,
-            accept_line = false,
+            --accept = "<M-l>",
+            accept = false,
+            --accept_word = false,
+            accept_word = "<M-Right>",
+            accept_line = "<M-Down>",
+            --accept_line = false,
             next = "<M-]>",
             prev = "<M-[>",
-            dismiss = "<C-]>",
+            dismiss = false,
+            --dismiss = "<C-]>",
           },
         },
-        filetypes = {
-          yaml = true,
-          lua = true,
-          nix = true,
-          markdown = false,
-          help = false,
-          gitcommit = false,
-          gitrebase = false,
-          hgcommit = false,
-          svn = false,
-          cvs = false,
-          ["."] = false,
-        },
+        -- filetypes = {
+        --   yaml = true,
+        --   lua = true,
+        --   nix = true,
+        --   markdown = false,
+        --   help = false,
+        --   gitcommit = false,
+        --   gitrebase = false,
+        --   hgcommit = false,
+        --   svn = false,
+        --   cvs = false,
+        --   ["."] = false,
+        -- },
         copilot_node_command = "node", -- Node.js version must be > 18.x
         server_opts_overrides = {},
       })
+
+      keymapcontroller:register_keymap("i", "<M-l>", function()
+        if suggestion.is_visible() then
+          suggestion.accept()
+        else
+          suggestion.next()
+        end
+      end, { buffer = event.buf, silent = true })
     end,
   },
   {
