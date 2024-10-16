@@ -37,6 +37,7 @@ function CompletionController:new()
 end
 
 local cmp = require("cmp")
+local luasnip = require("luasnip")
 local has_cmp_comparators, copilot_cmp = pcall(require, "copilot_cmp.comparators")
 
 local function has_words_before()
@@ -46,7 +47,7 @@ end
 
 local function fetch_cmp_sources()
   return {
-    { name = "lazydev", group_index = 0, keyword_length = 2 },
+    { name = "lazydev", group_index = 0 },
     {
       name = "nvim_lsp",
       group_index = 1,
@@ -59,7 +60,7 @@ local function fetch_cmp_sources()
       end,
     },
     { name = "path", group_index = 2, keyword_length = 2 },
-    --{ name = "luasnip", group_index = 2 },
+    { name = "luasnip", group_index = 2 },
     { name = "dotenv", group_index = 3, max_item_count = 5 },
     -- {
     --   name = "buffer",
@@ -229,7 +230,7 @@ local function fetch_cmp_formatting()
           nvim_lsp = "[LSP]",
           dotenv = "[ENV]",
           --nvim_lua = "[NLUA]",
-          --luasnip = "[SNIP]",
+          luasnip = "[SNIP]",
           path = "[PATH]",
           --crates = "[CRATE]",
           --cmdline_history = "[HIST]",
