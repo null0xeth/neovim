@@ -290,7 +290,7 @@ local spec = {
           insertModeConfirm = "<C-CR>",
           prevSubst = "<Up>",
           nextSubst = "<Down>",
-          toggleFixedStrings = "<C-F>", -- ripgrep's `--fixed-strings`
+          toggleFixedStrings = "<C-f>", -- ripgrep's `--fixed-strings`
           toggleIgnoreCase = "<C-c>", -- ripgrep's `--ignore-case`
           openAtRegex101 = "R",
         },
