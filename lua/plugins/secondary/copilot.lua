@@ -65,7 +65,7 @@ local spec = {
         else
           suggestion.next()
         end
-      end, { buffer = event.buf, silent = true })
+      end, { silent = true })
     end,
   },
   {
