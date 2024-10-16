@@ -5,7 +5,7 @@ local spec = {
     event = "InsertEnter",
     --build = ":Copilot auth",
     config = function()
-      local keymapcontroller = get_obj("framework.controller.keymapcontroller", "keymapcontroller")
+      local keymapcontroller = require("framework.controller.keymapcontroller", "keymapcontroller"):new()
 
       require("copilot").setup({
         panel = {
@@ -79,13 +79,13 @@ local spec = {
         end,
       },
     },
-    ---@param opts cmp.ConfigSchema
-    opts = function(_, opts)
-      table.insert(opts.sources, 1, {
-        name = "copilot",
-        group_index = 1,
-      })
-    end,
+    -- ---@param opts cmp.ConfigSchema
+    -- opts = function(_, opts)
+    --   table.insert(opts.sources, 1, {
+    --     name = "copilot",
+    --     group_index = 1,
+    --   })
+    -- end,
   },
 }
 
