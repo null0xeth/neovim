@@ -151,21 +151,17 @@ local spec = {
           {
             event = "neo_tree_window_before_open",
             handler = function(args)
-              print("neo_tree_window_before_open", vim.inspect(args))
+              vim.cmd("wincmd =")
             end,
           },
+
           {
             event = "neo_tree_window_after_open",
             handler = function(args)
               vim.cmd("wincmd =")
             end,
           },
-          {
-            event = "neo_tree_window_before_close",
-            handler = function(args)
-              print("neo_tree_window_before_close", vim.inspect(args))
-            end,
-          },
+
           {
             event = "neo_tree_window_after_close",
             handler = function(args)

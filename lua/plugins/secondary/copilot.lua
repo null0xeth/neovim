@@ -6,7 +6,7 @@ local spec = {
     build = ":Copilot auth",
     config = function()
       local keymapcontroller = require("framework.controller.keymapcontroller", "keymapcontroller"):new()
-
+      local suggestion = require("copilot.suggestion")
       require("copilot").setup({
         panel = {
           enabled = true,
@@ -58,7 +58,7 @@ local spec = {
         server_opts_overrides = {},
       })
 
-      keymapcontroller:register_keymap("i", "<M-l>", function()
+      keymapcontroller:register_keymap("i", "<C-=>", function()
         if suggestion.is_visible() then
           suggestion.accept()
         else
