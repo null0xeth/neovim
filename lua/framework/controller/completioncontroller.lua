@@ -227,8 +227,8 @@ local has_words_before = function()
 end
 
 local function fetch_cmp_sorting()
-  local compare = get_module("compare", "compare")
-  local types = require("cmp.types")
+  -- local compare = get_module("compare", "compare")
+  -- local types = require("cmp.types")
 
   -- local priority_map = {
   --   [types.lsp.CompletionItemKind.EnumMember] = 1,
@@ -263,18 +263,18 @@ local function fetch_cmp_sorting()
       return v ~= nil
     end, {
       -- order matters here
-      compare.exact,
-      compare.offset,
+      cmp.config.compare.exact,
+      cmp.config.compare.offset,
       has_cmp_comparators and copilot_cmp.prioritize or nil,
       has_cmp_comparators and copilot_cmp.score or nil,
       -- compare.scopes, --this is commented in nvim-cmp too
-      compare.score,
-      compare.recently_used,
-      compare.locality,
-      compare.kind,
-      compare.sort_text,
-      compare.length,
-      compare.order,
+      cmp.config.compare.score,
+      cmp.config.compare.recently_used,
+      cmp.config.compare.locality,
+      cmp.config.compare.kind,
+      cmp.config.compare.sort_text,
+      cmp.config.compare.length,
+      cmp.config.compare.order,
       -- personal settings:
       -- compare.recently_used,
       -- compare.offset,
