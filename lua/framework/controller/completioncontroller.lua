@@ -124,6 +124,7 @@ local function fetch_cmp_mappings()
       behavior = cmp.ConfirmBehavior.Insert,
       -- select = false,
     }),
+
     ["<Esc>"] = cmp.mapping.abort(),
     ["<C-]>"] = cmp.mapping(function(fallback)
       if cmp.visible() then

@@ -2,15 +2,15 @@ local spec = {
   {
     "zbirenbaum/copilot.lua",
     cmd = "Copilot",
-    event = "InsertEnter",
+    --event = "InsertEnter",
     build = ":Copilot auth",
     config = function()
-      local keymapcontroller = require("framework.controller.keymapcontroller", "keymapcontroller"):new()
-      local suggestion = require("copilot.suggestion")
+      -- local keymapcontroller = require("framework.controller.keymapcontroller", "keymapcontroller"):new()
+      -- local suggestion = require("copilot.suggestion")
       require("copilot").setup({
         panel = {
-          enabled = true,
-          auto_refresh = true,
+          enabled = false,
+          auto_refresh = false,
           keymap = {
             jump_prev = "[[",
             jump_next = "]]",
@@ -18,15 +18,15 @@ local spec = {
             refresh = "gr",
             open = "<M-CR>",
           },
-          layout = {
-            position = "bottom", -- | top | left | right
-            ratio = 0.4,
-          },
+          -- layout = {
+          --   position = "bottom", -- | top | left | right
+          --   ratio = 0.4,
+          -- },
         },
         suggestion = {
           enabled = true,
           auto_trigger = true,
-          hide_during_completion = true,
+          --hide_during_completion = true,
           debounce = 75,
           keymap = {
             --accept = "<M-l>",
@@ -58,13 +58,13 @@ local spec = {
         server_opts_overrides = {},
       })
 
-      keymapcontroller:register_keymap("i", "<C-=>", function()
-        if suggestion.is_visible() then
-          suggestion.accept()
-        else
-          suggestion.next()
-        end
-      end, { silent = true })
+      -- keymapcontroller:register_keymap("i", "<C-=>", function()
+      --   if suggestion.is_visible() then
+      --     suggestion.accept()
+      --   else
+      --     suggestion.next()
+      --   end
+      -- end, { silent = true })
     end,
   },
   -- {

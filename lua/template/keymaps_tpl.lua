@@ -22,10 +22,10 @@ return {
   { "n", "wu", "<C-w>k", "Move to Window Above" }, -- up window
   { "n", "wd", "<C-w>j", "Move to Window Below" }, -- down window
   { "n", "wr", "<C-w>l", "Move to Right Window" }, -- right window
-  { "n", "<c-up>", ":resize -2<cr>", "(-) size Horizontally" },
-  { "n", "<c-down>", ":resize +2<cr>", "(+) size Horizontally" },
-  { "n", "<c-right>", ":vertical resize -2<cr>", "(-) size Vertically" },
-  { "n", "<c-left>", ":vertical resize +2<cr>", "(+) size Vertically" },
+  -- { "n", "<c-up>", ":resize -2<cr>", "(-) size Horizontally" },
+  -- { "n", "<c-down>", ":resize +2<cr>", "(+) size Horizontally" },
+  -- { "n", "<c-right>", ":vertical resize -2<cr>", "(-) size Vertically" },
+  -- { "n", "<c-left>", ":vertical resize +2<cr>", "(+) size Vertically" },
   -- { "n", "<tab>n", ":tabnew<Return>", "New Tab" }, -- New Tab
   -- { "n", "<tab>f", "<cmd>tabfirst<cr>", "Goto first Tab" }, -- first tab
   -- { "n", "<tab>l", "<cmd>tablast<cr>", "Goto last Tab" }, -- last tab
