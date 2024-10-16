@@ -5,7 +5,6 @@ local spec = {
     event = "InsertEnter",
     --build = ":Copilot auth",
     config = function()
-      vim.bo[event.buf].buflisted = false
       local keymapcontroller = get_obj("framework.controller.keymapcontroller", "keymapcontroller")
 
       require("copilot").setup({
