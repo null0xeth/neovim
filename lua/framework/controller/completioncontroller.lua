@@ -36,6 +36,17 @@ function CompletionController:new()
   return obj
 end
 
+local cmp = require("cmp")
+local has_cmp_comparators, copilot_cmp = pcall(require, "copilot_cmp.comparators")
+
+local function has_words_before()
+  if vim.api.nvim_get_option_value("buftype", { buf = 0 }) == "prompt" then
+    return false
+  end
+  local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+  return col ~= 0 and vim.api.nvim_buf_get_text(0, line - 1, 0, line - 1, col, {})[1]:match("^%s*$") == nil
+end
+
 local function fetch_cmp_sources()
   return {
     { name = "copilot", group_index = 0 },
@@ -216,18 +227,7 @@ local function fetch_cmp_formatting()
   }
 end
 
-local has_cmp_comparators, copilot_cmp = pcall(require, "copilot_cmp.comparators")
-
-local has_words_before = function()
-  if vim.api.nvim_get_option_value("buftype", { buf = 0 }) == "prompt" then
-    return false
-  end
-  local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-  return col ~= 0 and vim.api.nvim_buf_get_text(0, line - 1, 0, line - 1, col, {})[1]:match("^%s*$") == nil
-end
-
 local function fetch_cmp_sorting()
-  local cmp = require("cmp")
   -- local compare = get_module("compare", "compare")
   -- local types = require("cmp.types")
 
