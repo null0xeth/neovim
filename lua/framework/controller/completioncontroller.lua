@@ -59,8 +59,9 @@ local function fetch_cmp_sources()
         return true
       end,
     },
+    { name = "nvim_lua", group_index = 2 },
     { name = "path", group_index = 2, keyword_length = 2 },
-    { name = "luasnip", group_index = 2 },
+    { name = "luasnip", group_index = 3, max_item_count = 5 },
     { name = "dotenv", group_index = 3, max_item_count = 5 },
     -- {
     --   name = "buffer",
@@ -229,7 +230,7 @@ local function fetch_cmp_formatting()
           lazydev = "[LDEV]",
           nvim_lsp = "[LSP]",
           dotenv = "[ENV]",
-          --nvim_lua = "[NLUA]",
+          nvim_lua = "[NLUA]",
           luasnip = "[SNIP]",
           path = "[PATH]",
           --crates = "[CRATE]",
