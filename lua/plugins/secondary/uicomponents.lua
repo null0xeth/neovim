@@ -261,20 +261,6 @@ local spec = {
       statuslinecontroller:setup()
     end,
   },
-  { -- scrollbar with information
-    "lewis6991/satellite.nvim",
-    enabled = false,
-    commit = "5d33376", -- TODO following versions require nvim 0.10
-    event = "VeryLazy",
-    opts = {
-      winblend = 0, -- no transparency, hard to see in many themes otherwise
-      handlers = {
-        cursor = { enable = false },
-        marks = { enable = false }, -- FIX mark-related error message
-        quickfix = { enable = true },
-      },
-    },
-  },
   {
     "glepnir/dashboard-nvim",
     event = "VimEnter",

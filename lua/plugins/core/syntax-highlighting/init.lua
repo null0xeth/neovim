@@ -146,27 +146,6 @@ local spec = {
       codingcontroller:setup_treeshitter(opts)
     end,
   },
-  -- Show context of the current function
-  {
-    "nvim-treesitter/nvim-treesitter-context",
-    enabled = false,
-    event = "KindaLazy",
-    opts = {
-      enable = false,
-      mode = "cursor",
-      max_lines = 3,
-    },
-    keys = {
-      {
-        "<leader>Sc",
-        function()
-          local tsc = require("treesitter-context")
-          tsc.toggle()
-        end,
-        desc = "Toggle TS Context",
-      },
-    },
-  },
   {
     "ckolkey/ts-node-action",
     event = { "BufReadPost", "BufNewFile" },
@@ -186,22 +165,6 @@ local spec = {
     config = function()
       require("treesj").setup({
         use_default_keymaps = false,
-      })
-    end,
-  },
-  {
-    "rasulomaroff/reactive.nvim",
-    enabled = false,
-    event = "KindaLazy",
-    config = function()
-      local reactive = require("reactive")
-      reactive.setup({
-        load = { "catppuccin-mocha-cursor", "catppuccin-mocha-cursorline" },
-        builtin = {
-          cursorline = true,
-          cursor = true,
-          modemsg = true,
-        },
       })
     end,
   },

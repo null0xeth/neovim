@@ -3,22 +3,7 @@ local long_opts = { silent = true, expr = true, mode = { "i", "n", "s" } }
 local spec = {
   { "MunifTanjim/nui.nvim", lazy = true },
   { "nvim-tree/nvim-web-devicons", lazy = true },
-  {
-    "stevearc/stickybuf.nvim",
-    enabled = false,
-    event = "KindaLazy",
-    config = function()
-      require("stickybuf").setup({
-        -- This function is run on BufEnter to determine pinning should be activated
-        get_auto_pin = function(bufnr)
-          -- You can return "bufnr", "buftype", "filetype", or a custom function to set how the window will be pinned.
-          -- You can instead return an table that will be passed in as "opts" to `stickybuf.pin`.
-          -- The function below encompasses the default logic. Inspect the source to see what it does.
-          return require("stickybuf").should_auto_pin(bufnr)
-        end,
-      })
-    end,
-  },
+
   {
     "folke/noice.nvim",
     enabled = true,
@@ -185,45 +170,7 @@ local spec = {
       })
     end,
   },
-  {
-    "nvim-focus/focus.nvim",
-    enabled = false,
-    cmd = { "FocusSplitNicely", "FocusSplitLeft", "FocusSplitRight", "FocusSplitDown" },
-    version = false,
-    config = function()
-      require("focus").setup({
-        enable = true, -- Enable module
-        commands = true, -- Create Focus commands
-        autoresize = {
-          enable = true, -- Enable or disable auto-resizing of splits
-          -- width = 0, -- Force width for the focused window
-          -- height = 0, -- Force height for the focused window
-          -- minwidth = 0, -- Force minimum width for the unfocused window
-          -- minheight = 0, -- Force minimum height for the unfocused window
-          --height_quickfix = 10, -- Set the height of quickfix panel
-        },
-        split = {
-          bufnew = false, -- Create blank buffer for new split windows
-          tmux = false, -- Create tmux splits instead of neovim splits
-        },
-        ui = {
-          number = false, -- Display line numbers in the focussed window only
-          relativenumber = false, -- Display relative line numbers in the focussed window only
-          hybridnumber = false, -- Display hybrid line numbers in the focussed window only
-          absolutenumber_unfocussed = false, -- Preserve absolute numbers in the unfocussed windows
 
-          cursorline = true, -- Display a cursorline in the focussed window only
-          cursorcolumn = true, -- Display cursorcolumn in the focussed window only
-          colorcolumn = {
-            enable = false, -- Display colorcolumn in the foccused window only
-            list = "+1", -- Set the comma-saperated list for the colorcolumn
-          },
-          --signcolumn = true, -- Display signcolumn in the focussed window only
-          winhighlight = true, -- Auto highlighting for focussed/unfocussed windows
-        },
-      })
-    end,
-  },
   -- Fix bufferline offsets when edgy is loaded
   {
     "akinsho/bufferline.nvim",

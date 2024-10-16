@@ -118,48 +118,6 @@ local spec = {
     end,
   },
   {
-    -- Looks for .nvim/deployment.lua in root of pproject
-    "coffebar/transfer.nvim",
-    enabled = false,
-    event = "KindaLazy",
-    cmd = { "TransferInit", "DiffRemote", "TransferUpload", "TransferDownload", "TransferDirDiff", "TransferRepeat" },
-    config = function()
-      require("which-key").add({
-        { "<leader>u", group = "Upload / Download", icon = "" },
-        {
-          "<leader>ud",
-          "<cmd>TransferDownload<cr>",
-          desc = "Download from remote server (scp)",
-          icon = { color = "green", icon = "󰇚" },
-        },
-        {
-          "<leader>uf",
-          "<cmd>DiffRemote<cr>",
-          desc = "Diff file with remote server (scp)",
-          icon = { color = "green", icon = "" },
-        },
-        {
-          "<leader>ui",
-          "<cmd>TransferInit<cr>",
-          desc = "Init/Edit Deployment config",
-          icon = { color = "green", icon = "" },
-        },
-        {
-          "<leader>ur",
-          "<cmd>TransferRepeat<cr>",
-          desc = "Repeat transfer command",
-          icon = { color = "green", icon = "󰑖" },
-        },
-        {
-          "<leader>uu",
-          "<cmd>TransferUpload<cr>",
-          desc = "Upload to remote server (scp)",
-          icon = { color = "green", icon = "󰕒" },
-        },
-      })
-    end,
-  },
-  {
     "gbprod/substitute.nvim",
     opts = {
       -- your configuration comes here
@@ -437,59 +395,6 @@ local spec = {
       },
     },
   },
-  -- {
-  --   "cshuaimin/ssr.nvim",
-  --   enabled = false,
-  --   opts = {
-  --     border = "rounded",
-  --     min_width = 50,
-  --     min_height = 5,
-  --     max_width = 120,
-  --     max_height = 25,
-  --     keymaps = {
-  --       close = "q",
-  --       next_match = "n",
-  --       prev_match = "N",
-  --       replace_confirm = "<cr>",
-  --       replace_all = "<leader><cr>",
-  --     },
-  --   },
-  --   keys = {
-  --     {
-  --       "<leader>srr",
-  --       function()
-  --         require("ssr").open()
-  --       end,
-  --       mode = { "n", "x" },
-  --       desc = "Search and Replace (SSR)",
-  --     },
-  --   },
-  -- },
-  -- { -- refactoring utilities
-  --   "ThePrimeagen/refactoring.nvim",
-  --   dependencies = { "nvim-lua/plenary.nvim", "nvim-treesitter/nvim-treesitter" },
-  --   opts = true,
-  --   keys = {
-  -- 	-- stylua: ignore start
-  -- 	{"<leader>ri", function() require("refactoring").refactor("Inline Variable") end,  desc = "󱗘 Inline Var (Refactoring)" },
-  -- 	{"<leader>re", function() require("refactoring").refactor("Extract Variable") end, desc = "󱗘 Extract Var (Refactoring)" },
-  -- 	{"<leader>ru", function() require("refactoring").refactor("Extract Function") end, desc = "󱗘 Extract Func (Refactoring)" },
-  --     -- stylua: ignore end
-  --   },
-  -- },
-  -- {
-  --   "nvim-pack/nvim-spectre",
-  --   build = false,
-  --   cmd = "Spectre",
-  --   opts = { open_cmd = "noswapfile vnew" },
-  --   -- stylua: ignore
-  --   keys = {
-  --     { "<leader>sst", function() require("spectre").toggle() end, desc = "Toggle (Spectre)" },
-  --     { '<leader>ssw', function() require("spectre").open_visual({select_word=true}) end, desc = "Search Current Word (Spectre)" },
-  --     { '<leader>ssv', function() require("spectre").open_visual() end, desc = "Open Visual Panel (Spectre)" },
-  --     { '<leader>ssv', function() require("spectre").open_file_search({select_word=true}) end, desc = "Search in File (Spectre)" },
-  --   },
-  -- },
   {
     "chrisgrieser/nvim-origami",
     event = "KindaLazy",

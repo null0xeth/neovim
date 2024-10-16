@@ -36,22 +36,7 @@ local function on_rename(from, to)
 end
 
 local spec = {
-  {
-    "nvim-tree/nvim-tree.lua",
-    enabled = false,
-    dependencies = { "nvim-tree/nvim-web-devicons" },
-    version = "*",
-    cmd = { "NvimTreeToggle" },
-    init = function()
-      local keymapcontroller = require("framework.controller.keymapcontroller"):new()
-      keymapcontroller:register_keymap("n", "<c-n>", "<cmd>NvimTreeToggle<CR>", { silent = true })
-      keymapcontroller:register_keymap("n", "<Space>n", "<cmd>NvimTreeFocus<CR>", { silent = true })
-    end,
-    config = function()
-      local navigationcontroller = require("framework.controller.navigationcontroller"):new()
-      navigationcontroller:setup()
-    end,
-  },
+
   {
     "stevearc/oil.nvim",
     dependencies = { "nvim-tree/nvim-web-devicons" },
@@ -78,25 +63,6 @@ local spec = {
       { "<leader>mno", "<cmd>Oil<CR>", desc = "Browse parent directory (Oil)" },
       { "<leader>mnf", "<cmd>Oil --float <CR>", desc = "[FLOAT]: Browse parent directory (Oil)" },
     },
-  },
-  {
-    "toppair/reach.nvim",
-    enabled = false,
-    cmd = { "ReachOpen" },
-    dependencies = {
-      "nvim-tree/nvim-web-devicons",
-    },
-    keys = {
-      { "<leader>mrb", "<cmd>ReachOpen buffers<cr>", desc = "Open buffers" },
-      { "<leader>mrt", "<cmd>ReachOpen tabpages<cr>", desc = "Open tabpages" },
-      { "<leader>mrc", "<cmd>ReachOpen colorschemes<cr>", desc = "Open colorschemes" },
-      { "<leader>mrm", "<cmd>ReachOpen marks<cr>", desc = "Open marks" },
-    },
-    config = function()
-      require("reach").setup({
-        notifications = true,
-      })
-    end,
   },
 }
 

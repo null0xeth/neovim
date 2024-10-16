@@ -72,25 +72,6 @@ local spec = {
       deleteBufferWhenFileDeleted = true,
     },
   },
-  {
-    "axkirillov/hbac.nvim",
-    enabled = false,
-    event = "KindaLazy",
-    dependencies = {
-      "nvim-telescope/telescope.nvim",
-      "nvim-lua/plenary.nvim",
-      "nvim-tree/nvim-web-devicons",
-    },
-    config = function()
-      require("hbac").setup({
-        autoclose = true,
-        threshold = 10,
-        close_command = function(bufnr)
-          vim.api.nvim_buf_delete(bufnr, {})
-        end,
-      })
-    end,
-  },
 }
 
 return spec
