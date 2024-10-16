@@ -3,13 +3,13 @@ local spec = {
     "zbirenbaum/copilot.lua",
     cmd = "Copilot",
     event = "InsertEnter",
-    --build = ":Copilot auth",
+    build = ":Copilot auth",
     config = function()
       local keymapcontroller = require("framework.controller.keymapcontroller", "keymapcontroller"):new()
 
       require("copilot").setup({
         panel = {
-          enabled = false,
+          enabled = true,
           auto_refresh = true,
           keymap = {
             jump_prev = "[[",
@@ -24,10 +24,10 @@ local spec = {
           },
         },
         suggestion = {
-          --enabled = false,
+          enabled = true,
           auto_trigger = true,
-          --hide_during_completion = true,
-          --debounce = 75,
+          hide_during_completion = true,
+          debounce = 75,
           keymap = {
             --accept = "<M-l>",
             accept = false,
@@ -67,26 +67,26 @@ local spec = {
       end, { silent = true })
     end,
   },
-  {
-    "nvim-cmp",
-    dependencies = {
-      {
-        "zbirenbaum/copilot-cmp",
-        dependencies = "zbirenbaum/copilot.lua",
-        config = function()
-          local copilot_cmp = require("copilot_cmp")
-          copilot_cmp.setup()
-        end,
-      },
-    },
-    -- ---@param opts cmp.ConfigSchema
-    -- opts = function(_, opts)
-    --   table.insert(opts.sources, 1, {
-    --     name = "copilot",
-    --     group_index = 1,
-    --   })
-    -- end,
-  },
+  -- {
+  --   "nvim-cmp",
+  --   dependencies = {
+  --     {
+  --       "zbirenbaum/copilot-cmp",
+  --       dependencies = "zbirenbaum/copilot.lua",
+  --       config = function()
+  --         local copilot_cmp = require("copilot_cmp")
+  --         copilot_cmp.setup()
+  --       end,
+  --     },
+  --   },
+  --   -- ---@param opts cmp.ConfigSchema
+  --   -- opts = function(_, opts)
+  --   --   table.insert(opts.sources, 1, {
+  --   --     name = "copilot",
+  --   --     group_index = 1,
+  --   --   })
+  --   -- end,
+  -- },
 }
 
 return spec
