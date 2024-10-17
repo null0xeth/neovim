@@ -150,110 +150,6 @@ local spec = {
     },
   },
   {
-    "s1n7ax/nvim-comment-frame",
-    dependencies = { "nvim-treesitter/nvim-treesitter" },
-    keys = {
-      {
-        "<leader>cbs",
-        function()
-          require("nvim-comment-frame").add_comment()
-        end,
-        desc = "Add single-line commentbox",
-        mode = { "n" },
-      },
-      {
-        "<leader>cbm",
-        function()
-          require("nvim-comment-frame").add_multiline_comment()
-        end,
-        desc = "Add multi-line commentbox",
-        mode = { "n" },
-      },
-    },
-    config = function()
-      require("nvim-comment-frame").setup({
-
-        -- if true, <leader>cf keymap will be disabled
-        disable_default_keymap = false,
-
-        -- adds custom keymap
-        keymap = "<leader>cc",
-        multiline_keymap = "<leader>cm",
-
-        -- start the comment with this string
-        start_str = "//",
-
-        -- end the comment line with this string
-        end_str = "//",
-
-        -- fill the comment frame border with this character
-        fill_char = "-",
-
-        -- width of the comment frame
-        frame_width = 70,
-
-        -- wrap the line after 'n' characters
-        line_wrap_len = 50,
-
-        -- automatically indent the comment frame based on the line
-        auto_indent = true,
-
-        -- add comment above the current line
-        add_comment_above = true,
-
-        -- configurations for individual language goes here
-        languages = {
-          lua = {
-            -- start the comment with this string
-            start_str = "--[[",
-
-            -- end the comment line with this string
-            end_str = "]]--",
-
-            -- fill the comment frame border with this character
-            fill_char = "*",
-
-            -- width of the comment frame
-            frame_width = 100,
-
-            -- wrap the line after 'n' characters
-            line_wrap_len = 70,
-
-            -- automatically indent the comment frame based on the line
-            auto_indent = true,
-
-            -- add comment above the current line
-            add_comment_above = false,
-          },
-        },
-      })
-    end,
-  },
-  {
-    "ray-x/sad.nvim",
-    event = "KindaLazy",
-    dependencies = { "ray-x/guihua.lua" },
-    config = function()
-      require("sad").setup({
-        debug = false,
-        diff = "diff-so-fancy",
-        ls_file = "fd",
-        exact = false,
-        vsplit = true,
-      })
-    end,
-  },
-
-  {
-    "MagicDuck/grug-far.nvim",
-    event = "KindaLazy",
-    config = function()
-      require("grug-far").setup({
-        engine = "astgrep",
-      })
-    end,
-  },
-  {
     "chrisgrieser/nvim-rip-substitute",
     cmd = "RipSubstitute",
     keys = {
@@ -318,43 +214,43 @@ local spec = {
       })
     end,
   },
-  {
-    "akinsho/toggleterm.nvim",
-    cmd = { "ToggleTerm", "TermExec" },
-    keys = {
-      { [[<C-\>]] },
-      { "<leader>vt", "<Cmd>2ToggleTerm<Cr>", desc = "Terminal" },
-    },
-    opts = {
-      --size = 25,
-      size = function(term)
-        if term.direction == "horizontal" then
-          return vim.o.lines / 2
-        elseif term.direction == "vertical" then
-          return vim.o.columns / 2
-        end
-      end,
+  -- {
+  --   "akinsho/toggleterm.nvim",
+  --   cmd = { "ToggleTerm", "TermExec" },
+  --   keys = {
+  --     { [[<C-\>]] },
+  --     { "<leader>vt", "<Cmd>2ToggleTerm<Cr>", desc = "Terminal" },
+  --   },
+  --   opts = {
+  --     --size = 25,
+  --     size = function(term)
+  --       if term.direction == "horizontal" then
+  --         return vim.o.lines / 2
+  --       elseif term.direction == "vertical" then
+  --         return vim.o.columns / 2
+  --       end
+  --     end,
 
-      hide_numbers = true, --true
-      open_mapping = [[<C-\>]],
-      shade_filetypes = {},
-      shade_terminals = true, --false
-      shading_factor = 1, -- 0.3
-      start_in_insert = true,
-      insert_mappings = true,
-      persist_size = true,
-      direction = "horizontal",
-      close_on_exit = false,
-      auto_scroll = false,
-      autchdir = false,
-      winbar = {
-        enabled = false,
-        name_formatter = function(term)
-          return term.name
-        end,
-      },
-    },
-  },
+  --     hide_numbers = true, --true
+  --     open_mapping = [[<C-\>]],
+  --     shade_filetypes = {},
+  --     shade_terminals = true, --false
+  --     shading_factor = 1, -- 0.3
+  --     start_in_insert = true,
+  --     insert_mappings = true,
+  --     persist_size = true,
+  --     direction = "horizontal",
+  --     close_on_exit = false,
+  --     auto_scroll = false,
+  --     autchdir = false,
+  --     winbar = {
+  --       enabled = false,
+  --       name_formatter = function(term)
+  --         return term.name
+  --       end,
+  --     },
+  --   },
+  -- },
   {
     "tzachar/highlight-undo.nvim",
     keys = { "u", "U" },
@@ -486,23 +382,6 @@ local spec = {
       wk.setup(opts.setup)
       wk.register(opts.defaults)
     end,
-  },
-  {
-    "allaman/kustomize.nvim",
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-    },
-    ft = "yaml",
-    opts = {
-      enable_key_mappings = true,
-      enable_lua_snip = true,
-      validate = { kubeconform_args = { "--strict", "--ignore-missing-schemas" } },
-      build = {
-        additional_args = { "--enable-helm", "--load-restrictor=LoadRestrictionsNone" },
-      },
-      deprecations = { kube_version = "1.25" },
-      kinds = { show_filepath = true, show_line = true, exclude_pattern = "" },
-    },
   },
 }
 

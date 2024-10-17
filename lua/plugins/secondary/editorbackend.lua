@@ -17,36 +17,6 @@ end
 
 local spec = {
   { "tpope/vim-repeat", event = "KindaLazy" },
-  {
-    "tomiis4/Hypersonic.nvim",
-    event = "CmdlineEnter",
-    cmd = "Hypersonic",
-    config = function()
-      require("hypersonic").setup({
-        -- config
-      })
-    end,
-  },
-  {
-    "SmiteshP/nvim-navic",
-    event = "LspAttach",
-    dependencies = {
-      "neovim/nvim-lspconfig",
-    },
-    config = function()
-      require("nvim-navic").setup({
-        highlight = true,
-        --separator = " ",
-        --depth_limit = 5,
-        --lazy_update_context = true,
-        icons = { Object = "󰆧 " },
-        separator = "  ",
-        depth_limit = 0,
-        depth_limit_indicator = "…",
-        safe_output = true,
-      })
-    end,
-  },
   { -- when searching, search count is shown next to the cursor
     "kevinhwang91/nvim-hlslens",
     event = "KindaLazy",

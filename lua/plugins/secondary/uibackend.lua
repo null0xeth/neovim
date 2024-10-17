@@ -219,13 +219,13 @@ local spec = {
     opts = function()
       local opts = {
         bottom = {
-          {
-            ft = "toggleterm",
-            size = { height = 0.4 },
-            filter = function(buf, win)
-              return vim.api.nvim_win_get_config(win).relative == ""
-            end,
-          },
+          -- {
+          --   ft = "toggleterm",
+          --   size = { height = 0.4 },
+          --   filter = function(buf, win)
+          --     return vim.api.nvim_win_get_config(win).relative == ""
+          --   end,
+          -- },
           {
             ft = "noice",
             size = { height = 0.25 },
@@ -249,8 +249,8 @@ local spec = {
               return vim.bo[buf].buftype == "help"
             end,
           },
-          { title = "Spectre", ft = "spectre_panel", size = { height = 0.4 } },
-          { title = "Neotest Output", ft = "neotest-output-panel", size = { height = 15 } },
+          --{ title = "Spectre", ft = "spectre_panel", size = { height = 0.4 } },
+          --{ title = "Neotest Output", ft = "neotest-output-panel", size = { height = 15 } },
         },
         left = {
           {
@@ -298,13 +298,13 @@ local spec = {
           "neo-tree",
         },
         right = {
-          {
-            title = "Outline (Aerial)",
-            ft = "aerial",
-            pinned = true,
-            open = "AerialOpen",
-            size = { height = 0.5 },
-          },
+          -- {
+          --   title = "Outline (Aerial)",
+          --   ft = "aerial",
+          --   pinned = true,
+          --   open = "AerialOpen",
+          --   size = { height = 0.5 },
+          -- },
         },
         options = {
           left = { size = 35 },
