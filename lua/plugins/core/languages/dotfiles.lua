@@ -38,7 +38,7 @@ return {
       ensure_installed = {
         "git_config",
         "rasi",
-        "Dockerfile",
+        "dockerfile",
       },
     },
   },
