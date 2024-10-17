@@ -109,7 +109,6 @@ local spec = {
         "none-ls-external-sources.diagnostics.cpplint",
         "none-ls-external-sources.diagnostics.eslint_d",
         "none-ls-external-sources.diagnostics.luacheck",
-        "none-ls-external-sources.diagnostics.shellcheck",
         "none-ls-external-sources.diagnostics.yamllint",
         -- formatting
         "none-ls-external-sources.formatting.beautysh",
@@ -132,16 +131,19 @@ local spec = {
     "nvimtools/none-ls.nvim",
     event = "KindaLazy",
     dependencies = {
-      "mason.nvim",
+      "williamboman/mason.nvim",
       "gbprod/none-ls-shellcheck.nvim",
     },
     opts_extend = { "sources" },
     opts = function(_, opts)
       local nls = require("null-ls")
+      local shellcheck = require("none-ls-shellcheck")
       opts.root_dir = opts.root_dir
         or require("null-ls.utils").root_pattern(".null-ls-root", ".neoconf.json", "Makefile", ".git")
       opts.sources = vim.list_extend(opts.sources or {}, {
         nls.builtins.diagnostics.actionlint, -- gh actions
+        shellcheck.diagnostics,
+        shellcheck.code_actions,
         --nls.builtins.diagnostics.shellcheck,
         --nls.builtins.formatting.shfmt, -- add actionlint for gh
       })
