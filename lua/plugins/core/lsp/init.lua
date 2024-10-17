@@ -131,7 +131,10 @@ local spec = {
   {
     "nvimtools/none-ls.nvim",
     event = "KindaLazy",
-    dependencies = { "mason.nvim" },
+    dependencies = {
+      "mason.nvim",
+      "gbprod/none-ls-shellcheck.nvim",
+    },
     opts_extend = { "sources" },
     opts = function(_, opts)
       local nls = require("null-ls")
