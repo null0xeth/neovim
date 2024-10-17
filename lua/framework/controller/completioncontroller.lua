@@ -300,12 +300,12 @@ local function fetch_cmp_sorting()
       cmp.config.compare.length,
       cmp.config.compare.order,
       -- personal settings:
-      compare.recently_used,
-      compare.offset,
-      compare.score,
-      compare.sort_text,
-      compare.length,
-      compare.order,
+      cmp.config.compare.recently_used,
+      cmp.config.compare.offset,
+      cmp.config.compare.score,
+      cmp.config.compare.sort_text,
+      cmp.config.compare.length,
+      cmp.config.compare.order,
     }),
     preselect = cmp.PreselectMode.Item,
   }
