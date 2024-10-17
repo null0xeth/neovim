@@ -62,7 +62,6 @@ local spec = {
       ensure_installed = {
         "bash",
         "comment",
-        "dockerfile",
         "diff",
         "dap_repl",
         "html",
