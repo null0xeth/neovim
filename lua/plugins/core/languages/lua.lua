@@ -27,16 +27,6 @@ local spec = {
   },
   -- Manage libuv types with lazy. Plugin will never be loaded
   { "Bilal2453/luvit-meta", lazy = true },
-  { -- optional completion source for require statements and module annotations
-    "hrsh7th/nvim-cmp",
-    opts = function(_, opts)
-      opts.sources = opts.sources or {}
-      table.insert(opts.sources, {
-        name = "lazydev",
-        group_index = 0, -- set group index to 0 to skip loading LuaLS completions
-      })
-    end,
-  },
 
   {
     "stevearc/conform.nvim",
@@ -117,20 +107,20 @@ local spec = {
       opts.adapters = vim.list_extend(opts.adapters, { require("neotest-plenary") })
     end,
   },
-  {
-    "mfussenegger/nvim-dap",
-    dependencies = {
-      {
-        "jbyuki/one-small-step-for-vimkind",
-        config = function()
-          vim.schedule_wrap(function()
-            local dapcontroller = require("framework.controller.dapcontroller"):new()
-            dapcontroller:get_lua_dap()
-          end)()
-        end,
-      },
-    },
-  },
+  -- {
+  --   "mfussenegger/nvim-dap",
+  --   dependencies = {
+  --     {
+  --       "jbyuki/one-small-step-for-vimkind",
+  --       config = function()
+  --         vim.schedule_wrap(function()
+  --           local dapcontroller = require("framework.controller.dapcontroller"):new()
+  --           dapcontroller:get_lua_dap()
+  --         end)()
+  --       end,
+  --     },
+  --   },
+  -- },
 }
 
 return spec

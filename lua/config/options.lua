@@ -140,6 +140,9 @@ vim.filetype.add({
     tfstate = "json",
     hcl = "terraform",
     tm = "terraform",
+    jinja = "jinja",
+    jinja2 = "jinja",
+    j2 = "jinja",
   },
 })
 

@@ -38,6 +38,7 @@ return {
       ensure_installed = {
         "git_config",
         "rasi",
+        "Dockerfile",
       },
     },
   },
@@ -73,12 +74,28 @@ return {
           settings = {},
         },
         bashls = {},
+        docker_compose_language_service = {},
+        gitlab_ci_ls = {},
+        jinja_lsp = {},
       },
       setup = {
         dockerls = function(_, opts)
           local lspcontroller = require("framework.controller.lspController"):new()
           lspcontroller:setup_lsp_servers(_, opts.dockerls)
         end,
+        jinja_lsp = function(_, opts)
+          local lspcontroller = require("framework.controller.lspController"):new()
+          lspcontroller:setup_lsp_servers(_, opts.jinja_lsp)
+        end,
+        docker_compose_language_service = function(_, opts)
+          local lspcontroller = require("framework.controller.lspController"):new()
+          lspcontroller:setup_lsp_servers(_, opts.docker_compose_language_service)
+        end,
+        gitlab_ci_ls = function(_, opts)
+          local lspcontroller = require("framework.controller.lspController"):new()
+          lspcontroller:setup_lsp_servers(_, opts.gitlab_ci_ls)
+        end,
+
         bashls = function(_, opts)
           local lspcontroller = require("framework.controller.lspController"):new()
           lspcontroller:setup_lsp_servers(_, opts.bashls)

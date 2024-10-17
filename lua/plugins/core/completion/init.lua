@@ -116,8 +116,10 @@ local spec = {
   },
 
   {
-    "hrsh7th/nvim-cmp",
-    version = false,
+    -- "hrsh7th/nvim-cmp",
+    -- version = false,
+    "iguanacucumber/magazine.nvim", -- Temporary fork. Also remove in copilot-cmp.lua and nvim-lspconfig.lua
+    name = "nvim-cmp", -- Needed for fork
     event = "InsertEnter",
     dependencies = {
       "onsails/lspkind.nvim",
