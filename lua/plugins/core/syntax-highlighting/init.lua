@@ -13,12 +13,12 @@ local spec = {
   },
   {
     "nvim-treesitter/nvim-treesitter",
-    build = ":TSUpdate",
-    -- build = function()
-    --   vim.schedule(function()
-    --     vim.cmd(":TSUpdate")
-    --   end)
-    -- end,
+    --build = ":TSUpdate",
+    build = function()
+      vim.schedule(function()
+        vim.cmd(":TSUpdate")
+      end)
+    end,
     event = "KindaLazy",
     -- init = function(plugin)
     --   require("lazy.core.loader").add_to_rtp(plugin)

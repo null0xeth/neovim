@@ -289,8 +289,8 @@ local function fetch_cmp_sorting()
       -- order matters here
       cmp.config.compare.exact,
       cmp.config.compare.offset,
-      has_cmp_comparators and copilot_cmp.prioritize or nil,
-      has_cmp_comparators and copilot_cmp.score or nil,
+      -- has_cmp_comparators and copilot_cmp.prioritize or nil,
+      -- has_cmp_comparators and copilot_cmp.score or nil,
       -- compare.scopes, --this is commented in nvim-cmp too
       cmp.config.compare.score,
       cmp.config.compare.recently_used,
@@ -300,12 +300,12 @@ local function fetch_cmp_sorting()
       cmp.config.compare.length,
       cmp.config.compare.order,
       -- personal settings:
-      -- compare.recently_used,
-      -- compare.offset,
-      -- compare.score,
-      -- compare.sort_text,
-      -- compare.length,
-      -- compare.order,
+      compare.recently_used,
+      compare.offset,
+      compare.score,
+      compare.sort_text,
+      compare.length,
+      compare.order,
     }),
     preselect = cmp.PreselectMode.Item,
   }
@@ -382,7 +382,7 @@ local function generate_cmp_template()
     -- leave as template
     experimental = {
       native_menu = false,
-      ghost_text = false,
+      ghost_text = true,
       -- ghost_text = {
       --   hl_group = "CmpGhostText",
       -- },
