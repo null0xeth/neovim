@@ -59,7 +59,6 @@ local spec = {
     opts = {
       sync_install = false,
       auto_install = true,
-      parser_install_dir = "/treesitter",
       ensure_installed = {
         "bash",
         "comment",
