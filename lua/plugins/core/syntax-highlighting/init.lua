@@ -143,8 +143,6 @@ local spec = {
       },
     },
     config = function(_, opts)
-      local install_dir = vim.g.pre_install_root .. "/treesitter"
-      vim.opt.runtimepath:append(install_dir)
       local codingcontroller = require("framework.controller.codingcontroller"):new()
       codingcontroller:setup_treeshitter(opts)
     end,
