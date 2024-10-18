@@ -24,7 +24,6 @@ local settings = {
     terraform = true,
   },
   keymap_categories = {
-    {
       {
         mode = { "n", "v" },
         { "<leader>b", group = "Buffer" },
@@ -185,7 +184,6 @@ local settings = {
     --x = false,
     --y = false,
     --z = false,
-  },
-}
+  }
 
 return settings
