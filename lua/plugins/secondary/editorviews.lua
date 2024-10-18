@@ -69,7 +69,7 @@ local spec = {
   -- },
   {
     "hedyhli/outline.nvim",
-    keys = { { "<leader>cs", "<cmd>Outline<cr>", desc = "Toggle Outline" } },
+    keys = { { "<leader>eo", "<cmd>Outline<cr>", desc = "Toggle Code Outline" } },
     cmd = "Outline",
     opts = function()
       local defaults = require("outline.config").defaults

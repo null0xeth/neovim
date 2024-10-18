@@ -1,13 +1,13 @@
-local config = require("config")
+--local config = require("config")
 
 local spec = {
-  {
-    "altermo/iedit.nvim",
-    event = "KindaLazy",
-    config = function()
-      require("iedit").setup()
-    end,
-  },
+  -- {
+  --   "altermo/iedit.nvim",
+  --   event = "KindaLazy",
+  --   config = function()
+  --     require("iedit").setup()
+  --   end,
+  -- },
   {
     "google/executor.nvim",
     event = "KindaLazy",
@@ -117,44 +117,44 @@ local spec = {
       })
     end,
   },
-  {
-    "gbprod/substitute.nvim",
-    opts = {
-      -- your configuration comes here
-      -- or leave it empty to use the default settings
-      -- refer to the configuration section below
-      on_substitute = nil,
-      yank_substituted_text = true,
-      preserve_cursor_position = true,
-      modifiers = nil,
-      highlight_substituted_text = {
-        enabled = true,
-        timer = 500,
-      },
-      range = {
-        prefix = "s",
-        prompt_current_text = false,
-        confirm = false,
-        complete_word = false,
-        subject = nil,
-        range = nil,
-        suffix = "",
-        auto_apply = false,
-        cursor_position = "end",
-      },
-      exchange = {
-        motion = false,
-        use_esc_to_cancel = true,
-        preserve_cursor_position = false,
-      },
-    },
-  },
+  -- {
+  --   "gbprod/substitute.nvim",
+  --   opts = {
+  --     -- your configuration comes here
+  --     -- or leave it empty to use the default settings
+  --     -- refer to the configuration section below
+  --     on_substitute = nil,
+  --     yank_substituted_text = true,
+  --     preserve_cursor_position = true,
+  --     modifiers = nil,
+  --     highlight_substituted_text = {
+  --       enabled = true,
+  --       timer = 500,
+  --     },
+  --     range = {
+  --       prefix = "s",
+  --       prompt_current_text = false,
+  --       confirm = false,
+  --       complete_word = false,
+  --       subject = nil,
+  --       range = nil,
+  --       suffix = "",
+  --       auto_apply = false,
+  --       cursor_position = "end",
+  --     },
+  --     exchange = {
+  --       motion = false,
+  --       use_esc_to_cancel = true,
+  --       preserve_cursor_position = false,
+  --     },
+  --   },
+  -- },
   {
     "chrisgrieser/nvim-rip-substitute",
     cmd = "RipSubstitute",
     keys = {
       {
-        "<leader>fs",
+        "<leader>sr",
         function()
           require("rip-substitute").sub()
         end,
@@ -275,7 +275,7 @@ local spec = {
     cmd = "GrugFar",
     keys = {
       {
-        "<leader>sr",
+        "<leader>sg",
         function()
           local grug = require("grug-far")
           local ext = vim.bo.buftype == "" and vim.fn.expand("%:e")
@@ -339,48 +339,22 @@ local spec = {
     "folke/which-key.nvim",
     event = "KindaLazy",
     opts_extend = { "spec" },
-    opts = {
-      defaults = {},
-      setup = {
-        triggers_blacklist = { i = { "<C-G>" } },
-        plugins = {
-          presets = { motions = false, g = false, z = false },
-          spelling = { enabled = false },
-        },
-        -- hidden = { "<Plug>", "^:lua ", "<cmd>" },
-        -- key_labels = {
-        --   ["<CR>"] = "↵",
-        --   ["<BS>"] = "⌫",
-        --   ["<space>"] = "󱁐",
-        --   ["<Tab>"] = "󰌒",
-        ["<Esc>"] = "⎋",
-      },
-      --key_labels = { ["<leader>"] = "SPC" },
-      --triggers = "auto",
-      win = {
-        -- border = "single", -- none, single, double, shadow
-        -- position = "bottom", -- bottom, top
-        -- margin = { 1, 0, 1, 0 }, -- extra window margin [top, right, bottom, left]
-        -- padding = { 1, 1, 1, 1 }, -- extra window padding [top, right, bottom, left]
-        -- winblend = 0,
-      },
-      popup_mappings = {
-        scroll_down = "<PageDown>",
-        scroll_up = "<PageUp>",
-      },
-      layout = {
-        -- height = { min = 4, max = 25 }, -- min and max height of the columns
-        -- width = { min = 20, max = 50 }, -- min and max width of the columns
-        -- spacing = 1, -- spacing between columns
-        --[[           align = "left", -- align columns left, center or right ]]
-      },
+    opts = function()
+      local config = require("config")
+      return {
+        defaults = {},
+        spec = config.keymap_categories,
+      }
+    end,
 
-      defaults = config.keymap_categories,
-    },
+    -- {
+    --   defaults = {},
+    --   spec = config.keymap_categories,
+    -- },
     config = function(_, opts)
       local wk = require("which-key")
-      wk.setup(opts.setup)
-      wk.register(opts.defaults)
+      wk.setup(opts)
+      --wk.register(opts.defaults)
     end,
   },
 }

@@ -17,8 +17,8 @@ local spec = {
       library = {
         -- See the configuration section for more details
         -- Load luvit types when the `vim.uv` word is found
-        { path = "luvit-meta/library", words = { "vim%.uv", "vim%.loop" } },
-        --{ path = "lazy.nvim", words = { "LazyVim" } },
+        { path = "luvit-meta/library", words = { "vim%.uv" } },
+        { path = "lazy.nvim", words = { "LazyVim" } },
         { path = "neo-tree.nvim", mods = { "neo-tree" } },
         { path = "nui.nvim", mods = { "nui" } },
         { path = "nvim-ufo", mods = { "ufo" } },
