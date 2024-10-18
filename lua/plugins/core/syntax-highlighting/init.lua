@@ -13,12 +13,12 @@ local spec = {
   },
   {
     "nvim-treesitter/nvim-treesitter",
-    --build = ":TSUpdate",
-    build = function()
-      vim.schedule(function()
-        vim.cmd(":TSUpdate")
-      end)
-    end,
+    build = ":TSUpdate",
+    -- build = function()
+    --   vim.schedule(function()
+    --     vim.cmd(":TSUpdate")
+    --   end)
+    -- end,
     event = "KindaLazy",
     -- init = function(plugin)
     --   require("lazy.core.loader").add_to_rtp(plugin)
@@ -59,6 +59,7 @@ local spec = {
     opts = {
       sync_install = false,
       auto_install = true,
+      parser_install_dir = "/treesitter",
       ensure_installed = {
         "bash",
         "comment",
@@ -142,6 +143,8 @@ local spec = {
       },
     },
     config = function(_, opts)
+      local install_dir = vim.g.pre_install_root .. "/treesitter"
+      vim.opt.runtimepath:append(install_dir)
       local codingcontroller = require("framework.controller.codingcontroller"):new()
       codingcontroller:setup_treeshitter(opts)
     end,

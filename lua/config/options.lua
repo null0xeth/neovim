@@ -150,6 +150,7 @@ vim.filetype.add({
 opt.shortmess:append({ W = true, I = true, c = true, C = true })
 opt.iskeyword:append("-")
 vim.keymap.set("", "<Space>", "<Nop>", { silent = true })
+vim.g.pre_install_root = vim.fn.expand("$HOME/.nvim")
 
 for _, vim_g_val in pairs(vim_g_options) do
   for k, v in pairs(vim_g_val) do
