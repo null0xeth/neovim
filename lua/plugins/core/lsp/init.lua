@@ -1,19 +1,3 @@
--- local function fqn(fname)
---   fname = vim.fn.fnamemodify(fname, ":p")
---   return vim.loop.fs_realpath(fname) or fname
--- end
-
--- local function exists(fname)
---   local stat = vim.loop.fs_stat(fname)
---   return (stat and stat.type) or false
--- end
-
--- local function has_file(root_dir, file)
---   root_dir = fqn(root_dir)
---   file = fqn(file)
---   return exists(file) and file:find(root_dir, 1, true) == 1
--- end
-
 local spec = {
   {
     "neovim/nvim-lspconfig",
@@ -144,8 +128,6 @@ local spec = {
         nls.builtins.diagnostics.actionlint, -- gh actions
         shellcheck.diagnostics,
         shellcheck.code_actions,
-        --nls.builtins.diagnostics.shellcheck,
-        --nls.builtins.formatting.shfmt, -- add actionlint for gh
       })
     end,
   },

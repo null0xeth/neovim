@@ -171,6 +171,7 @@ local cmds = {
   {
     event = "FileType",
     pattern = {
+      -- TODO: update
       "OverseerForm",
       "OverseerList",
       "checkhealth",

@@ -13,17 +13,15 @@ local spec = {
   },
   {
     "nvim-treesitter/nvim-treesitter",
+    version = false,
     build = ":TSUpdate",
-    -- build = function()
-    --   vim.schedule(function()
-    --     vim.cmd(":TSUpdate")
-    --   end)
-    -- end,
+    cmd = { "TSUpdateSync", "TSUpdate", "TSInstall" },
     event = "KindaLazy",
-    -- init = function(plugin)
-    --   require("lazy.core.loader").add_to_rtp(plugin)
-    --   require("nvim-treesitter.query_predicates")
-    -- end,
+    init = function(plugin)
+      require("lazy.core.loader").add_to_rtp(plugin)
+      require("nvim-treesitter.query_predicates")
+    end,
+    lazy = vim.fn.argc(-1) == 0,
     dependencies = {
       { "JoosepAlviste/nvim-ts-context-commentstring" },
       { "LiadOz/nvim-dap-repl-highlights" },
@@ -134,9 +132,9 @@ local spec = {
         -- disable_virtual_text = false,
         -- disable = { "rust" },
       },
-      endwise = {
-        enable = true,
-      },
+      -- endwise = {
+      --   enable = true,
+      -- },
       autotag = {
         enable = true,
       },

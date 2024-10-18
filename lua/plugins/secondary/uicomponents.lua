@@ -261,24 +261,24 @@ local spec = {
       statuslinecontroller:setup()
     end,
   },
-  {
-    "glepnir/dashboard-nvim",
-    event = "VimEnter",
-    init = vim.schedule(function()
-      local interface = require("framework.interfaces.engine_interface"):new()
-      local is_dashboard = interface.is_plugin_loaded("dashboard-nvim")
-      if not is_dashboard then
-        require("lazy").load({ plugins = { "dashboard-nvim" } })
-      end
-    end),
-    dependencies = {
-      "nvim-tree/nvim-web-devicons",
-    },
-    config = vim.schedule(function()
-      local dashboardcontroller = require("framework.controller.dashboardcontroller"):new()
-      dashboardcontroller:initialize_dashboard()
-    end),
-  },
+  -- {
+  --   "glepnir/dashboard-nvim",
+  --   --event = "VimEnter",
+  --   init = vim.schedule(function()
+  --     local interface = require("framework.interfaces.engine_interface"):new()
+  --     local is_dashboard = interface.is_plugin_loaded("dashboard-nvim")
+  --     if not is_dashboard then
+  --       require("lazy").load({ plugins = { "dashboard-nvim" } })
+  --     end
+  --   end),
+  --   dependencies = {
+  --     "nvim-tree/nvim-web-devicons",
+  --   },
+  --   config = vim.schedule(function()
+  --     local dashboardcontroller = require("framework.controller.dashboardcontroller"):new()
+  --     dashboardcontroller:initialize_dashboard()
+  --   end),
+  -- },
   {
     "rcarriga/nvim-notify",
     keys = {
