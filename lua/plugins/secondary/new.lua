@@ -25,7 +25,7 @@ local spec = {
       "HurlToggleMode",
       "HurlVerbose",
     },
-    keys = require("mappings").hurl,
+    --[[     keys = require("mappings").hurl, ]]
     config = function()
       require("hurl").setup({
         auto_close = false,

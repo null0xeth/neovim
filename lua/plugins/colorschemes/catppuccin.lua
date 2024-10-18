@@ -2,8 +2,9 @@ local spec = {
   {
     "Catppuccin/nvim",
     name = "catppuccin",
-    priority = 1000,
-    event = "VimEnter",
+    --priority = 1000,
+    lazy = false,
+    --event = "VimEnter",
     opts = {
       flavour = "mocha",
       background = {
@@ -119,11 +120,11 @@ local spec = {
     },
 
     config = function(_, opts)
-      vim.schedule_wrap(function()
-        require("catppuccin").setup(opts)
-        vim.opt.termguicolors = true
-        vim.cmd.colorscheme("catppuccin")
-      end)()
+      --vim.schedule_wrap(function()
+      require("catppuccin").setup(opts)
+      vim.opt.termguicolors = true
+      vim.cmd.colorscheme("catppuccin")
+      --end)()
     end,
   },
 }

@@ -18,7 +18,7 @@ local spec = {
         -- See the configuration section for more details
         -- Load luvit types when the `vim.uv` word is found
         { path = "luvit-meta/library", words = { "vim%.uv", "vim%.loop" } },
-        { path = "lazy.nvim", words = { "LazyVim" } },
+        --{ path = "lazy.nvim", words = { "LazyVim" } },
         { path = "neo-tree.nvim", mods = { "neo-tree" } },
         { path = "nui.nvim", mods = { "nui" } },
         { path = "nvim-ufo", mods = { "ufo" } },
@@ -92,21 +92,19 @@ local spec = {
       },
       setup = {
         lua_ls = function(_, opts)
-          vim.schedule_wrap(function()
-            local lspcontroller = require("framework.controller.lspcontroller"):new()
-            lspcontroller:setup_lsp_servers(_, opts)
-          end)()
+          local lspcontroller = require("framework.controller.lspcontroller"):new()
+          lspcontroller:setup_lsp_servers(_, opts)
         end,
       },
     },
   },
-  {
-    "nvim-neotest/neotest",
-    dependencies = { "nvim-neotest/neotest-plenary" },
-    opts = function(_, opts)
-      opts.adapters = vim.list_extend(opts.adapters, { require("neotest-plenary") })
-    end,
-  },
+  -- {
+  --   "nvim-neotest/neotest",
+  --   dependencies = { "nvim-neotest/neotest-plenary" },
+  --   opts = function(_, opts)
+  --     opts.adapters = vim.list_extend(opts.adapters, { require("neotest-plenary") })
+  --   end,
+  -- },
   -- {
   --   "mfussenegger/nvim-dap",
   --   dependencies = {
