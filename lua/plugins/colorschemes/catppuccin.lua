@@ -2,9 +2,9 @@ local spec = {
   {
     "Catppuccin/nvim",
     name = "catppuccin",
-    --priority = 1000,
-    lazy = false,
-    --event = "VimEnter",
+    priority = 1000,
+    --lazy = false,
+    event = "VimEnter",
     opts = {
       flavour = "mocha",
       background = {
