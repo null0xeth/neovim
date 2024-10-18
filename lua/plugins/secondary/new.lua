@@ -42,41 +42,15 @@ local spec = {
       })
     end,
   },
+
   {
-    "jellydn/hurl.nvim",
-    dependencies = {
-      "MunifTanjim/nui.nvim",
-      "nvim-lua/plenary.nvim",
-      "nvim-treesitter/nvim-treesitter",
-    },
-    ft = "hurl",
-    cmd = {
-      "HurlJson",
-      "HurlRunner",
-      "HurlRunnerAt",
-      "HurlRunnerToEntry",
-      "HurlShowLastResponse",
-      "HurlToggleMode",
-      "HurlVerbose",
-    },
-    keys = require("mappings").hurl,
+    "fredeeb/tardis.nvim",
+    event = "KindaLazy",
+    dependencies = { "nvim-lua/plenary.nvim" },
     config = function()
-      require("hurl").setup({
-        auto_close = false,
-        show_notification = true,
-        mode = "popup",
-        popup_position = "50%",
-        popup_size = {
-          width = "90%",
-          height = "90%",
-        },
-        mappings = {
-          close = "<c-c>",
-        },
-      })
+      require("tardis-nvim").setup()
     end,
   },
-
   -- {
   --   "yetone/avante.nvim",
   --   event = "VeryLazy",

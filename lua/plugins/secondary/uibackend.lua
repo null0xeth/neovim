@@ -6,7 +6,7 @@ local spec = {
 
   {
     "folke/noice.nvim",
-    enabled = true,
+    version = false,
     event = "VeryLazy",
     dependencies = {
       "MunifTanjim/nui.nvim",
