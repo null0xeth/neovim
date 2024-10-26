@@ -1,4 +1,3 @@
-local b = vim.b
 local spec = {
   { "nacro90/numb.nvim", event = "BufReadPre", config = true },
   {
@@ -61,7 +60,6 @@ local spec = {
       "HurlToggleMode",
       "HurlVerbose",
     },
-    --[[     keys = require("mappings").hurl, ]]
     config = function()
       require("hurl").setup({
         auto_close = false,
