@@ -132,9 +132,9 @@ local spec = {
         -- disable_virtual_text = false,
         -- disable = { "rust" },
       },
-      -- endwise = {
-      --   enable = true,
-      -- },
+      endwise = {
+        enable = true,
+      },
       autotag = {
         enable = true,
       },

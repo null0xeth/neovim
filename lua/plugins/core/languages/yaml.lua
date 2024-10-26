@@ -116,7 +116,7 @@ return {
               schemaDownload = { enable = true },
               schemas = {},
               trace = { server = "debug" },
-              keyordering = false,
+              keyOrdering = false,
             },
           },
         },

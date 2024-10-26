@@ -1,4 +1,4 @@
-local spepc = {
+local spec = {
   {
     "nvim-treesitter/nvim-treesitter",
     opts = {

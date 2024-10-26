@@ -10,6 +10,11 @@ local spec = {
     },
   },
   {
+    "folke/ts-comments.nvim",
+    event = "VeryLazy",
+    opts = {},
+  },
+  {
     "folke/lazydev.nvim",
     ft = "lua", -- only load on lua files
     cmd = "LazyDev",
@@ -55,12 +60,32 @@ local spec = {
         lua_ls = { --function()
           settings = {
             Lua = {
-              misc = {
-                -- parameters = { "--loglevel=trace" },
+              workspace = {
+                checkThirdParty = false,
               },
-              -- hover = { expandAlias = false },
+              codeLens = {
+                enable = true,
+              },
+              completion = {
+                callSnippet = "Replace",
+              },
+              doc = {
+                privateName = { "^_" },
+              },
+              -- misc = {
+              --   -- parameters = { "--loglevel=trace" },
+              -- },
+              -- -- hover = { expandAlias = false },
               type = {
                 castNumberToInteger = true,
+              },
+              hint = {
+                enable = true,
+                setType = false,
+                paramType = true,
+                paramName = "Disable",
+                semicolon = "Disable",
+                arrayIndex = "Disable",
               },
               diagnostics = {
                 disable = { "incomplete-signature-doc", "trailing-space" },
