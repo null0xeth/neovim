@@ -9,18 +9,18 @@ local spec = {
   },
   {
     "tpope/vim-rake",
-    event = "KindaLazy",
-    opts = {},
+    ft = "ruby",
+    config = true,
   },
   {
     "tpope/vim-bundler",
-    event = "KindaLazy",
-    opts = {},
+    ft = "ruby",
+    config = true,
   },
   {
     "tpope/vim-rails",
-    event = "KindaLazy",
-    opts = {},
+    ft = "ruby",
+    config = true,
   },
   {
     "stevearc/conform.nvim",
