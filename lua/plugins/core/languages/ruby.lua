@@ -9,18 +9,18 @@ local spepc = {
   },
   {
     "tpope/vim-rake",
-    ft = "ruby",
-    config = true,
+    event = "KindaLazy",
+    opts = {},
   },
   {
     "tpope/vim-bundler",
-    ft = "ruby",
-    config = true,
+    event = "KindaLazy",
+    opts = {},
   },
   {
     "tpope/vim-rails",
-    ft = "ruby",
-    config = true,
+    event = "KindaLazy",
+    opts = {},
   },
   {
     "stevearc/conform.nvim",
