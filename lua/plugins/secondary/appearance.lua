@@ -78,10 +78,10 @@ local spec = {
           min = 30,
           max = 500,
         },
-        indent = {
-          char = "▎",
-          tab_char = nil,
-        },
+        -- indent = {
+        --   char = "▎",
+        --   tab_char = nil,
+        -- },
         whitespace = {
           remove_blankline_trail = true,
         },
