@@ -68,6 +68,7 @@ local spec = {
   {
     "lukas-reineke/indent-blankline.nvim",
     main = "ibl",
+    tag = "v3.8.2",
     event = "KindaLazy",
     config = function()
       require("ibl").setup({
@@ -80,47 +81,19 @@ local spec = {
         indent = {
           char = "▎",
           tab_char = nil,
-          highlight = "IblIndent",
-          smart_indent_cap = true,
-          priority = 1,
-          repeat_linebreak = true,
         },
         whitespace = {
-          highlight = "IblWhitespace",
           remove_blankline_trail = true,
         },
         scope = {
           enabled = true,
-          char = nil,
-          show_start = true,
-          show_end = true,
-          show_exact_scope = false,
+          show_start = false,
+          show_end = false,
           injected_languages = true,
-          highlight = "IblScope",
-          priority = 1024,
-          include = {
-            node_type = {},
-          },
-          exclude = {
-            language = {},
-            node_type = {
-              ["*"] = {
-                "source_file",
-                "program",
-              },
-              lua = {
-                "chunk",
-              },
-              python = {
-                "module",
-              },
-            },
-          },
         },
         exclude = {
           filetypes = {
             "lspinfo",
-            "packer",
             "checkhealth",
             "help",
             "man",
@@ -128,6 +101,16 @@ local spec = {
             "TelescopePrompt",
             "TelescopeResults",
             "",
+            "neotree",
+            "lazy",
+            "Trouble",
+            "alpha",
+            "git",
+            "markdown",
+            "notify",
+            "sagahover",
+            "terminal",
+            "undotree",
           },
           buftypes = {
             "terminal",
