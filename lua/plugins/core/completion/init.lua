@@ -212,7 +212,7 @@ local spec = {
   -- },
   {
     "saghen/blink.cmp",
-    lazy = false, -- lazy loading handled internally
+    event = "KindaLazy", -- lazy loading handled internally
     -- optional: provides snippets for the snippet source
     dependencies = {
       "rafamadriz/friendly-snippets",
