@@ -50,8 +50,12 @@ end
 ---@protected
 ---@return table defaultCapabilities: Returns a table containing the default LSP server capabilities
 lspmodule.set_default_capabilities = memoize(function()
-  local cmp = get_module("cmp_nvim_lsp", "cmp_nvim_lsp")
-  return cmp.default_capabilities()
+  -- local cmp = get_module("cmp_nvim_lsp", "cmp_nvim_lsp")
+  -- return cmp.default_capabilities()
+  local capabilities = vim.lsp.protocol.make_client_capabilities()
+  capabilities.textDocument.completion.completionItem.snippetSupport = true
+  capabilities.textDocument.foldingRange = { dynamicRegistration = false, lineFoldingOnly = true }
+  return capabilities
 end)
 
 ---Configure and set up an individual LSP server
