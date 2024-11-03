@@ -118,6 +118,56 @@ local function show_related_locations(diag)
   return diag
 end
 
+local function on_supports_method(method, fn)
+  return vim.api.nvim_create_autocmd("User", {
+    pattern = "LspSupportsMethod",
+    callback = function(args)
+      local client = vim.lsp.get_client_by_id(args.data.client_id)
+      local buffer = args.data.buffer ---@type number
+      if client and method == args.data.method then
+        return fn(client, buffer)
+      end
+    end,
+  })
+end
+
+-- local words_enabled = false
+-- local function words_setup(opts)
+--   opts = opts or {}
+--   if not opts.enabled then
+--     return
+--   end
+--   words_enabled = true
+--   local handler = vim.lsp.handlers["textDocument/documentHighlight"]
+--   vim.lsp.handlers["textDocument/documentHighlight"] = function(err, result, ctx, config)
+--     if not vim.api.nvim_buf_is_loaded(ctx.bufnr) then
+--       return
+--     end
+--     vim.lsp.buf.clear_references()
+--     return handler(err, result, ctx, config)
+--   end
+--
+--   on_supports_method("textDocument/documentHighlight", function(_, buf)
+--     vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI", "CursorMoved", "CursorMovedI" }, {
+--       group = vim.api.nvim_create_augroup("lsp_word_" .. buf, { clear = true }),
+--       buffer = buf,
+--       callback = function(ev)
+--         if not require("lazyvim.plugins.lsp.keymaps").has(buf, "documentHighlight") then
+--           return false
+--         end
+--
+--         if not ({ M.words.get() })[2] then
+--           if ev.event:find("CursorMoved") then
+--             vim.lsp.buf.clear_references()
+--           elseif not LazyVim.cmp.visible() then
+--             vim.lsp.buf.document_highlight()
+--           end
+--         end
+--       end,
+--     })
+--   end)
+-- end
+
 ---@package
 ---Initializes the LSP config and assigns icons to the various LSP symbols.
 local function init_lsp_config() --= memoize(function()
@@ -130,8 +180,16 @@ local function init_lsp_config() --= memoize(function()
 
   local lspConfig = {
     diagnostic = {
-      virtual_text = false,
-      underline = false,
+      --virtual_text = false,
+      virtual_text = {
+        spacing = 4,
+        source = "if_many",
+        --prefix = "●",
+        -- this will set set the prefix to a function that returns the diagnostics icon based on the severity
+        -- this only works on a recent 0.10.0 build. Will be set to "●" when not supported
+        prefix = "icons",
+      },
+      underline = true,
       update_in_insert = false,
       severity_sort = true,
       float = {
@@ -164,9 +222,36 @@ local function init_lsp_config() --= memoize(function()
         },
       },
     },
+    inlay_hints = {
+      enabled = true,
+      exclude = { "vue" }, -- filetypes for which you don't want to enable inlay hints
+    },
+    codelens = {
+      enabled = true,
+    },
+    -- Enable lsp cursor word highlighting
+    document_highlight = {
+      enabled = true,
+    },
+    -- add any global capabilities here
+    capabilities = {
+      workspace = {
+        fileOperations = {
+          didRename = true,
+          willRename = true,
+        },
+      },
+    },
+    -- options for vim.lsp.buf.format
+    -- `bufnr` and `filter` is handled by the LazyVim formatter,
+    -- but can be also overridden when specified
+    format = {
+      formatting_options = nil,
+      timeout_ms = nil,
+    },
   }
 
-  diagnostic.config(lspConfig.diagnostic)
+  diagnostic.config(vim.deepcopy(lspConfig.diagnostic))
 end
 
 ---Take an array of LSP servers and initialize them.
