@@ -35,6 +35,8 @@ return {
   {
     "nvim-treesitter/nvim-treesitter",
     opts = function(_, opts)
+      local xdg_config = vim.env.XDG_CONFIG_HOME or vim.env.HOME .. "/.config"
+
       local function have(path)
         return vim.uv.fs_stat(xdg_config .. "/" .. path) ~= nil
       end
