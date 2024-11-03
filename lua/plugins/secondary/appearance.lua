@@ -86,7 +86,7 @@ local spec = {
           remove_blankline_trail = true,
         },
         scope = {
-          enabled = true,
+          enabled = false,
           show_start = false,
           show_end = false,
           injected_languages = true,
