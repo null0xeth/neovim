@@ -27,8 +27,8 @@ local spec = {
     optional = true,
     opts = {
       formatters_by_ft = {
-        ruby = { formatter },
-        eruby = { "erb-format" },
+        ruby = { "formatter" },
+        eruby = { "erb_format" },
       },
     },
   },

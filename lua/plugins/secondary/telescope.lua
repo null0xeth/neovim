@@ -16,10 +16,18 @@ local spec = {
       "nvim-tree/nvim-web-devicons",
       "nvim-lua/plenary.nvim",
       {
+        "cljoly/telescope-repo.nvim",
+        config = function()
+          local telescopecontroller = require("framework.controller.telescopecontroller"):new()
+          telescopecontroller:load_extension("repo")
+        end,
+      },
+      {
         "mrcjkb/telescope-manix",
+        enabled = false,
         -- stylua: ignore
         keys = {
-          { "<leader>fns", function() require('telescope-manix').search() end, desc = "Open Manix (Nix)" },
+          { "<leader>fns", function() require('telescope-manix').search() end,             desc = "Open Manix (Nix)" },
           { "<leader>fnc", function() require("telescope-manix").search(default_opts) end, desc = "Search cursorword" },
         },
         config = function()
@@ -33,6 +41,7 @@ local spec = {
       },
       {
         "cappyzawa/telescope-terraform.nvim",
+        enabled = false,
         config = function()
           local telescopecontroller = require("framework.controller.telescopecontroller"):new()
           telescopecontroller:load_extension("terraform")
@@ -40,6 +49,7 @@ local spec = {
       },
       {
         "ANGkeith/telescope-terraform-doc.nvim",
+        enabled = false,
         config = function()
           local telescopecontroller = require("framework.controller.telescopecontroller"):new()
           telescopecontroller:load_extension("terraform_doc")
@@ -63,6 +73,7 @@ local spec = {
       },
       {
         "nvim-telescope/telescope-dap.nvim",
+        enabled = false,
         dependencies = {
           "mfussenegger/nvim-dap",
           "nvim-treesitter/nvim-treesitter",

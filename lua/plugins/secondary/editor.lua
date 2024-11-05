@@ -322,6 +322,19 @@ local spec = {
   --   end,
   -- },
   {
+    "junegunn/fzf",
+    build = "./install --bin",
+  },
+  {
+    "ibhagwan/fzf-lua",
+    -- optional for icon support
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    config = function()
+      -- calling `setup` is optional for customization
+      require("fzf-lua").setup({})
+    end
+  },
+  {
     "google/executor.nvim",
     event = "KindaLazy",
     dependencies = {
@@ -397,11 +410,11 @@ local spec = {
     "mistweaverco/kulala.nvim",
     ft = "http",
     keys = {
-      { "<leader>R", "", desc = "+Rest" },
-      { "<leader>Rs", "<cmd>lua require('kulala').run()<cr>", desc = "Send the request" },
+      { "<leader>R",  "",                                             desc = "+Rest" },
+      { "<leader>Rs", "<cmd>lua require('kulala').run()<cr>",         desc = "Send the request" },
       { "<leader>Rt", "<cmd>lua require('kulala').toggle_view()<cr>", desc = "Toggle headers/body" },
-      { "<leader>Rp", "<cmd>lua require('kulala').jump_prev()<cr>", desc = "Jump to previous request" },
-      { "<leader>Rn", "<cmd>lua require('kulala').jump_next()<cr>", desc = "Jump to next request" },
+      { "<leader>Rp", "<cmd>lua require('kulala').jump_prev()<cr>",   desc = "Jump to previous request" },
+      { "<leader>Rn", "<cmd>lua require('kulala').jump_next()<cr>",   desc = "Jump to next request" },
     },
     opts = {},
   },
@@ -605,7 +618,7 @@ local spec = {
           prevSubst = "<Up>",
           nextSubst = "<Down>",
           toggleFixedStrings = "<C-f>", -- ripgrep's `--fixed-strings`
-          toggleIgnoreCase = "<C-c>", -- ripgrep's `--ignore-case`
+          toggleIgnoreCase = "<C-c>",   -- ripgrep's `--ignore-case`
           openAtRegex101 = "R",
         },
         incrementalPreview = {
@@ -742,7 +755,7 @@ local spec = {
       "JoosepAlviste/nvim-ts-context-commentstring",
     },
     keys = {
-      { "gc", mode = { "n", "v" } },
+      { "gc",  mode = { "n", "v" } },
       { "gcc", mode = { "n", "v" } },
       { "gbc", mode = { "n", "v" } },
     },

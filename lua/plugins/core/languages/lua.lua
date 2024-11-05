@@ -19,32 +19,22 @@ local spec = {
     ft = "lua", -- only load on lua files
     cmd = "LazyDev",
     opts = {
+      runtime = vim.fn.stdpath("data") .. "/lazy/lazydev.nvim/types/stable",
       library = {
         -- See the configuration section for more details
         -- Load luvit types when the `vim.uv` word is found
+        "lazy.nvim",
+        --"luvit-meta/library",
         { path = "luvit-meta/library", words = { "vim%.uv" } },
-        { path = "lazy.nvim", words = { "LazyVim" } },
-        { path = "neo-tree.nvim", mods = { "neo-tree" } },
-        { path = "nui.nvim", mods = { "nui" } },
-        { path = "nvim-ufo", mods = { "ufo" } },
+      },
+      integrations = {
+        lspconfig = true,
+        coq = false,
       },
     },
   },
   -- Manage libuv types with lazy. Plugin will never be loaded
   { "Bilal2453/luvit-meta", lazy = true },
-
-  {
-    "stevearc/conform.nvim",
-    opts = function(_, opts)
-      opts.formatters_by_ft = vim.tbl_deep_extend("force", opts.formatters_by_ft, { lua = { "stylua" } })
-      opts.formatters = {
-        stylua = {
-          --command = "/etc/profiles/per-user/null0x/bin/stylua",
-          command = "stylua",
-        },
-      }
-    end,
-  },
   {
     "mfussenegger/nvim-lint",
     opts = function(_, opts)
@@ -62,12 +52,20 @@ local spec = {
             Lua = {
               workspace = {
                 checkThirdParty = false,
+                maxPreload = 1000,
+                preloadFileSize = 500,
+                library = vim.api.nvim_get_runtime_file("", true),
+              },
+              telemetry = {
+                enable = false,
               },
               codeLens = {
                 enable = true,
               },
               completion = {
                 callSnippet = "Replace",
+                workspaceWord = false,
+                showWord = "Disable",
               },
               doc = {
                 privateName = { "^_" },
@@ -80,15 +78,29 @@ local spec = {
                 castNumberToInteger = true,
               },
               hint = {
-                enable = true,
+                enable = false,
                 setType = false,
                 paramType = true,
                 paramName = "Disable",
                 semicolon = "Disable",
                 arrayIndex = "Disable",
               },
+              runtime = {
+                version = "LuaJIT",
+                -- Garbage collection settings for better performance
+                gc = {
+                  incremental = true,
+                  generational = true
+                }
+              },
               diagnostics = {
-                disable = { "incomplete-signature-doc", "trailing-space" },
+                disable = {
+                  "incomplete-signature-doc",
+                  "trailing-space",
+                  "missing-parameter",
+                },
+                workspaceDelay = 3500,
+                workspaceRate = 100,
                 -- enable = false,
                 groupSeverity = {
                   strong = "Warning",

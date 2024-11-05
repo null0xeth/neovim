@@ -1,6 +1,7 @@
 local g = vim.g
 local opt = vim.opt
 
+vim.o.guifont = "MonoLisaVariable Nerd Font:h14"
 local vim_opt_options = {
   general_options = {
     --formatexpr = 'v:lua.require("conform").formatexpr()',

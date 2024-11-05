@@ -40,8 +40,8 @@ end
 function CodingController:setup_treeshitter(opts)
   assert(type(opts.ensure_installed) == "table", "ensure_installed is not a table")
 
-  local repl_highlights = get_module("nvim-dap-repl-highlights", "repl_highlights")
-  repl_highlights.setup()
+  -- local repl_highlights = get_module("nvim-dap-repl-highlights", "repl_highlights")
+  -- repl_highlights.setup()
 
   local treesitter_config = get_module("nvim-treesitter.configs", "treesitter_config")
 
@@ -60,6 +60,12 @@ function CodingController:setup_treeshitter(opts)
 
   treesitter_config.setup(opts)
   require("ts_context_commentstring").setup()
+  require("nvim-ts-autotag").setup()
+  require('nvim-treesitter.configs').setup({
+    endwise = {
+      enable = true,
+    },
+  })
   vim.g.skip_ts_context_commentstring_module = true
 end
 

@@ -25,7 +25,7 @@ local spec = {
     dependencies = {
       { "JoosepAlviste/nvim-ts-context-commentstring" },
       { "LiadOz/nvim-dap-repl-highlights" },
-      { "RRethy/nvim-treesitter-endwise" },
+      { "metiulekm/nvim-treesitter-endwise" },
       {
         "nvim-treesitter/nvim-treesitter-textobjects",
         config = function()
@@ -131,12 +131,6 @@ local spec = {
         -- enable_quotes = false,
         -- disable_virtual_text = false,
         -- disable = { "rust" },
-      },
-      endwise = {
-        enable = true,
-      },
-      autotag = {
-        enable = true,
       },
     },
     config = function(_, opts)

@@ -1,6 +1,7 @@
 local spec = {
   { -- :bnext & :bprevious get visual overview of buffers
     "ghillb/cybu.nvim",
+    enabled = false,
     keys = {
       {
         "<BS>",
@@ -71,6 +72,38 @@ local spec = {
       notificationOnAutoClose = true,
       deleteBufferWhenFileDeleted = true,
     },
+  },
+  { -- auto-close inactive buffers
+    "j-morano/buffer_manager.nvim",
+    keys = {
+      {
+        "<BS>",
+        function()
+          require("buffer_manager.ui").nav_prev()
+        end,
+        desc = "󰽙 Prev Buffer",
+      },
+      {
+        "<C>b",
+        function()
+          require("buffer_manager.ui").toggle_quick_menu()
+        end,
+        desc = "󰽙 Prev Buffer",
+      },
+
+      {
+        "<Tab>",
+        function()
+          require("buffer_manager.ui").nav_next()
+        end,
+        desc = "󰽙 Next Buffer",
+      },
+    },
+    dependencies = "nvim-lua/plenary.nvim",
+    event = "KindaLazy",
+    config = function()
+      require("buffer_manager").setup({})
+    end
   },
 }
 

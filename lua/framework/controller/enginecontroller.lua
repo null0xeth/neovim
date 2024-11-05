@@ -32,7 +32,7 @@ local vim = vim
 local fn = vim.fn
 local schedule = vim.schedule
 local cmd = vim.cmd
-local loop = vim.loop
+local loop = vim.uv
 local api = vim.api
 local bo = vim.bo
 
@@ -84,7 +84,7 @@ local function install_lazy()
   end
 
   local lazypath = fn.stdpath("data") .. "/lazy/lazy.nvim"
-  local has_lazy = loop.fs_stat(lazypath)
+  local has_lazy = (vim.uv or vim.loop).fs_stat(lazypath)
   if not has_lazy then
     fn.system({
       "git",
@@ -171,7 +171,7 @@ local function initialize_rtp()
 
   local lazypath = fn.stdpath("data") .. "/lazy/lazy.nvim"
   vim.opt.rtp:prepend(lazypath)
-  package.path = extend_package_path()
+  --package.path = extend_package_path()
 
   configuration.rtp_initialized = true
 end

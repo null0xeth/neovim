@@ -51,8 +51,8 @@ local spec = {
   {
     "stevearc/conform.nvim",
     event = "BufReadPre",
-    enabled = true,
     cmd = { "ConformInfo" },
+    opts_extend = { "formatters_by_ft", "formatters" },
     opts = {
       formatters_by_ft = {
         sh = { "shfmt" },
