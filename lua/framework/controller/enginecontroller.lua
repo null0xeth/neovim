@@ -171,7 +171,7 @@ local function initialize_rtp()
 
   local lazypath = fn.stdpath("data") .. "/lazy/lazy.nvim"
   vim.opt.rtp:prepend(lazypath)
-  --package.path = extend_package_path()
+  package.path = extend_package_path()
 
   configuration.rtp_initialized = true
 end
