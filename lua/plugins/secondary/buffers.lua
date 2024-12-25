@@ -84,11 +84,11 @@ local spec = {
         desc = "󰽙 Prev Buffer",
       },
       {
-        "<C>b",
+        "qq",
         function()
           require("buffer_manager.ui").toggle_quick_menu()
         end,
-        desc = "󰽙 Prev Buffer",
+        desc = "󰽙 Toggle quick menu",
       },
 
       {

@@ -1,0 +1,913 @@
+local M = {}
+M.CREATE_UNDO = vim.api.nvim_replace_termcodes("<c-G>u", true, true, true)
+function M.create_undo()
+  if vim.api.nvim_get_mode().mode == "i" then
+    vim.api.nvim_feedkeys(M.CREATE_UNDO, "n", false)
+  end
+end
+
+local border = {
+  {
+    "🭽",
+    "▔",
+    "🭾",
+    "▕",
+    "🭿",
+    "▁",
+    "🭼",
+    "▏",
+  }
+}
+
+local icons = {
+  -- if you change or add symbol here
+  -- replace corresponding line in readme
+  Text = "󰉿",
+  Method = "󰆧",
+  Function = "󰊕",
+  Constructor = "",
+  Field = "󰜢",
+  Variable = "󰀫",
+  Class = "󰠱",
+  Interface = "",
+  Module = "",
+  Property = "󰜢",
+  Unit = "󰑭",
+  Value = "󰎠",
+  Enum = "",
+  Keyword = "󰌋",
+  Snippet = "",
+  Color = "󰏘",
+  File = "󰈙",
+  Reference = "󰈇",
+  Folder = "󰉋",
+  EnumMember = "",
+  Constant = "󰏿",
+  Struct = "󰙅",
+  Event = "",
+  Operator = "󰆕",
+  TypeParameter = "",
+}
+
+return {
+  -- {
+  --   "L3MON4D3/LuaSnip",
+  --   build = "make install_jsregexp",
+  --   dependencies = {
+  --     {
+  --       "rafamadriz/friendly-snippets",
+  --       config = function()
+  --         require("luasnip.loaders.from_vscode").lazy_load()
+  --       end,
+  --     },
+  --     {
+  --       "honza/vim-snippets",
+  --       config = function()
+  --         require("luasnip.loaders.from_snipmate").lazy_load()
+  --         require("luasnip").filetype_extend("all", { "_" })
+  --       end,
+  --     },
+  --   },
+  --   opts = {
+  --     history = true,
+  --     delete_check_events = "TextChanged",
+  --   },
+  --   keys = {
+  --     {
+  --       "<C-j>",
+  --       function()
+  --         return require("luasnip").jumpable() and require("luasnip").jump_next() or "<C-j>"
+  --       end,
+  --       expr = true,
+  --       remap = true,
+  --       silent = true,
+  --       mode = "i",
+  --     },
+  --     {
+  --       "<C-j>",
+  --       function()
+  --         require("luasnip").jump(1)
+  --       end,
+  --       mode = "s",
+  --     },
+  --     {
+  --       "<C-k>",
+  --       function()
+  --         require("luasnip").jump(-1)
+  --       end,
+  --       mode = {
+  --         "i",
+  --         "s",
+  --       },
+  --     },
+  --   },
+  --   -- TODO: revisit this config
+  --   config = function(_, opts)
+  --     require("luasnip").setup(opts)
+  --
+  --     local snippets_folder = fn.stdpath("config") .. "/lua/plugins/core/completion/snippets/"
+  --     require("luasnip.loaders.from_lua").lazy_load({ paths = snippets_folder })
+  --
+  --     api.nvim_create_user_command("LuaSnipEdit", function()
+  --       require("luasnip.loaders.from_lua").edit_snippet_files()
+  --     end, {})
+  --   end,
+  -- },
+  -- {
+  --   "danymat/neogen",
+  --   enabled = false,
+  --   cmd = { "Neogen" },
+  --   opts = {
+  --     snippet_engine = "luasnip",
+  --     enabled = true,
+  --     languages = {
+  --       lua = {
+  --         template = {
+  --           annotation_convention = "ldoc",
+  --         },
+  --       },
+  --       python = {
+  --         template = {
+  --           annotation_convention = "google_docstrings",
+  --         },
+  --       },
+  --       rust = {
+  --         template = {
+  --           annotation_convention = "rustdoc",
+  --         },
+  --       },
+  --       javascript = {
+  --         template = {
+  --           annotation_convention = "jsdoc",
+  --         },
+  --       },
+  --       typescript = {
+  --         template = {
+  --           annotation_convention = "tsdoc",
+  --         },
+  --       },
+  --       typescriptreact = {
+  --         template = {
+  --           annotation_convention = "tsdoc",
+  --         },
+  --       },
+  --     },
+  --   },
+  --   --stylua: ignore
+  --   keys = {
+  --     { "<leader>laa", function() require("neogen").generate() end,                  desc = "Annotation (Neogen)", },
+  --     { "<leader>lac", function() require("neogen").generate { type = "class" } end, desc = "Class (Neogen)", },
+  --     { "<leader>laf", function() require("neogen").generate { type = "func" } end,  desc = "Function (Neogen)", },
+  --     { "<leader>lat", function() require("neogen").generate { type = "type" } end,  desc = "Type (Neogen)", },
+  --   },
+  -- },
+  --
+  -- {
+  --   "hrsh7th/nvim-cmp",
+  --   version = false,
+  --   --"iguanacucumber/magazine.nvim", -- Temporary fork. Also remove in copilot-cmp.lua and nvim-lspconfig.lua
+  --   --name = "nvim-cmp", -- Needed for fork
+  --   event = "InsertEnter",
+  --   dependencies = {
+  --     "onsails/lspkind.nvim",
+  --     "hrsh7th/cmp-nvim-lsp",
+  --     "hrsh7th/cmp-buffer",
+  --     "hrsh7th/cmp-path",
+  --     "saadparwaiz1/cmp_luasnip",
+  --     "hrsh7th/cmp-cmdline",
+  --     "dmitmel/cmp-cmdline-history",
+  --     "hrsh7th/cmp-nvim-lua",
+  --     "petertriho/cmp-git",
+  --     "hrsh7th/cmp-nvim-lsp-signature-help",
+  --     "SergioRibera/cmp-dotenv",
+  --   },
+  --   config = function()
+  --     local completion_controller = require("framework.controller.completioncontroller"):new()
+  --     completion_controller:initialize_cmp()
+  --   end,
+  -- },
+  {
+    "saghen/blink.cmp",
+    --lazy = false,
+    event = "InsertEnter",
+    build = "cargo build --release",
+    dependencies = {
+      "rafamadriz/friendly-snippets",
+      'L3MON4D3/LuaSnip',
+      'saadparwaiz1/cmp_luasnip',
+      -- lock compat to tagged versions, if you've also locked blink.cmp to tagged versions
+      { 'saghen/blink.compat', version = '*', opts = { impersonate_nvim_cmp = true } },
+      {
+        "giuxtaposition/blink-cmp-copilot",
+        enabled = vim.g.ai_cmp, -- only enable if needed
+        specs = {
+          {
+            "blink.cmp",
+            optional = true,
+            opts = {
+              sources = {
+                providers = {
+                  copilot = { name = "copilot", module = "blink-cmp-copilot" },
+                },
+                completion = {
+                  enabled_providers = { "copilot" },
+                },
+              },
+            },
+          },
+        },
+      },
+
+    },
+    opts = {
+      keymap = {
+        ["<C-s>"] = { "show" },
+        ["<C-h>"] = { "hide" },
+        ["<C-CR>"] = { "select_and_accept", "fallback" },
+        ['<Tab>'] = {
+          function(cmp)
+            if require("copilot.suggestion").is_visible() then
+              M.create_undo()
+              require("copilot.suggestion").accept()
+            else
+              return cmp.select_and_accept()
+            end
+          end,
+          'snippet_forward',
+          'fallback',
+        },
+        -- ["<Tab>"] = {
+        --   --"snippet_forward",
+        --   --"ai_accept",
+        --   function(cmp)
+        --     if cmp.is_in_snippet() then
+        --       return cmp.accept()
+        --     elseif require("copilot.suggestion").is_visible() then
+        --       M.create_undo()
+        --       require("copilot.suggestion").accept()
+        --     else
+        --       return cmp.select_and_accept()
+        --     end
+        --   end,
+        --   --"fallback",
+        -- },
+        ["<S-Tab>"] = { "select_prev", "fallback" },
+        ["<C-n>"] = { "select_next" },
+        ["<C-p>"] = { "select_prev" },
+        ["<PageDown>"] = { "scroll_documentation_down" },
+        ["<PageUp>"] = { "scroll_documentation_up" },
+      },
+      completion = {
+        keyword = {
+          -- 'prefix' will fuzzy match on the text before the cursor
+          -- 'full' will fuzzy match on the text before *and* after the cursor
+          -- example: 'foo_|_bar' will match 'foo_' for 'prefix' and 'foo__bar' for 'full'
+          range = 'prefix',
+          -- Regex used to get the text when fuzzy matching
+          regex = '[%w_\\-]',
+          -- After matching with regex, any characters matching this regex at the prefix will be excluded
+          exclude_from_prefix_regex = '[\\-]',
+        },
+
+        trigger = {
+          -- When false, will not show the completion window automatically when in a snippet
+          show_in_snippet = true,
+          -- LSPs can indicate when to show the completion window via trigger characters
+          -- however, some LSPs (i.e. tsserver) return characters that would essentially
+          -- always show the window. We block these by default.
+          show_on_blocked_trigger_characters = { ' ', '\n', '\t' },
+          -- When true, will show the completion window when the cursor comes after a trigger character
+          -- after accepting an item
+          show_on_accept_on_trigger_character = true,
+          -- When true, will show the completion window when the cursor comes after a trigger character
+          -- when entering insert mode
+          show_on_insert_on_trigger_character = true,
+          -- List of trigger characters (on top of `show_on_blocked_trigger_characters`) that won't trigger
+          -- the completion window when the cursor comes after a trigger character when
+          -- entering insert mode/accepting an item
+          show_on_x_blocked_trigger_characters = { "'", '"', '(' },
+        },
+        list = {
+          -- Maximum number of items to display
+          max_items = 200,
+          -- Controls if completion items will be selected automatically,
+          -- and whether selection automatically inserts
+          selection = 'preselect',
+          -- Controls how the completion items are selected
+          -- 'preselect' will automatically select the first item in the completion list
+          -- 'manual' will not select any item by default
+          -- 'auto_insert' will not select any item by default, and insert the completion items automatically
+          -- when selecting them
+          --
+          -- You may want to bind a key to the `cancel` command, which will undo the selection
+          -- when using 'auto_insert'
+          cycle = {
+            -- When `true`, calling `select_next` at the *bottom* of the completion list
+            -- will select the *first* completion item.
+            from_bottom = true,
+            -- When `true`, calling `select_prev` at the *top* of the completion list
+            -- will select the *last* completion item.
+            from_top = true,
+          },
+        },
+        accept = {
+          -- Create an undo point when accepting a completion item
+          create_undo_point = true,
+          -- Experimental auto-brackets support
+          auto_brackets = {
+            -- Whether to auto-insert brackets for functions
+            enabled = true,
+            -- Default brackets to use for unknown languages
+            default_brackets = { '(', ')' },
+            -- Overrides the default blocked filetypes
+            override_brackets_for_filetypes = {},
+            -- Synchronously use the kind of the item to determine if brackets should be added
+            kind_resolution = {
+              enabled = true,
+              blocked_filetypes = { 'typescriptreact', 'javascriptreact', 'vue' },
+            },
+            -- Asynchronously use semantic token to determine if brackets should be added
+            semantic_token_resolution = {
+              enabled = true,
+              blocked_filetypes = {},
+              -- How long to wait for semantic tokens to return before assuming no brackets should be added
+              timeout_ms = 400,
+            },
+          },
+        },
+
+        menu = {
+          enabled = true,
+          min_width = 15,
+          max_height = 10,
+
+          border = 'rounded',
+          winblend = 0,
+          winhighlight =
+          'Normal:NormalFloat,FloatBorder:FloatBorder,CursorLine:PmenuSel,Search:None',
+          -- Keep the cursor X lines away from the top/bottom of the window
+          scrolloff = 2,
+          -- Note that the gutter will be disabled when border ~= 'none'
+          scrollbar = false,
+          -- Which directions to show the window,
+          -- falling back to the next direction when there's not enough space
+          direction_priority = { 's', 'n' },
+          -- Controls how the completion items are rendered on the popup window
+          draw = {
+            -- Aligns the keyword you've typed to a component in the menu
+            align_to_component = 'label', -- or 'none' to disable
+            -- Left and right padding, optionally { left, right } for different padding on each side
+            padding = 1,
+            -- Gap between columns
+            gap = 1,
+
+            -- Components to render, grouped by column
+            ---columns = { { 'kind_icon' }, { 'label', 'label_description', gap = 1 } },
+            -- for a setup similar to nvim-cmp: https://github.com/Saghen/blink.cmp/pull/245#issuecomment-2463659508
+            columns = { { "label", "label_description", gap = 1 }, { "kind_icon", "kind" } },
+
+            -- Definitions for possible components to render. Each component defines:
+            --   ellipsis: whether to add an ellipsis when truncating the text
+            --   width: control the min, max and fill behavior of the component
+            --   text function: will be called for each item
+            --   highlight function: will be called only when the line appears on screen
+            components = {
+              kind_icon = {
+                ellipsis = false,
+                text = function(ctx) return ctx.kind_icon .. ctx.icon_gap end,
+                highlight = function(ctx)
+                  return require('blink.cmp.completion.windows.render.tailwind').get_hl(ctx) or
+                      'BlinkCmpKind' .. ctx.kind
+                end,
+              },
+
+              kind = {
+                ellipsis = false,
+                width = { fill = true },
+                text = function(ctx) return ctx.kind end,
+                highlight = function(ctx)
+                  return require('blink.cmp.completion.windows.render.tailwind').get_hl(ctx) or
+                      'BlinkCmpKind' .. ctx.kind
+                end,
+              },
+
+              label = {
+                width = { fill = true, max = 60 },
+                text = function(ctx) return ctx.label .. ctx.label_detail end,
+                highlight = function(ctx)
+                  -- label and label details
+                  local highlights = {
+                    { 0, #ctx.label, group = ctx.deprecated and 'BlinkCmpLabelDeprecated' or 'BlinkCmpLabel' },
+                  }
+                  if ctx.label_detail then
+                    table.insert(highlights,
+                      { #ctx.label, #ctx.label + #ctx.label_detail, group = 'BlinkCmpLabelDetail' })
+                  end
+
+                  -- characters matched on the label by the fuzzy matcher
+                  for _, idx in ipairs(ctx.label_matched_indices) do
+                    table.insert(highlights, { idx, idx + 1, group = 'BlinkCmpLabelMatch' })
+                  end
+
+                  return highlights
+                end,
+              },
+
+              label_description = {
+                width = { max = 30 },
+                text = function(ctx) return ctx.label_description end,
+                highlight = 'BlinkCmpLabelDescription',
+              },
+            },
+          },
+        },
+        documentation = {
+          -- Controls whether the documentation window will automatically show when selecting a completion item
+          auto_show = true,
+          -- Delay before showing the documentation window
+          auto_show_delay_ms = 500,
+          -- Delay before updating the documentation window when selecting a new item,
+          -- while an existing item is still visible
+          update_delay_ms = 50,
+          -- Whether to use treesitter highlighting, disable if you run into performance issues
+          treesitter_highlighting = true,
+          window = {
+            min_width = 10,
+            max_width = 60,
+            max_height = 20,
+            border = "rounded",
+            winblend = 0,
+            winhighlight =
+            'Normal:BlinkCmpDoc,FloatBorder:BlinkCmpDocBorder,CursorLine:BlinkCmpDocCursorLine,Search:None',
+            -- Note that the gutter will be disabled when border ~= 'none'
+            scrollbar = true,
+            -- Which directions to show the documentation window,
+            -- for each of the possible menu window directions,
+            -- falling back to the next direction when there's not enough space
+            treesitter_highlighting = true,
+            direction_priority = {
+              menu_north = { 'e', 'w', 'n', 's' },
+              menu_south = { 'e', 'w', 's', 'n' },
+            },
+          },
+        },
+        -- Displays a preview of the selected item on the current line
+        ghost_text = {
+          enabled = true,
+
+        },
+      },
+
+      -- Experimental signature help support
+      signature = {
+        enabled = true,
+        trigger = {
+          blocked_trigger_characters = {},
+          blocked_retrigger_characters = {},
+          -- When true, will show the signature help window when the cursor comes after a trigger character when entering insert mode
+          show_on_insert_on_trigger_character = true,
+        },
+        window = {
+          min_width = 1,
+          max_width = 100,
+          max_height = 10,
+          border = border,
+          winblend = 0,
+          winhighlight = 'Normal:BlinkCmpSignatureHelp,FloatBorder:BlinkCmpSignatureHelpBorder',
+          scrollbar = false, -- Note that the gutter will be disabled when border ~= 'none'
+          -- Which directions to show the window,
+          -- falling back to the next direction when there's not enough space,
+          -- or another window is in the way
+          direction_priority = { 'n', 's' },
+          -- Disable if you run into performance issues
+          treesitter_highlighting = true,
+        },
+      },
+
+
+      fuzzy = {
+        -- when enabled, allows for a number of typos relative to the length of the query
+        -- disabling this matches the behavior of fzf
+        use_typo_resistance = true,
+        -- frencency tracks the most recently/frequently used items and boosts the score of the item
+        use_frecency = true,
+        -- proximity bonus boosts the score of items matching nearby words
+        use_proximity = true,
+        max_items = 200,
+        -- controls which sorts to use and in which order, these three are currently the only allowed options
+        sorts = { 'label', 'kind', 'score' },
+
+        prebuilt_binaries = {
+          -- Whether or not to automatically download a prebuilt binary from github. If this is set to `false`
+          -- you will need to manually build the fuzzy binary dependencies by running `cargo build --release`
+          download = true,
+          -- When downloading a prebuilt binary, force the downloader to resolve this version. If this is unset
+          -- then the downloader will attempt to infer the version from the checked out git tag (if any).
+          --
+          -- Beware that if the FFI ABI changes while tracking main then this may result in blink breaking.
+          force_version = nil,
+          -- When downloading a prebuilt binary, force the downloader to use this system triple. If this is unset
+          -- then the downloader will attempt to infer the system triple from `jit.os` and `jit.arch`.
+          -- Check the latest release for all available system triples
+          --
+          -- Beware that if the FFI ABI changes while tracking main then this may result in blink breaking.
+          force_system_triple = nil,
+        },
+      },
+
+      sources = {
+        completion = {
+          enabled_providers = { 'lazydev', 'lsp', 'path', 'snippets', 'buffer' },
+          -- Static list of providers to enable, or a function to dynamically enable/disable providers based on the context
+          --enabled_providers = { 'lsp', 'path', 'snippets', 'buffer' },
+          -- Example dynamically picking providers based on the filetype and treesitter node:
+          -- enabled_providers = function(ctx)
+          --   local node = vim.treesitter.get_node()
+          --   if vim.bo.filetype == 'lua' then
+          --     return { 'lsp', 'path' }
+          --   elseif node and vim.tbl_contains({ 'comment', 'line_comment', 'block_comment' }, node:type()) then
+          --     return { 'buffer' }
+          --   else
+          --     return { 'lsp', 'path', 'snippets', 'buffer' }
+          --   end
+          -- end
+        },
+
+        -- Please see https://github.com/Saghen/blink.compat for using `nvim-cmp` sources
+        providers = {
+          -- lsp = {
+          --   name = 'LSP',
+          --   module = 'blink.cmp.sources.lsp',
+          --
+          --   --- *All* of the providers have the following options available
+          --   --- NOTE: All of these options may be functions to get dynamic behavior
+          --   --- See the type definitions for more information.
+          --   --- Check the enabled_providers config for an example
+          --   enabled = true,           -- Whether or not to enable the provider
+          --   --transform_items = nil, -- Function to transform the items before they're returned
+          --   should_show_items = true, -- Whether or not to show the items
+          --   max_items = nil,          -- Maximum number of items to display in the menu
+          --   min_keyword_length = 0,   -- Minimum number of characters in the keyword to trigger the provider
+          --   fallback_for = {},        -- If any of these providers return 0 items, it will fallback to this provider
+          --   score_offset = 0,         -- Boost/penalize the score of the items
+          --   override = nil,           -- Override the source's functions
+          -- },
+          lsp = {
+            -- dont show LuaLS require statements when lazydev has items
+            fallback_for = { "lazydev" },
+          },
+          lazydev = {
+            name = "LazyDev",
+            module = "lazydev.integrations.blink",
+          },
+          path = {
+            name = 'Path',
+            module = 'blink.cmp.sources.path',
+            score_offset = -2,
+            opts = {
+              trailing_slash = false,
+              label_trailing_slash = true,
+              get_cwd = function(context) return vim.fn.expand(('#%d:p:h'):format(context.bufnr)) end,
+              show_hidden_files_by_default = false,
+            }
+          },
+          snippets = {
+            name = 'Snippets',
+            module = 'blink.cmp.sources.snippets',
+            score_offset = -3,
+            max_items = 4,
+            min_keyword_length = 4,
+            opts = {
+              friendly_snippets = true,
+              search_paths = { vim.fn.stdpath('config') .. '/snippets' },
+              global_snippets = { 'all' },
+              extended_filetypes = {},
+              ignored_filetypes = {},
+              get_filetype = function(context)
+                return vim.bo.filetype
+              end
+            }
+
+            --- Example usage for disabling the snippet provider after pressing trigger characters (i.e. ".")
+            -- enabled = function(ctx)
+            --   return ctx ~= nil and ctx.trigger.kind == vim.lsp.protocol.CompletionTriggerKind.TriggerCharacter
+            -- end,
+          },
+          buffer = {
+            name = 'Buffer',
+            module = 'blink.cmp.sources.buffer',
+            fallback_for = { 'lsp' },
+            max_items = 4,
+            score_offset = -3,
+          },
+        },
+      },
+
+      appearance = {
+        highlight_ns = vim.api.nvim_create_namespace('blink_cmp'),
+        -- Sets the fallback highlight groups to nvim-cmp's highlight groups
+        -- Useful for when your theme doesn't support blink.cmp
+        -- Will be removed in a future release
+        use_nvim_cmp_as_default = true,
+        -- Set to 'mono' for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
+        -- Adjusts spacing to ensure icons are aligned
+        nerd_font_variant = 'normal',
+        kind_icons = {
+          Text = '󰉿',
+          Method = '󰊕',
+          Function = '󰊕',
+          Constructor = '󰒓',
+
+          Field = '󰜢',
+          Variable = '󰆦',
+          Property = '󰖷',
+
+          Class = '󱡠',
+          Interface = '󱡠',
+          Struct = '󱡠',
+          Module = '󰅩',
+
+          Unit = '󰪚',
+          Value = '󰦨',
+          Enum = '󰦨',
+          EnumMember = '󰦨',
+
+          Keyword = '󰻾',
+          Constant = '󰏿',
+
+          Snippet = '󱄽',
+          Color = '󰏘',
+          File = '󰈔',
+          Reference = '󰬲',
+          Folder = '󰉋',
+          Event = '󱐋',
+          Operator = '󰪚',
+          TypeParameter = '󰬛',
+        },
+      },
+    },
+
+    --
+    --
+    -- -----------
+    -- --accept = { auto_brackets = { enabled = true } },
+    -- accept = {
+    --
+    -- 	auto_brackets = {
+    -- 		enabled = true,
+    -- 	},
+    -- },
+    -- sources = {
+    -- 	completion = {
+    -- 		enabled_providers = { 'lsp', 'path', 'snippets', 'buffer' },
+    -- 	},
+    -- 	providers = {
+    -- 		lsp = {
+    -- 			module = "blink.cmp.sources.lsp",
+    -- 			name = "LSP",
+    -- 			score_offset = -1,
+    -- 		},
+    -- 		--lazydev = { name = "LazyDev", module = "lazydev.integrations.blink" },
+    -- 		-- ripgrep = {
+    -- 		-- 	module = "blink-ripgrep",
+    -- 		-- 	name = "Ripgrep",
+    -- 		-- 	max_items = 3,
+    -- 		-- 	score_offset = -3,
+    -- 		-- },
+    -- 		snippets = {
+    -- 			module = "blink.cmp.sources.snippets",
+    -- 			name = "Snippets",
+    -- 			score_offset = -3,
+    -- 			keyword_length = 1, -- not supported yet
+    -- 		},
+    -- 		path = {
+    -- 			module = "blink.cmp.sources.path",
+    -- 			name = "Path",
+    -- 			opts = { get_cwd = vim.uv.cwd },
+    -- 			score_offset = -2,
+    -- 		},
+    -- 		buffer = {
+    -- 			module = "blink.cmp.sources.buffer",
+    -- 			name = "Buffer",
+    -- 			max_items = 4,
+    -- 			min_keyword_length = 4,
+    -- 			score_offset = -3,
+    -- 			fallback_for = {}, -- PENDING https://github.com/Saghen/blink.cmp/issues/122
+    -- 		},
+    -- 	},
+    -- },
+    -- highlight = {
+    -- 	vim.api.nvim_create_namespace("blink_cmp"),
+    -- 	use_nvim_cmp_as_default = true,
+    -- },
+    -- nerd_font_variant = "normal",
+    -- windows = {
+    -- 	documentation = {
+    -- 		--winhighlight = 'Normal:BlinkCmpDoc,FloatBorder:BlinkCmpDocBorder,CursorLine:BlinkCmpDocCursorLine,Search:None',
+    -- 		winhighlight = "Normal:NormalFloat,FloatBorder:FloatBorder,CursorLine:BlinkCmpDocCursorLine,Search:None",
+    -- 		--winhighlight = 'Normal:BlinkCmpDoc,FloatBorder:BlinkCmpDocBorder,CursorLine:BlinkCmpDocCursorLine,Search:None',
+    -- 		auto_show = true,
+    -- 		border = "double",
+    -- 	},
+    -- 	signature_help = {
+    -- 		treesitter_highlighting = true,
+    -- 	},
+    -- 	ghost_text = {
+    -- 		enabled = true,
+    -- 	},
+    -- 	autocomplete = {
+    -- 		--winhighlight = "Normal:CmpPmenu,CursorLine:CmpSel,Search:None,FloatBorder:CmpBorder",
+    -- 		winhighlight = 'Normal:CmpPmenu,FloatBorder:FloatBorder,CursorLine:pMenuSel,Search:None',
+    -- 		--winhighlight =
+    -- 		--'Normal:BlinkCmpMenu,FloatBorder:BlinkCmpMenuBorder,CursorLine:BlinkCmpMenuSelection,Search:None',
+    --
+    -- 		auto_show = true,
+    -- 		--border = "double",
+    -- 		winblend = 0,
+    -- 		border = "none",
+    --
+    -- 		selection = 'preselect',
+    -- 		draw = {
+    -- 			align_to_component = 'label', -- or 'none' to disable
+    -- 			-- Left and right padding, optionally { left, right } for different padding on each side
+    -- 			padding = 1,
+    -- 			-- Gap between columns
+    -- 			gap = 1,
+    -- 			-- Components to render, grouped by column
+    -- 			--columns = { { 'kind_icon' }, { 'label', 'label_description', gap = 1 } },
+    -- 			-- for a setup similar to nvim-cmp: https://github.com/Saghen/blink.cmp/pull/245#issuecomment-2463659508
+    -- 			columns = { { "label", "label_description", gap = 1 }, { "kind_icon", "kind" } },
+    --
+    -- 			-- Definitions for possible components to render. Each component defines:
+    -- 			--   ellipsis: whether to add an ellipsis when truncating the text
+    -- 			--   width: control the min, max and fill behavior of the component
+    -- 			--   text function: will be called for each item
+    -- 			--   highlight function: will be called only when the line appears on screen
+    -- 			components = {
+    -- 				kind_icon = {
+    -- 					ellipsis = false,
+    -- 					text = function(ctx) return ctx.kind_icon .. ctx.icon_gap end,
+    -- 					highlight = function(ctx)
+    -- 						return require('blink.cmp.completion.windows.render.tailwind').get_hl(ctx) or
+    -- 								'BlinkCmpKind' .. ctx.kind
+    -- 					end,
+    -- 				},
+    --
+    -- 				kind = {
+    -- 					ellipsis = false,
+    -- 					width = { fill = true },
+    -- 					text = function(ctx) return ctx.kind end,
+    -- 					highlight = function(ctx)
+    -- 						return require('blink.cmp.completion.windows.render.tailwind').get_hl(ctx) or
+    -- 								'BlinkCmpKind' .. ctx.kind
+    -- 					end,
+    -- 				},
+    --
+    -- 				label = {
+    -- 					width = { fill = true, max = 60 },
+    -- 					text = function(ctx) return ctx.label .. ctx.label_detail end,
+    -- 					highlight = function(ctx)
+    -- 						-- label and label details
+    -- 						local highlights = {
+    -- 							{ 0, #ctx.label, group = ctx.deprecated and 'BlinkCmpLabelDeprecated' or 'BlinkCmpLabel' },
+    -- 						}
+    -- 						if ctx.label_detail then
+    -- 							table.insert(highlights,
+    -- 								{ #ctx.label, #ctx.label + #ctx.label_detail, group = 'BlinkCmpLabelDetail' })
+    -- 						end
+    --
+    -- 						-- characters matched on the label by the fuzzy matcher
+    -- 						for _, idx in ipairs(ctx.label_matched_indices) do
+    -- 							table.insert(highlights, { idx, idx + 1, group = 'BlinkCmpLabelMatch' })
+    -- 						end
+    --
+    -- 						return highlights
+    -- 					end,
+    -- 				},
+    --
+    -- 				label_description = {
+    -- 					width = { max = 30 },
+    -- 					text = function(ctx) return ctx.label_description end,
+    -- 					highlight = 'BlinkCmpLabelDescription',
+    -- 				},
+    -- 			},
+    -- 		},
+    -- 		-- Controls the cycling behavior when reaching the beginning or end of the completion list.
+    -- 		cycle = {
+    -- 			-- When `true`, calling `select_next` at the *bottom* of the completion list will select the *first* completion item.
+    -- 			from_bottom = true,
+    -- 			-- When `true`, calling `select_prev` at the *top* of the completion list will select the *last* completion item.
+    -- 			from_top = true,
+    -- 		},
+    -- 	},
+    -- },
+    -- kind_icons = icons,
+
+    config = function(_, opts)
+      require("blink.cmp").setup(opts)
+    end,
+  },
+
+  -- LSP servers and clients communicate what features they support through "capabilities".
+  --  By default, Neovim support a subset of the LSP specification.
+  --  With blink.cmp, Neovim has *more* capabilities which are communicated to the LSP servers.
+  --  Explanation from TJ: https://youtu.be/m8C0Cq9Uv9o?t=1275
+  --
+  -- This can vary by config, but in-general for nvim-lspconfig:
+
+  {
+    "neovim/nvim-lspconfig",
+    dependencies = { "saghen/blink.cmp" },
+    config = function(_, opts)
+      local lspconfig = require("lspconfig")
+      for server, config in pairs(opts.servers) do
+        config.capabilities = require("blink.cmp").get_lsp_capabilities(config.capabilities)
+        lspconfig[server].setup(config)
+      end
+    end,
+  },
+  {
+    'windwp/nvim-autopairs',
+    event = "InsertEnter",
+    config = function()
+      local cmp = require("blink.cmp")
+      local cmp_autopairs = require("nvim-autopairs.completion.cmp")
+      local ts_utils = require("nvim-treesitter.ts_utils")
+
+      local ts_node_func_parens_disabled = {
+        -- ecma
+        named_imports = true,
+        -- rust
+        use_declaration = true,
+      }
+      local default_handler = cmp_autopairs.filetypes["*"]["("].handler
+      cmp_autopairs.filetypes["*"]["("].handler = function(char, item, bufnr, rules, commit_character)
+        local node_type = ts_utils.get_node_at_cursor():type()
+        if ts_node_func_parens_disabled[node_type] then
+          if item.data then
+            item.data.funcParensDisabled = true
+          else
+            char = ""
+          end
+        end
+        default_handler(char, item, bufnr, rules, commit_character)
+      end
+
+      -- cmp.event:on(
+      -- 	"confirm_done",
+      -- 	cmp_autopairs.on_confirm_done({
+      -- 		sh = false,
+      -- 	})
+      --)
+    end,
+  }
+  --   {
+  --     "windwp/nvim-autopairs",
+  --     dependencies = {
+  --       "hrsh7th/nvim-cmp",
+  --     },
+  --     event = "InsertEnter",
+  --     config = function()
+  --       local autopairs = require("nvim-autopairs")
+  --
+  --       autopairs.setup({
+  --         enable_check_bracket_line = false,
+  --       })
+  --
+  --       local cmp = require("cmp")
+  --       local cmp_autopairs = require("nvim-autopairs.completion.cmp")
+  --       local ts_utils = require("nvim-treesitter.ts_utils")
+  --
+  --       local ts_node_func_parens_disabled = {
+  --         -- ecma
+  --         named_imports = true,
+  --         export_clause = true,
+  --         -- rust
+  --         use_declaration = true,
+  --       }
+  --
+  --       local default_handler = cmp_autopairs.filetypes["*"]["("].handler
+  --       cmp_autopairs.filetypes["*"]["("].handler = function(char, item, bufnr, rules, commit_character)
+  --         local node_type = ts_utils.get_node_at_cursor():type()
+  --         if ts_node_func_parens_disabled[node_type] then
+  --           if item.data then
+  --             item.data.funcParensDisabled = true
+  --           else
+  --             char = ""
+  --           end
+  --         end
+  --         default_handler(char, item, bufnr, rules, commit_character)
+  --       end
+  --
+  --       cmp.event:on(
+  --         "confirm_done",
+  --         cmp_autopairs.on_confirm_done({
+  --           filetypes = {
+  --             sh = false,
+  --           },
+  --         })
+  --       )
+  --     end,
+  --   },
+  -- }
+}

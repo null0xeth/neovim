@@ -68,7 +68,8 @@ local function setup_lsp_server(server, serverOpts, serverSetup)
 
   -- Deep extend options
   serverOpts = deepExtend("force", {
-    capabilities = default_capabilities,
+    --capabilities = default_capabilities,
+    capabilities = require('blink.cmp').get_lsp_capabilities(serverOpts.capabilities)
   }, serverOpts)
 
   -- Use the directly passed serverSetup function

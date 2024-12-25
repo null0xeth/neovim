@@ -2,6 +2,16 @@ local g = vim.g
 local opt = vim.opt
 
 vim.o.guifont = "MonoLisaVariable Nerd Font:h14"
+vim.g.border = {
+  { "🭽", "FloatBorder" },
+  { "▔", "FloatBorder" },
+  { "🭾", "FloatBorder" },
+  { "▕", "FloatBorder" },
+  { "🭿", "FloatBorder" },
+  { "▁", "FloatBorder" },
+  { "🭼", "FloatBorder" },
+  { "▏", "FloatBorder" },
+}
 local vim_opt_options = {
   general_options = {
     --formatexpr = 'v:lua.require("conform").formatexpr()',
@@ -22,11 +32,11 @@ local vim_opt_options = {
   },
   ui = {
     laststatus = 3,
-    confirm = true, -- confirm saving before exiting
+    confirm = true,   -- confirm saving before exiting
     cursorline = true,
     conceallevel = 2, -- hide markup shit
     emoji = false,
-    list = false, -- show chars like tabs...
+    list = false,     -- show chars like tabs...
     signcolumn = "no",
     number = true,
     relativenumber = false, -- releativenumber = false
@@ -47,7 +57,7 @@ local vim_opt_options = {
     smartindent = true,
     expandtab = true,
     shiftround = true, -- round idnentation
-    shiftwidth = 2, -- shiftwidth = 2
+    shiftwidth = 2,    -- shiftwidth = 2
     softtabstop = 2,
     smartcase = true,
     tabstop = 2, -- tabstop = 2
@@ -117,7 +127,6 @@ local vim_opt_options = {
     sessionoptions = { "buffers", "curdir", "tabpages", "winsize" },
   },
 }
-
 local vim_g_options = {
   disabled_providers = {
     loaded_python3_provider = 0,

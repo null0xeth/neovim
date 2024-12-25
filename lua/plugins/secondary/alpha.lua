@@ -21,6 +21,7 @@ end
 local spec = {
   {
     "goolord/alpha-nvim",
+    enabled = false,
     dependencies = {
       "echasnovski/mini.icons",
       "echasnovski/mini.files",

@@ -1,16 +1,81 @@
 local spec = {
   {
+    'williamboman/mason.nvim',
+    build = ":MasonUpdate",
+    opts = {
+      ensure_installed = {},
+    },
+    config = function(_, opts)
+      local lspcontroller = require("framework.controller.lspcontroller"):new()
+      lspcontroller:setup_mason(opts)
+    end,
+  },
+  {
+    "williamboman/mason-lspconfig.nvim",
+    event = { "BufReadPre", "BufNewFile" },
+    dependencies = {
+      'williamboman/mason.nvim',
+      "neovim/nvim-lspconfig",
+    },
+    opts = {
+      ensure_installed = {},
+      auto_install = true,
+      handlers = {},
+    },
+    opts_extend = { "ensure_installed", "handlers" },
+  },
+  {
+    "jay-babu/mason-null-ls.nvim",
+    event = { "BufReadPre", "BufNewFile" },
+    dependencies = {
+      'williamboman/mason.nvim',
+      "nvimtools/none-ls.nvim",
+    },
+    opts = {
+      automatic_installation = true,
+      ensure_installed = {},
+      handlers = {},
+      methods = {
+        diagnostics = true,
+        code_actions = true,
+        formatting = true,
+        completion = true,
+        hover = true,
+      },
+    },
+    opts_extend = { "ensure_installed", "handlers" },
+  },
+  {
+    "WhoIsSethDaniel/mason-tool-installer.nvim",
+    event = { "BufReadPre", "BufNewFile" },
+    dependencies = {
+      { "williamboman/mason-lspconfig.nvim" },
+      { "jay-babu/mason-null-ls.nvim" },
+    },
+    opts = {
+      servers = {},
+      setup = {},
+      format = {},
+    },
+  },
+
+  {
     "neovim/nvim-lspconfig",
     event = "KindaLazy",
     dependencies = {
-      { "williamboman/mason.nvim" },
-      { "williamboman/mason-lspconfig.nvim" },
       { "smjonas/inc-rename.nvim" },
     },
     opts = {
       servers = {},
       setup = {},
       format = {},
+      capabilities = {
+        worksapces = {
+          dirChangeWatchedFiles = {
+            dynamicRegistration = false,
+          },
+        },
+      }
     },
     config = function(plugin, opts)
       local lspcontroller = require("framework.controller.lspcontroller"):new()
@@ -35,18 +100,6 @@ local spec = {
       retries = 3,
       timeout = 1000,
     },
-  },
-  {
-    "williamboman/mason.nvim",
-    build = ":MasonUpdate",
-    cmd = { "Mason" },
-    opts = {
-      ensure_installed = {},
-    },
-    config = function(_, opts)
-      local lspcontroller = require("framework.controller.lspcontroller"):new()
-      lspcontroller:setup_mason(opts)
-    end,
   },
   {
     "stevearc/conform.nvim",
@@ -123,7 +176,7 @@ local spec = {
       local nls = require("null-ls")
       local shellcheck = require("none-ls-shellcheck")
       opts.root_dir = opts.root_dir
-        or require("null-ls.utils").root_pattern(".null-ls-root", ".neoconf.json", "Makefile", ".git")
+          or require("null-ls.utils").root_pattern(".null-ls-root", ".neoconf.json", "Makefile", ".git")
       opts.sources = vim.list_extend(opts.sources or {}, {
         nls.builtins.diagnostics.actionlint, -- gh actions
         shellcheck.diagnostics,

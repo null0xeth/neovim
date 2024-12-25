@@ -19,17 +19,8 @@ local spec = {
     ft = "lua", -- only load on lua files
     cmd = "LazyDev",
     opts = {
-      runtime = vim.fn.stdpath("data") .. "/lazy/lazydev.nvim/types/stable",
       library = {
-        -- See the configuration section for more details
-        -- Load luvit types when the `vim.uv` word is found
-        "lazy.nvim",
-        --"luvit-meta/library",
         { path = "luvit-meta/library", words = { "vim%.uv" } },
-      },
-      integrations = {
-        lspconfig = true,
-        coq = false,
       },
     },
   },
@@ -54,7 +45,10 @@ local spec = {
                 checkThirdParty = false,
                 maxPreload = 1000,
                 preloadFileSize = 500,
-                library = vim.api.nvim_get_runtime_file("", true),
+                ignoreSubmodules = true,
+                library = {
+                  [vim.fn.expand("$VIMRUNTIME/lua")] = true,
+                },
               },
               telemetry = {
                 enable = false,
@@ -80,13 +74,15 @@ local spec = {
               hint = {
                 enable = false,
                 setType = false,
-                paramType = true,
+                paramType = false,
                 paramName = "Disable",
+
                 semicolon = "Disable",
                 arrayIndex = "Disable",
               },
               runtime = {
                 version = "LuaJIT",
+                pathStrict = true,
                 -- Garbage collection settings for better performance
                 gc = {
                   incremental = true,
@@ -94,10 +90,13 @@ local spec = {
                 }
               },
               diagnostics = {
+                libraryFiles = "Disable",
+                ignoredFiles = "Disable",
                 disable = {
                   "incomplete-signature-doc",
                   "trailing-space",
                   "missing-parameter",
+                  "no-unknown",
                 },
                 workspaceDelay = 3500,
                 workspaceRate = 100,
@@ -135,27 +134,29 @@ local spec = {
       },
     },
   },
-  -- {
-  --   "nvim-neotest/neotest",
-  --   dependencies = { "nvim-neotest/neotest-plenary" },
-  --   opts = function(_, opts)
-  --     opts.adapters = vim.list_extend(opts.adapters, { require("neotest-plenary") })
-  --   end,
-  -- },
-  -- {
-  --   "mfussenegger/nvim-dap",
-  --   dependencies = {
-  --     {
-  --       "jbyuki/one-small-step-for-vimkind",
-  --       config = function()
-  --         vim.schedule_wrap(function()
-  --           local dapcontroller = require("framework.controller.dapcontroller"):new()
-  --           dapcontroller:get_lua_dap()
-  --         end)()
-  --       end,
-  --     },
-  --   },
-  -- },
+  {
+    "nvim-neotest/neotest",
+    enabled = false,
+    dependencies = { "nvim-neotest/neotest-plenary" },
+    opts = function(_, opts)
+      opts.adapters = vim.list_extend(opts.adapters, { require("neotest-plenary") })
+    end,
+  },
+  {
+    "mfussenegger/nvim-dap",
+    enabled = false,
+    dependencies = {
+      {
+        "jbyuki/one-small-step-for-vimkind",
+        config = function()
+          vim.schedule_wrap(function()
+            local dapcontroller = require("framework.controller.dapcontroller"):new()
+            dapcontroller:get_lua_dap()
+          end)()
+        end,
+      },
+    },
+  },
 }
 
 return spec

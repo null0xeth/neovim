@@ -24,6 +24,7 @@ return {
         fat_headlines = false,
         dash_string = "─",
       },
+
     },
   },
   { -- auto-bullets for markdown-like filetypes

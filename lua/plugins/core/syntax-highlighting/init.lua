@@ -24,7 +24,6 @@ local spec = {
     lazy = vim.fn.argc(-1) == 0,
     dependencies = {
       { "JoosepAlviste/nvim-ts-context-commentstring" },
-      { "LiadOz/nvim-dap-repl-highlights" },
       { "metiulekm/nvim-treesitter-endwise" },
       {
         "nvim-treesitter/nvim-treesitter-textobjects",
@@ -61,7 +60,6 @@ local spec = {
         "bash",
         "comment",
         "diff",
-        "dap_repl",
         "html",
         "markdown",
         "markdown_inline",
@@ -128,7 +126,7 @@ local spec = {
       matchup = {
         enable = true,
         include_match_words = true,
-        -- enable_quotes = false,
+        enable_quotes = true,
         -- disable_virtual_text = false,
         -- disable = { "rust" },
       },
@@ -162,8 +160,28 @@ local spec = {
   },
   {
     "windwp/nvim-ts-autotag",
-    event = "KindaLazy",
-    opts = {},
+    lazy = false,
+    config = function()
+      vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
+        vim.lsp.diagnostic.on_publish_diagnostics,
+        {
+          underline = true,
+          virtual_text = {
+            spacing = 5,
+            severity_limit = 'Warning',
+          },
+          update_in_insert = true,
+        }
+      )
+
+      require("nvim-ts-autotag").setup({
+        opts = {
+          enable_close = true,
+          enable_rename = true,
+          enable_close_on_slash = false
+        },
+      })
+    end
   },
 }
 return spec

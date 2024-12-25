@@ -254,6 +254,15 @@ local spec = {
       end,
     },
   },
+  {
+    'mikesmithgh/borderline.nvim',
+    event = 'VeryLazy',
+    config = function()
+      require('borderline').setup({
+        --  ...
+      })
+    end,
+  }
 }
 
 return spec

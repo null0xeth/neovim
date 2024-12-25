@@ -7,7 +7,8 @@ local configuration = {
 }
 
 local package_configuration = {
-  base = ";/home/null0x/.local/share/nvim/lazy/lazy.nvim/lua/?.lua",
+  base = ";/home/null0x/.config/nvim/lua/?.lua;/home/null0x/.local/share/nvim/lazy/lazy.nvim/lua/?.lua"
+
 }
 
 -- Lazy library routes:
@@ -152,29 +153,61 @@ local function find_and_load_module(name, query, is_obj)
   wrap_router(is_obj, request)
 end
 
+-- Extend the package path with custom directories
 local function extend_package_path()
-  local package_path = package.path
-  local new_package_path = package_path .. package_configuration.base
-  return new_package_path
+  return package.path .. package_configuration.base
 end
 
+-- Define the configuration table if not already defined
+local configuration = configuration or {}
+configuration.rtp_initialized = configuration.rtp_initialized or false
+
+-- Check if runtime path (rtp) is initialized
 ---@package
----@return boolean configuration.rtp_initialized
+---@return boolean
 local function is_rtp_initialized()
   return configuration.rtp_initialized
 end
 
+-- Initialize runtime path (rtp) if not already done
 local function initialize_rtp()
   if is_rtp_initialized() then
     return
   end
 
-  local lazypath = fn.stdpath("data") .. "/lazy/lazy.nvim"
+  -- Prepend lazy.nvim to the runtime path
+  local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
   vim.opt.rtp:prepend(lazypath)
+
+  -- Update the package path
   package.path = extend_package_path()
 
+  -- Mark rtp as initialized
   configuration.rtp_initialized = true
 end
+-- local function extend_package_path()
+--   local package_path = package.path
+--   local new_package_path = package_path .. package_configuration.base
+--   return new_package_path
+-- end
+--
+-- ---@package
+-- ---@return boolean configuration.rtp_initialized
+-- local function is_rtp_initialized()
+--   return configuration.rtp_initialized
+-- end
+--
+-- local function initialize_rtp()
+--   if is_rtp_initialized() then
+--     return
+--   end
+--
+--   local lazypath = fn.stdpath("data") .. "/lazy/lazy.nvim"
+--   vim.opt.rtp:prepend(lazypath)
+--   package.path = extend_package_path()
+--
+--   configuration.rtp_initialized = true
+-- end
 
 local function setup_kinda_lazy()
   configuration.registered_kinda_lazy = configuration.registered_kinda_lazy and vim.fn.argc(-1) > 0
