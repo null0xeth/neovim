@@ -138,17 +138,17 @@ local cmds = {
     end,
   },
   -- Big file support
-  {
-    event = "FileType",
-    pattern = "bigfile",
-    group = define_augroup("bigfile", { clear = true }),
-    command_or_callback = function(event)
-      vim.b.minianimate_disable = true
-      vim.schedule(function()
-        vim.bo[ev.buf].syntax = vim.filetype.match({ buf = ev.buf }) or ""
-      end)
-    end,
-  },
+  -- {
+  --   event = "FileType",
+  --   pattern = "bigfile",
+  --   group = define_augroup("bigfile", { clear = true }),
+  --   command_or_callback = function(event)
+  --     vim.b.minianimate_disable = true
+  --     vim.schedule(function()
+  --       vim.bo[ev.buf].syntax = vim.filetype.match({ buf = ev.buf }) or ""
+  --     end)
+  --   end,
+  -- },
   -- go to last loc when opening a buffer
   {
     event = "BufReadPost",

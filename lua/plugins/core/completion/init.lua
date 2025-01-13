@@ -256,7 +256,7 @@ return {
       },
 
       sources = {
-        default = { 'lazydev', 'lsp', 'path', 'snippets', 'buffer' },
+        default = { 'lsp', 'path', 'snippets', 'buffer' },
         cmdline = function()
           local type = vim.fn.getcmdtype()
           -- Search forward and backward
@@ -271,11 +271,11 @@ return {
             -- dont show LuaLS require statements when lazydev has items
             fallbacks = { "buffer" },
           },
-          lazydev = {
-            name = "LazyDev",
-            module = "lazydev.integrations.blink",
-            fallbacks = { "lsp" },
-          },
+          -- lazydev = {
+          --   name = "LazyDev",
+          --   module = "lazydev.integrations.blink",
+          --   fallbacks = { "lsp" },
+          -- },
           path = {
             name = 'Path',
             module = 'blink.cmp.sources.path',
@@ -392,7 +392,7 @@ return {
     config = function(_, opts)
       local lspconfig = require("lspconfig")
       for server, config in pairs(opts.servers) do
-        config.capabilities = require("blink.cmp").get_lsp_capabilities(config.capabilities)
+        --config.capabilities = require("blink.cmp").get_lsp_capabilities(config.capabilities)
         lspconfig[server].setup(config)
       end
     end,

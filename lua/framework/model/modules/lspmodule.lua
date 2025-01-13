@@ -29,7 +29,6 @@ local lspmodule = {}
 
 local deepExtend = vim.tbl_deep_extend
 
----@package
 ---@param opts table|function: A table with setup instructions for LSP servers
 ---@return table: A map-like structure with setup instructions for LSP servers
 ---Helper function that translates opts to an array with LSP servers
@@ -50,12 +49,21 @@ end
 ---@protected
 ---@return table defaultCapabilities: Returns a table containing the default LSP server capabilities
 lspmodule.set_default_capabilities = memoize(function()
-  -- local cmp = get_module("cmp_nvim_lsp", "cmp_nvim_lsp")
-  -- return cmp.default_capabilities()
-  local capabilities = vim.lsp.protocol.make_client_capabilities()
-  capabilities.textDocument.completion.completionItem.snippetSupport = true
-  capabilities.textDocument.foldingRange = { dynamicRegistration = false, lineFoldingOnly = true }
-  return capabilities
+  -- local default_capabilities = require('lspconfig').util.default_config
+  -- local capabilities = vim.tbl_deep_extend('force', default_capabilities, require('blink.cmp').get_lsp_capabilities())  
+  -- lspconfig_defaults.default_capabilities = vim.tbl_deep_extend(
+  --   'force',
+  --   lspconfig_defaults.default_capabilities,
+  --   require('blink.cmp').get_lsp_capabilities()
+  -- )
+  local lspconfig_defaults = require('lspconfig').util.default_config
+  lspconfig_defaults.capabilities = vim.tbl_deep_extend(
+    'force',
+    lspconfig_defaults.capabilities,
+    require('blink.cmp').get_lsp_capabilities()
+  )
+  lspconfig_defaults.capabilities.textDocument.foldingRange = { dynamicRegistration = false, lineFoldingOnly = true }
+  return lspconfig_defaults.capabilities
 end)
 
 ---Configure and set up an individual LSP server
@@ -68,8 +76,8 @@ local function setup_lsp_server(server, serverOpts, serverSetup)
 
   -- Deep extend options
   serverOpts = deepExtend("force", {
-    --capabilities = default_capabilities,
-    capabilities = require('blink.cmp').get_lsp_capabilities(serverOpts.capabilities)
+    capabilities = default_capabilities,
+    --capabilities = require('blink.cmp').get_lsp_capabilities(serverOpts.capabilities)
   }, serverOpts)
 
   -- Use the directly passed serverSetup function
@@ -78,7 +86,13 @@ local function setup_lsp_server(server, serverOpts, serverSetup)
       return
     end
   end
+  local lsp_zero = require('lsp-zero')
 
+  lsp_zero.on_attach(function(client, bufnr)
+    lsp_zero.default_keymaps({ buffer = bufnr })
+  end)
+
+  lsp_zero.setup_servers(server)
   -- Fallback to default setup if no custom setup is provided
   require("lspconfig")[server].setup(serverOpts)
 end
@@ -176,6 +190,11 @@ end
 ---@package
 ---Initializes the LSP config and assigns icons to the various LSP symbols.
 local function init_lsp_config() --= memoize(function()
+  -- local lsp_zero = require('lsp-zero')
+  --
+  -- lsp_zero.on_attach(function(client, bufnr)
+  --   lsp_zero.default_keymaps({buffer = bufnr})
+  -- end)
   local handler = lsp.handlers["textDocument/publishDiagnostics"]
   ---@diagnostic disable-next-line: duplicate-set-field
   lsp.handlers["textDocument/publishDiagnostics"] = function(err, result, ctx, config)
@@ -194,9 +213,8 @@ local function init_lsp_config() --= memoize(function()
         -- this only works on a recent 0.10.0 build. Will be set to "●" when not supported
         --prefix = "icons",
       },
-      underline = true,
-      update_in_insert = false,
-      severity_sort = true,
+      underline = false,
+      update_in_insert = true,
       float = {
         focusable = true,
         style = "minimal",
@@ -205,8 +223,8 @@ local function init_lsp_config() --= memoize(function()
         header = "",
         prefix = "",
       },
+      severity_sort = true,
       signs = {
-        severity = { min = vim.diagnostic.severity.WARN },
         text = {
           [vim.diagnostic.severity.ERROR] = "",
           [vim.diagnostic.severity.WARN] = "",
@@ -232,7 +250,7 @@ local function init_lsp_config() --= memoize(function()
       exclude = { "vue" }, -- filetypes for which you don't want to enable inlay hints
     },
     codelens = {
-      enabled = true,
+      enabled = false,
     },
     -- Enable lsp cursor word highlighting
     document_highlight = {
@@ -255,6 +273,15 @@ local function init_lsp_config() --= memoize(function()
       timeout_ms = nil,
     },
   }
+  -- diagnostics signs
+  -- if vim.fn.has("nvim-0.10.0") == 0 then
+  --   for severity, icon in pairs(lspConfig.diagnostics.signs.text) do
+  --     local name = vim.diagnostic.severity[severity]:lower():gsub("^%l", string.upper)
+  --     name = "DiagnosticSign" .. name
+  --     vim.fn.sign_define(name, { text = icon, texthl = name, numhl = "" })
+  --   end
+  -- end
+
 
   diagnostic.config(vim.deepcopy(lspConfig.diagnostic))
 end

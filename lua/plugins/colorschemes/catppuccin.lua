@@ -87,7 +87,6 @@ local spec = {
         blink_cmp = true,
         dap = false,
         dap_ui = false,
-
         native_lsp = {
           enabled = true,
           virtual_text = {

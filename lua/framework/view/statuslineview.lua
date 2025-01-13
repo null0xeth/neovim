@@ -185,6 +185,11 @@ local function create_statusline_template()
         -- } get option value
       },
       lualine_x = {
+        {
+          function()
+            return require("lsp-progress").progress()
+          end,  
+        },
         { -- Lsp server name .
           function()
             local msg = "No Active Lsp"
@@ -285,6 +290,13 @@ end
 ---@param self StatusLineView
 function StatusLineView:render()
   schedule_statusline_render()
+  -- listen lsp-progress event and refresh lualine
+  vim.api.nvim_create_augroup("lualine_augroup", { clear = true })
+  vim.api.nvim_create_autocmd("User", {
+    group = "lualine_augroup",
+    pattern = "LspProgressStatusUpdated",
+    callback = require("lualine").refresh,
+  })
   return create_statusline_template()
 end
 

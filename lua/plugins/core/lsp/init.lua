@@ -64,6 +64,7 @@ local spec = {
     event = "KindaLazy",
     dependencies = {
       { "smjonas/inc-rename.nvim" },
+      { "VonHeikemen/lsp-zero.nvim" }
     },
     opts = {
       servers = {},
