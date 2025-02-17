@@ -14,6 +14,17 @@ return {
       opts.linters_by_ft["sh"] = { "shellcheck" }
     end,
   },
+  {
+    "NoahTheDuke/vim-just",
+    ft = { "just" },
+  },
+  {
+    "chrisgrieser/nvim-justice",
+    ft = "just",
+    config = function()
+      require("justice").setup()
+    end
+  },
   -- {
   --   "luckasRanarison/tree-sitter-hypr",
   --   event = "BufRead */hypr/*.conf",
@@ -38,7 +49,7 @@ return {
   {
     "nvim-treesitter/nvim-treesitter",
     opts = {
-      ensure_installed = { "hyprlang", "git_config" },
+      ensure_installed = { "hyprlang", "git_config", "just" },
     },
     -- opts = function(_, opts)
     --   -- local xdg_config = vim.env.XDG_CONFIG_HOME or vim.env.HOME .. "/.config"
@@ -68,7 +79,7 @@ return {
 
         -- move
         nls.builtins.formatting.packer,    --hcp packer
-        nls.builtins.formatting.prettierd, --prettierd
+        --nls.builtins.formatting.prettierd, --prettierd
         nls.builtins.formatting.pg_format, --pgsql
         nls.builtins.formatting.shfmt,     --bash
       })

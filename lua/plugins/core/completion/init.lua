@@ -58,28 +58,12 @@ return {
       "rafamadriz/friendly-snippets",
       'L3MON4D3/LuaSnip',
       'saadparwaiz1/cmp_luasnip',
+      'xzbdmw/colorful-menu.nvim',
       -- lock compat to tagged versions, if you've also locked blink.cmp to tagged versions
       { 'saghen/blink.compat', version = '*', opts = { impersonate_nvim_cmp = true } },
-      {
-        "giuxtaposition/blink-cmp-copilot",
-        enabled = vim.g.ai_cmp, -- only enable if needed
-        specs = {
-          {
-            "blink.cmp",
-            optional = true,
-            opts = {
-              sources = {
-                providers = {
-                  copilot = { name = "copilot", module = "blink-cmp-copilot" },
-                },
-                default = { "copilot" },
-              },
-            },
-          },
-        },
-      },
-
+      'giuxtaposition/blink-cmp-copilot',
     },
+    opts_extend = { "sources.default" },
     opts = {
       keymap = {
         ["<C-s>"] = { "show" },
@@ -104,8 +88,17 @@ return {
         ["<PageUp>"] = { "scroll_documentation_up" },
       },
       completion = {
+        list = {
+          selection = {
+            preselect = function(ctx) return ctx.mode ~= 'cmdline' end,
+            auto_insert = function(ctx) return ctx.mode ~= 'cmdline' end
+          }
+        },
         menu = {
           enabled = true,
+          auto_show = function(ctx)
+            return ctx.mode ~= "cmdline" or not vim.tbl_contains({ '/', '?' }, vim.fn.getcmdtype())
+          end,
           min_width = 15,
           max_height = 10,
 
@@ -129,70 +122,88 @@ return {
             -- Gap between columns
             gap = 1,
 
-            -- Components to render, grouped by column
-            ---columns = { { 'kind_icon' }, { 'label', 'label_description', gap = 1 } },
-            -- for a setup similar to nvim-cmp: https://github.com/Saghen/blink.cmp/pull/245#issuecomment-2463659508
-            columns = { { "label", "label_description", gap = 1 }, { "kind_icon", "kind" } },
-
-            -- Definitions for possible components to render. Each component defines:
-            --   ellipsis: whether to add an ellipsis when truncating the text
-            --   width: control the min, max and fill behavior of the component
-            --   text function: will be called for each item
-            --   highlight function: will be called only when the line appears on screen
+            -- columns = { { "label", "label_description", gap = 1 }, { "kind_icon", "kind" } },
+            columns = { { "kind_icon" }, { "label", gap = 1 } },
             components = {
-              kind_icon = {
-                ellipsis = false,
-                text = function(ctx) return ctx.kind_icon .. ctx.icon_gap end,
-                highlight = function(ctx)
-                  return require('blink.cmp.completion.windows.render.tailwind').get_hl(ctx) or
-                      'BlinkCmpKind' .. ctx.kind
-                end,
-              },
-
-              kind = {
-                ellipsis = false,
-                width = { fill = true },
-                text = function(ctx) return ctx.kind end,
-                highlight = function(ctx)
-                  return require('blink.cmp.completion.windows.render.tailwind').get_hl(ctx) or
-                      'BlinkCmpKind' .. ctx.kind
-                end,
-              },
-
               label = {
                 width = { fill = true, max = 60 },
-                text = function(ctx) return ctx.label .. ctx.label_detail end,
+                text = function(ctx)
+                  local highlights_info = require("colorful-menu").blink_highlights(ctx)
+                  if highlights_info ~= nil then
+                    -- Or you want to add more item to label
+                    return highlights_info.label
+                  else
+                    return ctx.label
+                  end
+                end,
                 highlight = function(ctx)
-                  -- label and label details
-                  local highlights = {
-                    { 0, #ctx.label, group = ctx.deprecated and 'BlinkCmpLabelDeprecated' or 'BlinkCmpLabel' },
-                  }
-                  if ctx.label_detail then
-                    table.insert(highlights,
-                      { #ctx.label, #ctx.label + #ctx.label_detail, group = 'BlinkCmpLabelDetail' })
+                  local highlights = {}
+                  local highlights_info = require("colorful-menu").blink_highlights(ctx)
+                  if highlights_info ~= nil then
+                    highlights = highlights_info.highlights
                   end
-
-                  -- characters matched on the label by the fuzzy matcher
                   for _, idx in ipairs(ctx.label_matched_indices) do
-                    table.insert(highlights, { idx, idx + 1, group = 'BlinkCmpLabelMatch' })
+                    table.insert(highlights, { idx, idx + 1, group = "BlinkCmpLabelMatch", fg = "none", style = "bold" })
                   end
-
+                  -- Do something else
                   return highlights
                 end,
               },
-
-              label_description = {
-                width = { max = 30 },
-                text = function(ctx) return ctx.label_description end,
-                highlight = 'BlinkCmpLabelDescription',
-              },
-
-              source_name = {
-                width = { max = 30 },
-                text = function(ctx) return ctx.source_name end,
-                highlight = 'BlinkCmpSource',
-              },
             },
+            -- components = {
+            --   kind_icon = {
+            --     ellipsis = false,
+            --     text = function(ctx) return ctx.kind_icon .. ctx.icon_gap end,
+            --     highlight = function(ctx)
+            --       return require('blink.cmp.completion.windows.render.tailwind').get_hl(ctx) or
+            --           'BlinkCmpKind' .. ctx.kind
+            --     end,
+            --   },
+            --
+            --   kind = {
+            --     ellipsis = false,
+            --     width = { fill = true },
+            --     text = function(ctx) return ctx.kind end,
+            --     highlight = function(ctx)
+            --       return require('blink.cmp.completion.windows.render.tailwind').get_hl(ctx) or
+            --           'BlinkCmpKind' .. ctx.kind
+            --     end,
+            --   },
+            --
+            --   label = {
+            --     width = { fill = true, max = 60 },
+            --     text = function(ctx) return ctx.label .. ctx.label_detail end,
+            --     highlight = function(ctx)
+            --       -- label and label details
+            --       local highlights = {
+            --         { 0, #ctx.label, group = ctx.deprecated and 'BlinkCmpLabelDeprecated' or 'BlinkCmpLabel' },
+            --       }
+            --       if ctx.label_detail then
+            --         table.insert(highlights,
+            --           { #ctx.label, #ctx.label + #ctx.label_detail, group = 'BlinkCmpLabelDetail' })
+            --       end
+            --
+            --       -- characters matched on the label by the fuzzy matcher
+            --       for _, idx in ipairs(ctx.label_matched_indices) do
+            --         table.insert(highlights, { idx, idx + 1, group = 'BlinkCmpLabelMatch' })
+            --       end
+            --
+            --       return highlights
+            --     end,
+            --   },
+            --
+            --   label_description = {
+            --     width = { max = 30 },
+            --     text = function(ctx) return ctx.label_description end,
+            --     highlight = 'BlinkCmpLabelDescription',
+            --   },
+            --
+            --   source_name = {
+            --     width = { max = 30 },
+            --     text = function(ctx) return ctx.source_name end,
+            --     highlight = 'BlinkCmpSource',
+            --   },
+            -- },
           },
         },
         documentation = {
@@ -254,10 +265,8 @@ return {
           -- Disable if you run into performance issues
         },
       },
-
-      sources = {
-        default = { 'lsp', 'path', 'snippets', 'buffer' },
-        cmdline = function()
+      cmdline = {
+        sources = function()
           local type = vim.fn.getcmdtype()
           -- Search forward and backward
           if type == '/' or type == '?' then return { 'buffer' } end
@@ -265,11 +274,29 @@ return {
           if type == ':' then return { 'cmdline' } end
           return {}
         end,
+      },
+      sources = {
+        default = { 'lsp', 'path', 'snippets', 'buffer', 'copilot' },
         -- Please see https://github.com/Saghen/blink.compat for using `nvim-cmp` sources
         providers = {
           lsp = {
             -- dont show LuaLS require statements when lazydev has items
             fallbacks = { "buffer" },
+          },
+          copilot = {
+            name = "copilot",
+            module = "blink-cmp-copilot",
+            score_offset = 100,
+            async = true,
+            transform_items = function(_, items)
+              local CompletionItemKind = require("blink.cmp.types").CompletionItemKind
+              local kind_idx = #CompletionItemKind + 1
+              CompletionItemKind[kind_idx] = "Copilot"
+              for _, item in ipairs(items) do
+                item.kind = kind_idx
+              end
+              return items
+            end,
           },
           -- lazydev = {
           --   name = "LazyDev",
@@ -283,8 +310,10 @@ return {
             opts = {
               trailing_slash = false,
               label_trailing_slash = true,
-              get_cwd = function(context) return vim.fn.expand(('#%d:p:h'):format(context.bufnr)) end,
               show_hidden_files_by_default = false,
+              get_cwd = function(_)
+                return vim.fn.getcwd()
+              end,
             }
           },
           snippets = {
@@ -328,6 +357,7 @@ return {
         -- Adjusts spacing to ensure icons are aligned
         nerd_font_variant = 'normal',
         kind_icons = {
+          Copilot = "",
           Text = '󰉿',
           Method = '󰊕',
           Function = '󰊕',
@@ -424,6 +454,20 @@ return {
         default_handler(char, item, bufnr, rules, commit_character)
       end
 
+      vim.api.nvim_create_autocmd('User', {
+        pattern = 'BlinkCmpMenuOpen',
+        callback = function()
+          require("copilot.suggestion").dismiss()
+          vim.b.copilot_suggestion_hidden = true
+        end,
+      })
+
+      vim.api.nvim_create_autocmd('User', {
+        pattern = 'BlinkCmpMenuClose',
+        callback = function()
+          vim.b.copilot_suggestion_hidden = false
+        end,
+      })
       -- cmp.event:on(
       -- 	"confirm_done",
       -- 	cmp_autopairs.on_confirm_done({

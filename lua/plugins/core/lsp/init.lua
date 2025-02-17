@@ -145,13 +145,13 @@ local spec = {
       external_sources = {
         -- diagnostics
         "none-ls-external-sources.diagnostics.cpplint",
-        "none-ls-external-sources.diagnostics.eslint_d",
+        --"none-ls-external-sources.diagnostics.eslint_d",
         "none-ls-external-sources.diagnostics.luacheck",
         "none-ls-external-sources.diagnostics.yamllint",
         -- formatting
         "none-ls-external-sources.formatting.beautysh",
         "none-ls-external-sources.formatting.easy-coding-standard",
-        "none-ls-external-sources.formatting.eslint_d",
+        --"none-ls-external-sources.formatting.eslint_d",
         "none-ls-external-sources.formatting.jq",
         "none-ls-external-sources.formatting.latexindent",
         "none-ls-external-sources.formatting.standardrb",

@@ -14,6 +14,7 @@ local settings = {
     helm = true,
     json = true,
     jsonc = true,
+    go = true,
     lua = true,
     markdown = false,
     nix = true,

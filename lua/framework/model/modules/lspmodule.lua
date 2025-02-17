@@ -48,23 +48,17 @@ end
 ---Initializes the default LSP capabilities if not already initialized.
 ---@protected
 ---@return table defaultCapabilities: Returns a table containing the default LSP server capabilities
-lspmodule.set_default_capabilities = memoize(function()
-  -- local default_capabilities = require('lspconfig').util.default_config
-  -- local capabilities = vim.tbl_deep_extend('force', default_capabilities, require('blink.cmp').get_lsp_capabilities())  
-  -- lspconfig_defaults.default_capabilities = vim.tbl_deep_extend(
-  --   'force',
-  --   lspconfig_defaults.default_capabilities,
-  --   require('blink.cmp').get_lsp_capabilities()
-  -- )
-  local lspconfig_defaults = require('lspconfig').util.default_config
-  lspconfig_defaults.capabilities = vim.tbl_deep_extend(
-    'force',
-    lspconfig_defaults.capabilities,
-    require('blink.cmp').get_lsp_capabilities()
-  )
-  lspconfig_defaults.capabilities.textDocument.foldingRange = { dynamicRegistration = false, lineFoldingOnly = true }
-  return lspconfig_defaults.capabilities
-end)
+-- lspmodule.set_default_capabilities = memoize(function()
+--   local default_capabilities = require('lspconfig').util.default_config
+--   local capabilities = vim.tbl
+--   lspconfig_defaults.default_capabilities = vim.tbl_deep_extend(
+--     'force',
+--     lspconfig_defaults.default_capabilities,
+--     require('blink.cmp').get_lsp_capabilities()
+--   )
+--   lspconfig_defaults.capabilities.textDocument.foldingRange = { dynamicRegistration = false, lineFoldingOnly = true }
+--   return lspconfig_defaults.capabilities
+-- end)
 
 ---Configure and set up an individual LSP server
 ---@package
@@ -72,13 +66,13 @@ end)
 ---@param serverOpts table: A lua table containing configurations for this LSP server
 ---@param serverSetup table: A slice of serverSetups for this particular LSP server
 local function setup_lsp_server(server, serverOpts, serverSetup)
-  local default_capabilities = lspmodule.set_default_capabilities()
+  --local default_capabilities = lspmodule.set_default_capabilities()
 
   -- Deep extend options
-  serverOpts = deepExtend("force", {
-    capabilities = default_capabilities,
-    --capabilities = require('blink.cmp').get_lsp_capabilities(serverOpts.capabilities)
-  }, serverOpts)
+  -- serverOpts = deepExtend("force", {
+  --   --#capabilities = default_capabilities,
+  --   capabilities = require('blink.cmp').get_lsp_capabilities(serverOpts.capabilities)
+  -- }, serverOpts)
 
   -- Use the directly passed serverSetup function
   if serverSetup then
@@ -298,6 +292,7 @@ function lspmodule.process_lsp_servers(opts)
   for server, s_opts in pairs(servers) do
     if s_opts then
       s_opts = s_opts == true and {} or s_opts
+      s_opts.capabilities = require('blink.cmp').get_lsp_capabilities(s_opts.capabilities)
       setup_lsp_server(server, s_opts, sSetups[server])
     end
   end

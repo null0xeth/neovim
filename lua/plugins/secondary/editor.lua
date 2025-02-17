@@ -500,14 +500,14 @@ local spec = {
       ensure_installed = { "http", "graphql" },
     },
   },
-{
- "nosduco/remote-sshfs.nvim",
-  event = "KindaLazy",  
- dependencies = { "nvim-telescope/telescope.nvim" },
- opts = {},
-  -- Refer to the configuration section below
-  -- or leave empty for defaults
- },
+  {
+    "nosduco/remote-sshfs.nvim",
+    event = "KindaLazy",
+    dependencies = { "nvim-telescope/telescope.nvim" },
+    opts = {},
+    -- Refer to the configuration section below
+    -- or leave empty for defaults
+  },
   {
     "Dan7h3x/neaterm.nvim",
     branch = "stable",
@@ -783,6 +783,18 @@ local spec = {
           delete = "d",
           change = "c",
         },
+      })
+    end,
+  },
+  {
+    'wsdjeg/flygrep.nvim',
+    event = "KindaLazy",
+    config = function(_, opts)
+      require('flygrep').setup({
+        -- your configuration comes here
+        -- or leave it empty to use the default settings
+        -- refer to the configuration section below
+        -- or the documentation
       })
     end,
   },
