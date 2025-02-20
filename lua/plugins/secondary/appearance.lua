@@ -161,10 +161,7 @@ local spec = {
       { "]]", desc = "Next Reference" },
       { "[[", desc = "Prev Reference" },
     },
-    {
-      "neovim/nvim-lspconfig",
-      opts = { document_highlight = { enabled = false } },
-    },
+
     -- opts = {
     --   providers = {
     --     "lsp",
@@ -254,15 +251,15 @@ local spec = {
       end,
     },
   },
-  {
-    'mikesmithgh/borderline.nvim',
-    event = 'VeryLazy',
-    config = function()
-      require('borderline').setup({
-        --  ...
-      })
-    end,
-  }
+  -- {
+  --   'mikesmithgh/borderline.nvim',
+  --   event = 'VeryLazy',
+  --   config = function()
+  --     require('borderline').setup({
+  --       --  ...
+  --     })
+  --   end,
+  -- }
 }
 
 return spec

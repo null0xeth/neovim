@@ -5,7 +5,6 @@ local spec = {
       ensure_installed = {
         "go",
         "goctl",
-        "godot",
         "gomod",
         "gosum",
         "gotmpl",
@@ -13,13 +12,48 @@ local spec = {
       },
     },
   },
-
   {
-    "mfussenegger/nvim-lint",
+    "williamboman/mason.nvim",
+    opts = {
+      ensure_installed = {
+        "goimports",
+        "gofumpt",
+        "delve",
+      },
+    },
+  },
+  {
+    "nvimtools/none-ls.nvim",
+    optional = true,
+    dependencies = {
+      {
+        "williamboman/mason.nvim",
+        opts = {
+          ensure_installed = {
+            "gomodifytags",
+            "impl",
+          },
+        },
+      },
+    },
     opts = function(_, opts)
-      -- move dis to other langs
-      opts.linters_by_ft["lua"] = { "luacheck" }
+      local nls = require("null-ls")
+      opts.sources = vim.list_extend(opts.sources or {}, {
+        nls.builtins.code_actions.gomodifytags,
+        nls.builtins.code_actions.impl,
+        nls.builtins.formatting.goimports,
+        nls.builtins.formatting.gofumpt,
+      })
     end,
+  },
+  {
+    "stevearc/conform.nvim",
+    optional = true,
+    opts = {
+      formatters_by_ft = {
+        go = { "goimports", "gofumpt" },
+      },
+    },
   },
   {
     "neovim/nvim-lspconfig",
@@ -28,7 +62,39 @@ local spec = {
       servers = {
         gopls = {
           settings = {
-            go = {},
+            gopls = {
+              gofumpt = true,
+              codelenses = {
+                gc_details = false,
+                generate = true,
+                regenerate_cgo = true,
+                run_govulncheck = true,
+                test = true,
+                tidy = true,
+                upgrade_dependency = true,
+                vendor = true
+              },
+              hints = {
+                assignVariableTypes = true,
+                compositeLiteralFields = true,
+                compositeLiteralTypes = true,
+                constantValues = true,
+                functionTypeParameters = true,
+                parameterNames = true,
+                rangeVariableTypes = true,
+              },
+              analyses = {
+                nilness = true,
+                unusedparams = true,
+                unusedwrite = true,
+                useany = true,
+              },
+              usePlaceholders = true,
+              completeUnimported = true,
+              staticcheck = true,
+              directoryFilters = { "-.git", "-.vscode", "-.idea", "-.vscode-test", "-node_modules" },
+              semanticTokens = true,
+            },
           },
         }, --function()
 
@@ -41,29 +107,7 @@ local spec = {
       },
     },
   },
-  {
-    "nvim-neotest/neotest",
-    enabled = false,
-    dependencies = { "nvim-neotest/neotest-plenary" },
-    opts = function(_, opts)
-      opts.adapters = vim.list_extend(opts.adapters, { require("neotest-plenary") })
-    end,
-  },
-  {
-    "mfussenegger/nvim-dap",
-    enabled = false,
-    dependencies = {
-      {
-        "jbyuki/one-small-step-for-vimkind",
-        config = function()
-          vim.schedule_wrap(function()
-            local dapcontroller = require("framework.controller.dapcontroller"):new()
-            dapcontroller:get_lua_dap()
-          end)()
-        end,
-      },
-    },
-  },
+
   {
     "xzbdmw/colorful-menu.nvim",
     config = function()

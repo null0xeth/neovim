@@ -15,46 +15,46 @@ local spec = {
     dependencies = {
       "nvim-tree/nvim-web-devicons",
       "nvim-lua/plenary.nvim",
-      {
-        "cljoly/telescope-repo.nvim",
-        config = function()
-          local telescopecontroller = require("framework.controller.telescopecontroller"):new()
-          telescopecontroller:load_extension("repo")
-        end,
-      },
-      {
-        "mrcjkb/telescope-manix",
-        enabled = false,
-        -- stylua: ignore
-        keys = {
-          { "<leader>fns", function() require('telescope-manix').search() end,             desc = "Open Manix (Nix)" },
-          { "<leader>fnc", function() require("telescope-manix").search(default_opts) end, desc = "Search cursorword" },
-        },
-        config = function()
-          local telescopecontroller = require("framework.controller.telescopecontroller"):new()
-          telescopecontroller:load_extension("manix")
-
-          vim.keymap.set("n", "<leader>fnc", function()
-            require("telescope-manix").search(default_opts)
-          end, { desc = "Search cursorword" })
-        end,
-      },
-      {
-        "cappyzawa/telescope-terraform.nvim",
-        enabled = false,
-        config = function()
-          local telescopecontroller = require("framework.controller.telescopecontroller"):new()
-          telescopecontroller:load_extension("terraform")
-        end,
-      },
-      {
-        "ANGkeith/telescope-terraform-doc.nvim",
-        enabled = false,
-        config = function()
-          local telescopecontroller = require("framework.controller.telescopecontroller"):new()
-          telescopecontroller:load_extension("terraform_doc")
-        end,
-      },
+      -- {
+      --   "cljoly/telescope-repo.nvim",
+      --   config = function()
+      --     local telescopecontroller = require("framework.controller.telescopecontroller"):new()
+      --     telescopecontroller:load_extension("repo")
+      --   end,
+      -- },
+      -- {
+      --   "mrcjkb/telescope-manix",
+      --   enabled = false,
+      --   -- stylua: ignore
+      --   keys = {
+      --     { "<leader>fns", function() require('telescope-manix').search() end,             desc = "Open Manix (Nix)" },
+      --     { "<leader>fnc", function() require("telescope-manix").search(default_opts) end, desc = "Search cursorword" },
+      --   },
+      --   config = function()
+      --     local telescopecontroller = require("framework.controller.telescopecontroller"):new()
+      --     telescopecontroller:load_extension("manix")
+      --
+      --     vim.keymap.set("n", "<leader>fnc", function()
+      --       require("telescope-manix").search(default_opts)
+      --     end, { desc = "Search cursorword" })
+      --   end,
+      -- },
+      -- {
+      --   "cappyzawa/telescope-terraform.nvim",
+      --   enabled = false,
+      --   config = function()
+      --     local telescopecontroller = require("framework.controller.telescopecontroller"):new()
+      --     telescopecontroller:load_extension("terraform")
+      --   end,
+      -- },
+      -- {
+      --   "ANGkeith/telescope-terraform-doc.nvim",
+      --   enabled = false,
+      --   config = function()
+      --     local telescopecontroller = require("framework.controller.telescopecontroller"):new()
+      --     telescopecontroller:load_extension("terraform_doc")
+      --   end,
+      -- },
       {
         "nvim-telescope/telescope-fzf-native.nvim",
         build = "make",
@@ -71,25 +71,25 @@ local spec = {
           telescopecontroller:load_extension("undo")
         end,
       },
-      {
-        "nvim-telescope/telescope-dap.nvim",
-        enabled = false,
-        dependencies = {
-          "mfussenegger/nvim-dap",
-          "nvim-treesitter/nvim-treesitter",
-        },
-        -- stylua: ignore
-        keys = {
-          { "<leader>fDc", "<cmd>Telescope dap commands<cr>",         desc = "Dap Commands" },
-          { "<leader>fDC", "<cmd>Telescope dap configurations<cr>",   desc = "Dap Configurations" },
-          { "<leader>fDb", "<cmd>Telescope dap list_breakpoints<cr>", desc = "Dap Breakpoints" },
-          { "<leader>fDf", "<cmd>Telescope dap frames<cr>",           desc = "Dap Frames" },
-        },
-        config = function()
-          local telescopecontroller = require("framework.controller.telescopecontroller"):new()
-          telescopecontroller:load_extension("dap")
-        end,
-      },
+      -- {
+      --   "nvim-telescope/telescope-dap.nvim",
+      --   enabled = false,
+      --   dependencies = {
+      --     "mfussenegger/nvim-dap",
+      --     "nvim-treesitter/nvim-treesitter",
+      --   },
+      --   -- stylua: ignore
+      --   keys = {
+      --     { "<leader>fDc", "<cmd>Telescope dap commands<cr>",         desc = "Dap Commands" },
+      --     { "<leader>fDC", "<cmd>Telescope dap configurations<cr>",   desc = "Dap Configurations" },
+      --     { "<leader>fDb", "<cmd>Telescope dap list_breakpoints<cr>", desc = "Dap Breakpoints" },
+      --     { "<leader>fDf", "<cmd>Telescope dap frames<cr>",           desc = "Dap Frames" },
+      --   },
+      --   config = function()
+      --     local telescopecontroller = require("framework.controller.telescopecontroller"):new()
+      --     telescopecontroller:load_extension("dap")
+      --   end,
+      -- },
     },
     --keys = "<space>",
     config = function()

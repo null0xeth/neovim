@@ -321,13 +321,13 @@ local spec = {
   --     require("iedit").setup()
   --   end,
   -- },
-  {
-    "isak102/ghostty.nvim",
-    event = "KindaLazy",
-    config = function()
-      require("ghostty").setup()
-    end,
-  },
+  -- {
+  --   "isak102/ghostty.nvim",
+  --   event = "KindaLazy",
+  --   config = function()
+  --     require("ghostty").setup()
+  --   end,
+  -- },
   {
     "linrongbin16/lsp-progress.nvim",
     event = "KindaLazy",
@@ -351,7 +351,7 @@ local spec = {
           end
 
           local sign = "" -- nf-fa-gear \uf013
-          local lsp_clients = vim.lsp.get_active_clients()
+          local lsp_clients = vim.lsp.get_clients()
           local messages_map = {}
           for _, climsg in ipairs(client_messages) do
             messages_map[climsg.name] = climsg.body
@@ -387,15 +387,15 @@ local spec = {
       })
     end,
   },
-  {
-    "samharju/yeet.nvim",
-    dependencies = {
-      "stevearc/dressing.nvim", -- optional, provides sane UX
-    },
-    version = "*",              -- use the latest release, remove for master
-    cmd = "Yeet",
-    opts = {},
-  },
+  -- {
+  --   "samharju/yeet.nvim",
+  --   dependencies = {
+  --     "stevearc/dressing.nvim", -- optional, provides sane UX
+  --   },
+  --   version = "*",              -- use the latest release, remove for master
+  --   cmd = "Yeet",
+  --   opts = {},
+  -- },
   {
     "junegunn/fzf",
     build = "./install --bin",
@@ -482,20 +482,21 @@ local spec = {
       })
     end,
   },
-  {
-    "mistweaverco/kulala.nvim",
-    ft = "http",
-    keys = {
-      { "<leader>R",  "",                                             desc = "+Rest" },
-      { "<leader>Rs", "<cmd>lua require('kulala').run()<cr>",         desc = "Send the request" },
-      { "<leader>Rt", "<cmd>lua require('kulala').toggle_view()<cr>", desc = "Toggle headers/body" },
-      { "<leader>Rp", "<cmd>lua require('kulala').jump_prev()<cr>",   desc = "Jump to previous request" },
-      { "<leader>Rn", "<cmd>lua require('kulala').jump_next()<cr>",   desc = "Jump to next request" },
-    },
-    opts = {},
-  },
+  -- {
+  --   "mistweaverco/kulala.nvim",
+  --   ft = "http",
+  --   keys = {
+  --     { "<leader>R",  "",                                             desc = "+Rest" },
+  --     { "<leader>Rs", "<cmd>lua require('kulala').run()<cr>",         desc = "Send the request" },
+  --     { "<leader>Rt", "<cmd>lua require('kulala').toggle_view()<cr>", desc = "Toggle headers/body" },
+  --     { "<leader>Rp", "<cmd>lua require('kulala').jump_prev()<cr>",   desc = "Jump to previous request" },
+  --     { "<leader>Rn", "<cmd>lua require('kulala').jump_next()<cr>",   desc = "Jump to next request" },
+  --   },
+  --   opts = {},
+  -- },
   {
     "nvim-treesitter/nvim-treesitter",
+    optional = true,
     opts = {
       ensure_installed = { "http", "graphql" },
     },
@@ -783,18 +784,6 @@ local spec = {
           delete = "d",
           change = "c",
         },
-      })
-    end,
-  },
-  {
-    'wsdjeg/flygrep.nvim',
-    event = "KindaLazy",
-    config = function(_, opts)
-      require('flygrep').setup({
-        -- your configuration comes here
-        -- or leave it empty to use the default settings
-        -- refer to the configuration section below
-        -- or the documentation
       })
     end,
   },

@@ -39,7 +39,7 @@ local spec = {
       require("neo-tree").setup({
         sources = { "filesystem", "buffers", "git_status" },
         open_files_do_not_replace_types = { "terminal", "Trouble", "trouble", "qf", "Outline", "edgy" }, -- and edgy?
-        nesting_rules = {}, --require("neotree-file-nesting-config").nesting_rules,
+        nesting_rules = {},                                                                              --require("neotree-file-nesting-config").nesting_rules,
         auto_clean_after_session_restore = true,
         close_if_last_window = true,
         popup_border_style = "rounded",
@@ -49,8 +49,8 @@ local spec = {
         default_source = "filesystem", -- you can choose a specific source `last` here which indicates the last used source
         enable_diagnostics = false,
         enable_git_status = true,
-        enable_modified_markers = true, -- Show markers for files with unsaved changes.
-        enable_opened_markers = true, -- Enable tracking of opened files. Required for `components.name.highlight_opened_files`
+        enable_modified_markers = true,  -- Show markers for files with unsaved changes.
+        enable_opened_markers = true,    -- Enable tracking of opened files. Required for `components.name.highlight_opened_files`
         enable_refresh_on_write = false, -- Refresh the tree when a file is written. Only used if `use_libuv_file_watcher` is false.
 
         -- Fresh of the boat:
@@ -98,8 +98,8 @@ local spec = {
             event = "file_renamed",
             handler = function(args)
               for _, client in pairs(vim.lsp.get_clients()) do
-                if client.supports_method("workspace/willRenameFiles") then
-                  local resp = client.request_sync("workspace/willRenameFiles", {
+                if client:supports_method("workspace/willRenameFiles") then
+                  local resp = client:request_sync("workspace/willRenameFiles", {
                     files = {
                       {
                         oldUri = vim.uri_from_fname(args.source),
@@ -119,8 +119,8 @@ local spec = {
             event = "file_moved",
             handler = function(args)
               for _, client in pairs(vim.lsp.get_clients()) do
-                if client.supports_method("workspace/willRenameFiles") then
-                  local resp = client.request_sync("workspace/willRenameFiles", {
+                if client:supports_method("workspace/willRenameFiles") then
+                  local resp = client:request_sync("workspace/willRenameFiles", {
                     files = {
                       {
                         oldUri = vim.uri_from_fname(args.source),
@@ -279,9 +279,9 @@ local spec = {
             {
               "container",
               content = {
-                { "name", zindex = 10 },
+                { "name",       zindex = 10 },
                 --{ "symlink_target", zindex = 10, highlight = "NeoTreeSymbolicLinkTarget" },
-                { "clipboard", zindex = 10 },
+                { "clipboard",  zindex = 10 },
                 { "git_status", zindex = 10, align = "right", hide_when_expanded = true },
                 --{ "file_size", zindex = 10, align = "right" },
                 --{ "type", zindex = 10, align = "right" },
@@ -296,9 +296,9 @@ local spec = {
             {
               "container",
               content = {
-                { "name", zindex = 10 },
+                { "name",       zindex = 10 },
                 --{ "symlink_target", zindex = 10, highlight = "NeoTreeSymbolicLinkTarget" },
-                { "clipboard", zindex = 10 },
+                { "clipboard",  zindex = 10 },
                 --{ "modified", zindex = 20, align = "right" },
                 { "git_status", zindex = 10, align = "right" },
                 --{ "file_size", zindex = 10, align = "right" },
@@ -310,7 +310,7 @@ local spec = {
           },
           message = {
             { "indent", with_markers = false },
-            { "name", highlight = "NeoTreeMessage" },
+            { "name",   highlight = "NeoTreeMessage" },
           },
           terminal = {
             { "indent" },
@@ -375,7 +375,7 @@ local spec = {
           bind_to_cwd = true,
           async_directory_scan = "auto",
           cwd_target = {
-            sidebar = "tab", -- sidebar is when position = left or right
+            sidebar = "tab",    -- sidebar is when position = left or right
             current = "window", -- current is when position = current
           },
 
@@ -393,14 +393,14 @@ local spec = {
         buffers = {
           bind_to_cwd = true,
           follow_current_file = {
-            enabled = true, -- This will find and focus the file in the active buffer every time
+            enabled = true,          -- This will find and focus the file in the active buffer every time
             --              -- the current file is changed while the tree is open.
             leave_dirs_open = false, -- `false` closes auto expanded dirs, such as with `:Neotree reveal`
           },
-          group_empty_dirs = true, -- when true, empty directories will be grouped together
-          show_unloaded = false, -- When working with sessions, for example, restored but unfocused buffers
+          group_empty_dirs = true,   -- when true, empty directories will be grouped together
+          show_unloaded = false,     -- When working with sessions, for example, restored but unfocused buffers
           -- are mark as "unloaded". Turn this on to view these unloaded buffer.
-          terminals_first = false, -- when true, terminals will be listed before file buffers
+          terminals_first = false,   -- when true, terminals will be listed before file buffers
           window = {
             mappings = {
               ["<bs>"] = "navigate_up",
@@ -437,16 +437,16 @@ local spec = {
           renderers = {
             root = {
               { "indent" },
-              { "icon", default = "C" },
-              { "name", zindex = 10 },
+              { "icon",  default = "C" },
+              { "name",  zindex = 10 },
             },
             symbol = {
-              { "indent", with_expanders = true },
+              { "indent",    with_expanders = true },
               { "kind_icon", default = "?" },
               {
                 "container",
                 content = {
-                  { "name", zindex = 10 },
+                  { "name",      zindex = 10 },
                   { "kind_name", zindex = 20, align = "right" },
                 },
               },

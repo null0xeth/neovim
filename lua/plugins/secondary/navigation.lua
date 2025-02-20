@@ -8,7 +8,7 @@ local function get_clients(opts)
     if opts and opts.method then
       ---@param client lsp.Client
       ret = vim.tbl_filter(function(client)
-        return client.supports_method(opts.method, { bufnr = opts.bufnr })
+        return client:supports_method(opts.method, { bufnr = opts.bufnr })
       end, ret)
     end
   end
@@ -18,9 +18,9 @@ end
 local function on_rename(from, to)
   local clients = get_clients()
   for _, client in ipairs(clients) do
-    if client.supports_method("workspace/willRenameFiles") then
+    if client:supports_method("workspace/willRenameFiles") then
       ---@diagnostic disable-next-line: invisible
-      local resp = client.request_sync("workspace/willRenameFiles", {
+      local resp = client:request_sync("workspace/willRenameFiles", {
         files = {
           {
             oldUri = vim.uri_from_fname(from),
@@ -60,7 +60,7 @@ local spec = {
       },
     },
     keys = {
-      { "<leader>mno", "<cmd>Oil<CR>", desc = "Browse parent directory (Oil)" },
+      { "<leader>mno", "<cmd>Oil<CR>",          desc = "Browse parent directory (Oil)" },
       { "<leader>mnf", "<cmd>Oil --float <CR>", desc = "[FLOAT]: Browse parent directory (Oil)" },
     },
   },

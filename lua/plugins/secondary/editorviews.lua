@@ -67,22 +67,22 @@ local spec = {
   --     require("mini.map").setup(opts)
   --   end,
   -- },
-  {
-    "hedyhli/outline.nvim",
-    keys = { { "<leader>eo", "<cmd>Outline<cr>", desc = "Toggle Code Outline" } },
-    cmd = "Outline",
-    opts = function()
-      local defaults = require("outline.config").defaults
-      local opts = {
-        symbols = {},
-        keymaps = {
-          up_and_jump = "<up>",
-          down_and_jump = "<down>",
-        },
-      }
-      return opts
-    end,
-  },
+  -- {
+  --   "hedyhli/outline.nvim",
+  --   keys = { { "<leader>eo", "<cmd>Outline<cr>", desc = "Toggle Code Outline" } },
+  --   cmd = "Outline",
+  --   opts = function()
+  --     local defaults = require("outline.config").defaults
+  --     local opts = {
+  --       symbols = {},
+  --       keymaps = {
+  --         up_and_jump = "<up>",
+  --         down_and_jump = "<down>",
+  --       },
+  --     }
+  --     return opts
+  --   end,
+  -- },
 }
 
 return spec

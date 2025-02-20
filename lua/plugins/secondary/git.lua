@@ -1,10 +1,10 @@
 return {
-  {
-    "sindrets/diffview.nvim",
-    cmd = { "DiffviewOpen", "DiffviewClose", "DiffviewToggleFiles", "DiffviewFocusFiles" },
-    opts = {},
-    keys = { { "<leader>gD", "<cmd>DiffviewOpen<cr>", desc = "Open DiffView" } },
-  },
+  -- {
+  --   "sindrets/diffview.nvim",
+  --   cmd = { "DiffviewOpen", "DiffviewClose", "DiffviewToggleFiles", "DiffviewFocusFiles" },
+  --   opts = {},
+  --   keys = { { "<leader>gD", "<cmd>DiffviewOpen<cr>", desc = "Open DiffView" } },
+  -- },
   -- {
   --   "NeogitOrg/neogit",
   --   cmd = "Neogit",
