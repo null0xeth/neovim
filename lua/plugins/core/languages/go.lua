@@ -57,7 +57,7 @@ local spec = {
   },
   {
     "neovim/nvim-lspconfig",
-    dependencies = {},
+    optional = true,
     opts = {
       servers = {
         gopls = {
@@ -99,12 +99,12 @@ local spec = {
         }, --function()
 
       },
-      setup = {
-        gopls = function(_, opts)
-          local lspcontroller = require("framework.controller.lspcontroller"):new()
-          lspcontroller:setup_lsp_servers(_, opts)
-        end,
-      },
+      -- setup = {
+      --   gopls = function(_, opts)
+      --     local lspcontroller = require("framework.controller.lspcontroller"):new()
+      --     lspcontroller:setup_lsp_servers(_, opts)
+      --   end,
+      -- },
     },
   },
 

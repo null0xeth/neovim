@@ -47,6 +47,7 @@ return {
     dependencies = {
       "b0o/SchemaStore.nvim",
     },
+    optional = true,
     opts = {
       servers = {
         jsonls = {
@@ -68,12 +69,12 @@ return {
           },
         },
       },
-      setup = {
-        jsonls = function(_, opts)
-          local lspcontroller = require("framework.controller.lspController"):new()
-          lspcontroller:setup_lsp_servers(_, opts)
-        end,
-      },
+      -- setup = {
+      --   jsonls = function(_, opts)
+      --     local lspcontroller = require("framework.controller.lspController"):new()
+      --     lspcontroller:setup_lsp_servers(_, opts)
+      --   end,
+      -- },
     },
   },
 }

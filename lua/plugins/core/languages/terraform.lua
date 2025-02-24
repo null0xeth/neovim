@@ -55,6 +55,7 @@ local spec = {
   },
   {
     "neovim/nvim-lspconfig",
+    optional = true,
     opts = {
       -- make sure mason installs the server
       servers = {
@@ -71,12 +72,12 @@ local spec = {
           settings = {},
         },
       },
-      setup = {
-        terraformls = function(_, opts)
-          local lspcontroller = require("framework.controller.lspcontroller"):new()
-          lspcontroller:setup_lsp_servers(_, opts)
-        end,
-      },
+      -- setup = {
+      --   terraformls = function(_, opts)
+      --     local lspcontroller = require("framework.controller.lspcontroller"):new()
+      --     lspcontroller:setup_lsp_servers(_, opts)
+      --   end,
+      -- },
     },
   },
 }

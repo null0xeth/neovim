@@ -329,6 +329,67 @@ local spec = {
   --   end,
   -- },
   {
+    "ramilito/kubectl.nvim",
+    opts = {},
+    cmd = { 'Kubectl', 'Kubectx', 'Kubens' },
+    keys = {
+      { '<leader>k', '<cmd>lua require("kubectl").toggle()<cr>' },
+      { '<C-k>',     '<Plug>(kubectl.kill)',                    ft = 'k8s_*' },
+      { '7',         '<Plug>(kubectl.view_nodes)',              ft = 'k8s_*' },
+      { '8',         '<Plug>(kubectl.view_overview)',           ft = 'k8s_*' },
+      { '<C-t>',     '<Plug>(kubectl.view_top)',                ft = 'k8s_*' },
+    },
+    config = function()
+      require("kubectl").setup({
+        auto_refresh = {
+          enabled = true,
+          interval = 200, -- milliseconds
+        },
+        diff = {
+          bin = "kubediff", -- or any other binary
+        },
+        namespace = "All",
+        namespace_fallback = {}, -- If you have limited access you can list all the namespaces here
+        notifications = {
+          enabled = true,
+          verbose = false,
+          blend = 100,
+        },
+        hints = true,
+        context = true,
+        float_size = {
+          -- Almost fullscreen:
+          -- width = 1.0,
+          -- height = 0.95, -- Setting it to 1 will cause bottom to be cutoff by statuscolumn
+
+          -- For more context aware size:
+          width = 0.9,
+          height = 0.8,
+
+          -- -- Might need to tweak these to get it centered when float is smaller
+          -- col = 10,
+          -- row = 5,
+        },
+        obj_fresh = 0, -- highlight if creation newer than number (in minutes)
+        mappings = {
+          -- exit = "<leader>uk",
+        },
+      })
+      local group = vim.api.nvim_create_augroup("kubectl_mappings", { clear = true })
+      vim.api.nvim_create_autocmd("FileType", {
+        group = group,
+        pattern = "k8s_*",
+        callback = function(ev)
+          local k = vim.keymap
+          local opts = { buffer = ev.buf }
+          for i = 1, 6 do
+            pcall(k.del, "n", tostring(i), opts)
+          end
+        end,
+      })
+    end,
+  },
+  {
     "linrongbin16/lsp-progress.nvim",
     event = "KindaLazy",
     config = function()
@@ -385,6 +446,32 @@ local spec = {
           return ""
         end,
       })
+
+      local group = vim.api.nvim_create_augroup('kubectl_user', { clear = true })
+      vim.api.nvim_create_autocmd('FileType', {
+        group = group,
+        pattern = 'k8s_*',
+        callback = function()
+          vim.opt.titlestring = 'k8s: %t'
+        end,
+      })
+      local group2 = vim.api.nvim_create_augroup('kubectl_mappings', { clear = false })
+      vim.api.nvim_create_autocmd('FileType', {
+        group = group2,
+        pattern = 'k8s_*',
+        callback = function(ev)
+          vim.keymap.set('n', 'Z', function()
+            local state = require 'kubectl.state'
+            local current = state.getFilter()
+            local faults_filter = '!1/1,!2/2,!3/3,!4/4,!5/5,!6/6,!7/7,!Completed,!Terminating'
+            if current == faults_filter then
+              state.setFilter ''
+              return
+            end
+            state.setFilter(faults_filter)
+          end, { buffer = ev.buf, desc = 'Toggle Faults' })
+        end,
+      })
     end,
   },
   -- {
@@ -403,11 +490,45 @@ local spec = {
   {
     "ibhagwan/fzf-lua",
     -- optional for icon support
-    event = "KindaLazy",
+    lazy = true,
+    keys = {
+      -- search
+      { "<leader>sk", "<cmd> FzfLua keymaps <CR>",                                                                desc = "Show Keys" },
+      { "<leader>sh", "<cmd> FzfLua help_tags <CR>",                                                              desc = "Help Page" },
+      { "<leader>sc", "<cmd> FzfLua highlights <CR>",                                                             desc = "Highlights" },
+      { "<leader>sf", "<cmd> FzfLua files<CR>",                                                                   desc = "Search files" },
+      { "<leader>st", "<cmd> FzfLua live_grep<CR>",                                                               desc = "Live Grep" },
+      { "<leader>sw", "<cmd> FzfLua grep_cWORD<CR>",                                                              mode = "n",                        desc = "Find current word" },
+      { "<leader>sw", "<cmd> FzfLua grep_cWORD<CR>",                                                              mode = "v",                        desc = "Find current selection" },
+      { "<leader>s/", "<cmd> FzfLua search_history<CR>",                                                          desc = "Search history" },
+      { "<leader>sr", "<cmd> FzfLua oldfiles sort_mru=true sort_lastused=true include_current_session=true <CR>", desc = "Search recent" },
+      { "<leader>sn", "<cmd> ObsidianQuickSwitch <CR>",                                                           desc = "Find Note" },
+      -- git
+      { "<leader>gc", "<cmd>FzfLua git_commits<CR>",                                                              desc = "Commits" },
+      { "<leader>gs", "<cmd>FzfLua git_status<CR>",                                                               desc = "Status" },
+      { "<C-p>",      "<cmd> FzfLua buffers sort_mru=true sort_lastused=true <CR>",                               desc = "[ ] Find existing buffers" },
+    },
     dependencies = { "nvim-tree/nvim-web-devicons" },
     config = function()
       -- calling `setup` is optional for customization
-      require("fzf-lua").setup({})
+      require("fzf-lua").setup({
+        fzf_opts = {
+          ["--no-scrollbar"] = true,
+          ["--history"] = vim.fn.stdpath("data") .. "/fzf-lua-history",
+        },
+        winopts = {
+          fzf_colors = true,
+          preview = {
+            scrollbar = false,
+          },
+        },
+      })
+
+      local config = require("fzf-lua.config")
+      local actions = require("fzf-lua.actions")
+
+      -- Quickfix
+      config.defaults.keymap.fzf["ctrl-q"] = "select-all+accept"
     end
   },
   {

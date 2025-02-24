@@ -73,6 +73,7 @@ return {
         version = false,
       },
     },
+    optional = true,
     opts = {
       -- make sure mason installs the server
       servers = {
@@ -117,16 +118,16 @@ return {
           },
         },
       },
-      setup = {
-        yaml_ls = function(_, opts)
-          local lspcontroller = require("framework.controller.lspcontroller"):new()
-          lspcontroller:setup_lsp_servers(_, opts, function(client, _)
-            if client.name == "yamlls" then
-              client.server_capabilities.documentFormattingProvider = true
-            end
-          end)
-        end,
-      },
+      -- setup = {
+      --   yaml_ls = function(_, opts)
+      --     local lspcontroller = require("framework.controller.lspcontroller"):new()
+      --     lspcontroller:setup_lsp_servers(_, opts, function(client, _)
+      --       if client.name == "yamlls" then
+      --         client.server_capabilities.documentFormattingProvider = true
+      --       end
+      --     end)
+      --   end,
+      -- },
     },
   },
 }

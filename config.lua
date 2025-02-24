@@ -8,22 +8,21 @@ local settings = {
   },
   languages = {
     ansible = true,
-    cpp = false,
-    css = false,
+    -- cpp = false,
+    -- css = false,
     dotfiles = true,
     helm = true,
     json = true,
-    jsonc = true,
     go = true,
     lua = true,
-    markdown = false,
+    -- markdown = false,
     nix = true,
-    python = false,
-    rust = false,
-    solidity = false,
-    kcl = true,
+    -- python = false,
+    -- rust = false,
+    -- solidity = false,
     typescript = true,
-    ruby = false,
+    kcl = true,
+    -- ruby = false,
     yaml = true,
     terraform = true,
   },
@@ -31,7 +30,6 @@ local settings = {
     {
       mode = { "n", "v" },
       { "<leader>b",   group = "Buffer" },
-
       { "<leader>c",   group = "Coding" },
       { "<leader>cT",  desc = "+TODO Comments" },
       { "<leader>ct",  desc = "+Trouble (QF)" },
@@ -45,7 +43,6 @@ local settings = {
 
       { "<leader>e",   group = "Editor" },
       { "<leader>ef",  desc = "+Folding" },
-
       { "<leader>f",   group = "Telescope" },
       { "<leader>fD",  desc = "+DAP Telescope" },
       { "<leader>fG",  desc = "+Git" },
@@ -94,7 +91,6 @@ local settings = {
       { "<leader>vws", desc = "+Splits" },
     },
   },
-
   -- --a = false,
   -- prefix = "<leader>",
   -- mode = { "n", "v" },
@@ -139,6 +135,7 @@ local settings = {
   -- 		l = { "+Line" },
   -- 	},
   -- },
+
   -- --h = false,
   -- --i = false,
   -- --j = false,

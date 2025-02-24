@@ -87,6 +87,7 @@ return {
   },
   {
     "neovim/nvim-lspconfig",
+    optional = true,
     opts = {
       -- make sure mason installs the server
       servers = {
@@ -103,45 +104,45 @@ return {
         gitlab_ci_ls = {},
         jinja_lsp = {},
       },
-      setup = {
-        dockerls = function(_, opts)
-          local lspcontroller = require("framework.controller.lspController"):new()
-          lspcontroller:setup_lsp_servers(_, opts.dockerls)
-        end,
-        hyprls = function(_, opts)
-          vim.filetype.add({
-            --extension = { rasi = "rasi", rofi = "rasi", wofi = "rasi" },
-            pattern = {
-              [".*/hyprland%.conf$"] = "hyprlang"
-              -- [".*/waybar/config"] = "jsonc",
-              -- [".*/mako/config"] = "dosini",
-              -- [".*/kitty/.+%.conf"] = "bash",
-              -- [".*/hypr/.+%.conf"] = "hyprlang",
-              -- [".*hyprland.conf"] = "hyprlang",
-              -- ["%.env%.[%w_.-]+"] = "sh",
-            },
-          })
-          local lspcontroller = require("framework.controller.lspController"):new()
-          lspcontroller:setup_lsp_servers(_, opts.hyprls)
-        end,
-        jinja_lsp = function(_, opts)
-          local lspcontroller = require("framework.controller.lspController"):new()
-          lspcontroller:setup_lsp_servers(_, opts.jinja_lsp)
-        end,
-        docker_compose_language_service = function(_, opts)
-          local lspcontroller = require("framework.controller.lspController"):new()
-          lspcontroller:setup_lsp_servers(_, opts.docker_compose_language_service)
-        end,
-        gitlab_ci_ls = function(_, opts)
-          local lspcontroller = require("framework.controller.lspController"):new()
-          lspcontroller:setup_lsp_servers(_, opts.gitlab_ci_ls)
-        end,
-
-        bashls = function(_, opts)
-          local lspcontroller = require("framework.controller.lspController"):new()
-          lspcontroller:setup_lsp_servers(_, opts.bashls)
-        end,
-      },
+      -- setup = {
+      --   dockerls = function(_, opts)
+      --     local lspcontroller = require("framework.controller.lspController"):new()
+      --     lspcontroller:setup_lsp_servers(_, opts.dockerls)
+      --   end,
+      --   hyprls = function(_, opts)
+      --     vim.filetype.add({
+      --       --extension = { rasi = "rasi", rofi = "rasi", wofi = "rasi" },
+      --       pattern = {
+      --         [".*/hyprland%.conf$"] = "hyprlang"
+      --         -- [".*/waybar/config"] = "jsonc",
+      --         -- [".*/mako/config"] = "dosini",
+      --         -- [".*/kitty/.+%.conf"] = "bash",
+      --         -- [".*/hypr/.+%.conf"] = "hyprlang",
+      --         -- [".*hyprland.conf"] = "hyprlang",
+      --         -- ["%.env%.[%w_.-]+"] = "sh",
+      --       },
+      --     })
+      --     local lspcontroller = require("framework.controller.lspController"):new()
+      --     lspcontroller:setup_lsp_servers(_, opts.hyprls)
+      --   end,
+      --   jinja_lsp = function(_, opts)
+      --     local lspcontroller = require("framework.controller.lspController"):new()
+      --     lspcontroller:setup_lsp_servers(_, opts.jinja_lsp)
+      --   end,
+      --   docker_compose_language_service = function(_, opts)
+      --     local lspcontroller = require("framework.controller.lspController"):new()
+      --     lspcontroller:setup_lsp_servers(_, opts.docker_compose_language_service)
+      --   end,
+      --   gitlab_ci_ls = function(_, opts)
+      --     local lspcontroller = require("framework.controller.lspController"):new()
+      --     lspcontroller:setup_lsp_servers(_, opts.gitlab_ci_ls)
+      --   end,
+      --
+      --   bashls = function(_, opts)
+      --     local lspcontroller = require("framework.controller.lspController"):new()
+      --     lspcontroller:setup_lsp_servers(_, opts.bashls)
+      --   end,
+      --},
     },
   },
 }

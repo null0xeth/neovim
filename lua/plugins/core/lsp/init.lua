@@ -58,13 +58,12 @@ local spec = {
       format = {},
     },
   },
-
   {
     "neovim/nvim-lspconfig",
     event = "KindaLazy",
     dependencies = {
       { "smjonas/inc-rename.nvim" },
-      { "VonHeikemen/lsp-zero.nvim" }
+      { "VonHeikemen/lsp-zero.nvim" },
     },
     opts = {
       servers = {},
@@ -78,9 +77,15 @@ local spec = {
         },
       }
     },
+
     config = function(plugin, opts)
       local lspcontroller = require("framework.controller.lspcontroller"):new()
       lspcontroller:setup_lsp_servers(plugin, opts)
+      -- local lspconfig = require('lspconfig')
+      -- for server, config in pairs(opts.servers) do
+      --   config.capabilities = require('blink.cmp').get_lsp_capabilities(config.capabilities)
+      --   lspconfig[server].setup(config)
+      -- end
     end,
   },
   {

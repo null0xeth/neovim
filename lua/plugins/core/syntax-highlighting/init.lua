@@ -64,7 +64,6 @@ local spec = {
         "markdown",
         "markdown_inline",
         "printf",
-        "org",
         "query",
         "regex",
         "latex",
