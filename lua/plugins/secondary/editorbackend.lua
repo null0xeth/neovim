@@ -16,7 +16,7 @@ local function getHighlightValue(name, key)
 end
 
 local spec = {
-  { "tpope/vim-repeat", event = "KindaLazy" },
+  { "tpope/vim-repeat", enabled = false, event = "KindaLazy" },
   { -- when searching, search count is shown next to the cursor
     "kevinhwang91/nvim-hlslens",
     event = "KindaLazy",

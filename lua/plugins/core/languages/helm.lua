@@ -19,14 +19,14 @@ return {
       servers = {
         helm_ls = {},
       },
-      -- setup = {
-      --   helm_ls = function(_, opts)
-      --     vim.schedule_wrap(function()
-      --       local lspcontroller = require("framework.controller.lspcontroller"):new()
-      --       lspcontroller:setup_lsp_servers(_, opts)
-      --     end)()
-      --   end,
-      -- },
+      setup = {
+        helm_ls = function(_, opts)
+          vim.schedule_wrap(function()
+            local lspcontroller = require("framework.controller.lspcontroller"):new()
+            lspcontroller:setup_lsp_servers(_, opts)
+          end)()
+        end,
+      },
     },
   },
 }

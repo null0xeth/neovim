@@ -61,12 +61,12 @@ return {
           },
         },
       },
-      -- setup = {
-      --   nil_ls = function(_, opts)
-      --     local lspcontroller = require("framework.controller.lspcontroller"):new()
-      --     lspcontroller:setup_lsp_servers(_, opts)
-      --   end,
-      -- },
+      setup = {
+        nil_ls = function(_, opts)
+          local lspcontroller = require("framework.controller.lspcontroller"):new()
+          lspcontroller:setup_lsp_servers(_, opts)
+        end,
+      },
     },
   },
 }

@@ -24,12 +24,6 @@ return {
       opts.formatters_by_ft = vim.tbl_deep_extend("force", opts.formatters_by_ft, { yaml = { "prettierd" } })
     end,
   },
-  -- {
-  --   "mfussenegger/nvim-lint",
-  --   opts = function(_, opts)
-  --     opts.linters_by_ft["yaml"] = { "yamllint" }
-  --   end,
-  -- },
   {
     "nvimtools/none-ls.nvim",
     opts = function(_, opts)
@@ -118,16 +112,16 @@ return {
           },
         },
       },
-      -- setup = {
-      --   yaml_ls = function(_, opts)
-      --     local lspcontroller = require("framework.controller.lspcontroller"):new()
-      --     lspcontroller:setup_lsp_servers(_, opts, function(client, _)
-      --       if client.name == "yamlls" then
-      --         client.server_capabilities.documentFormattingProvider = true
-      --       end
-      --     end)
-      --   end,
-      -- },
+      setup = {
+        yaml_ls = function(_, opts)
+          local lspcontroller = require("framework.controller.lspcontroller"):new()
+          lspcontroller:setup_lsp_servers(_, opts, function(client, _)
+            if client.name == "yamlls" then
+              client.server_capabilities.documentFormattingProvider = true
+            end
+          end)
+        end,
+      },
     },
   },
 }

@@ -86,6 +86,7 @@ local spec = {
   -- },
   {
     "stevearc/overseer.nvim",
+    enabled = false,
     -- stylua: ignore
     cmd = {
       "OverseerOpen",
@@ -139,7 +140,7 @@ local spec = {
     }
     config = true,
   },
-   {
+  {
     "folke/edgy.nvim",
     optional = true,
     opts = function(_, opts)

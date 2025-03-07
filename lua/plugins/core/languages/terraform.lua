@@ -16,15 +16,6 @@ local spec = {
     "williamboman/mason.nvim",
     opts = { ensure_installed = { "tflint" } },
   },
-  -- {
-  --   -- add Terragrunt
-  --   "stevearc/conform.nvim",
-  --   opts = function(_, opts)
-  --     opts.formatters_by_ft = vim.tbl_deep_extend("force", opts.formatters_by_ft, {
-  --       ["terraform"] = { "terraform_fmt" },
-  --     })
-  --   end,
-  -- },
 
   {
     "stevearc/conform.nvim",
@@ -72,12 +63,12 @@ local spec = {
           settings = {},
         },
       },
-      -- setup = {
-      --   terraformls = function(_, opts)
-      --     local lspcontroller = require("framework.controller.lspcontroller"):new()
-      --     lspcontroller:setup_lsp_servers(_, opts)
-      --   end,
-      -- },
+      setup = {
+        terraformls = function(_, opts)
+          local lspcontroller = require("framework.controller.lspcontroller"):new()
+          lspcontroller:setup_lsp_servers(_, opts)
+        end,
+      },
     },
   },
 }

@@ -1,6 +1,7 @@
 return {
   {
     "kevinhwang91/nvim-bqf", -- better quickfix window
+    enabled = false,
     ft = "qf",
     dependencies = {
       { "nvim-treesitter/nvim-treesitter" },

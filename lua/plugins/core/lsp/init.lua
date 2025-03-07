@@ -81,11 +81,6 @@ local spec = {
     config = function(plugin, opts)
       local lspcontroller = require("framework.controller.lspcontroller"):new()
       lspcontroller:setup_lsp_servers(plugin, opts)
-      -- local lspconfig = require('lspconfig')
-      -- for server, config in pairs(opts.servers) do
-      --   config.capabilities = require('blink.cmp').get_lsp_capabilities(config.capabilities)
-      --   lspconfig[server].setup(config)
-      -- end
     end,
   },
   {
@@ -128,16 +123,6 @@ local spec = {
       },
     },
   },
-  -- {
-  --   "mhartington/formatter.nvim",
-  --   enabled = false,
-  --   event = "BufReadPre",
-  --   config = function()
-  --     local cachecontroller = require("framework.controller.cachecontroller"):new()
-  --     local formatters = cachecontroller:query("formatters")
-  --     require("formatter").setup(formatters)
-  --   end,
-  -- },
   {
     "zeioth/none-ls-autoload.nvim",
     event = "BufEnter",

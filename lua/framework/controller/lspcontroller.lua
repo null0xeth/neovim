@@ -154,67 +154,67 @@ function LspController:setup_lsp_servers(_, opts, customAttach)
   self:init_lsp_servers(opts)
 end
 
-function LspController:setup_glance()
-  local glance = get_module("glance", "glance")
-  local actions = glance.actions
-
-  glance.setup({
-    height = 25,
-    list = { width = 0.35, position = "left" },
-    detached = false,
-    theme = { -- This feature might not work properly in nvim-0.7.2
-      enable = true, -- Will generate colors for the plugin based on your current colorscheme
-      mode = "auto", -- 'brighten'|'darken'|'auto', 'auto' will set mode based on the brightness of your colorscheme
-    },
-    preview_win_opts = { number = false, wrap = false },
-    folds = { folded = false },
-    indent_lines = { icon = " " },
-    mappings = {
-      list = {
-        ["<C-CR>"] = actions.enter_win("preview"),
-        ["j"] = actions.next_location, -- `.next` goes to next item, `.next_location` skips groups
-        ["k"] = actions.previous_location,
-        ["<PageUp>"] = actions.preview_scroll_win(5),
-        ["<PageDown>"] = actions.preview_scroll_win(-5),
-        -- consistent with the respective keymap for telescope
-        ["<C-q>"] = function()
-          actions.quickfix() -- leaves quickfix window open, so it's necessary to close it
-          vim.cmd.cclose() -- cclose = quickfix-close
-        end,
-        -- ['<Esc>'] = false -- disable a mapping
-      },
-      preview = {
-        ["q"] = actions.close,
-        ["<Tab>"] = actions.next_location,
-        ["<S-Tab>"] = actions.previous_location,
-        ["<leader>l"] = actions.enter_win("list"), -- Focus list window
-      },
-    },
-    hooks = {
-      before_open = function(results, open, jump, method)
-        -- filter out current line, if references
-        if method == "references" then
-          local curLn = vim.fn.line(".")
-          local curUri = vim.uri_from_bufnr(0)
-          results = vim.tbl_filter(function(result)
-            local targetLine = result.range.start.line + 1 -- LSP counts off-by-one
-            local targetUri = result.uri or result.targetUri
-            local notCurrentLine = (targetLine ~= curLn) or (targetUri ~= curUri)
-            return notCurrentLine
-          end, results)
-        end
-
-        -- jump directly if there is only one references
-        if #results == 0 then
-          vim.notify("No " .. method .. " found.")
-        elseif #results == 1 then
-          jump(results[1])
-        else
-          open(results)
-        end
-      end,
-    },
-  })
-end
+-- function LspController:setup_glance()
+--   local glance = get_module("glance", "glance")
+--   local actions = glance.actions
+--
+--   glance.setup({
+--     height = 25,
+--     list = { width = 0.35, position = "left" },
+--     detached = false,
+--     theme = {        -- This feature might not work properly in nvim-0.7.2
+--       enable = true, -- Will generate colors for the plugin based on your current colorscheme
+--       mode = "auto", -- 'brighten'|'darken'|'auto', 'auto' will set mode based on the brightness of your colorscheme
+--     },
+--     preview_win_opts = { number = false, wrap = false },
+--     folds = { folded = false },
+--     indent_lines = { icon = " " },
+--     mappings = {
+--       list = {
+--         ["<C-CR>"] = actions.enter_win("preview"),
+--         ["j"] = actions.next_location, -- `.next` goes to next item, `.next_location` skips groups
+--         ["k"] = actions.previous_location,
+--         ["<PageUp>"] = actions.preview_scroll_win(5),
+--         ["<PageDown>"] = actions.preview_scroll_win(-5),
+--         -- consistent with the respective keymap for telescope
+--         ["<C-q>"] = function()
+--           actions.quickfix() -- leaves quickfix window open, so it's necessary to close it
+--           vim.cmd.cclose()   -- cclose = quickfix-close
+--         end,
+--         -- ['<Esc>'] = false -- disable a mapping
+--       },
+--       preview = {
+--         ["q"] = actions.close,
+--         ["<Tab>"] = actions.next_location,
+--         ["<S-Tab>"] = actions.previous_location,
+--         ["<leader>l"] = actions.enter_win("list"), -- Focus list window
+--       },
+--     },
+--     hooks = {
+--       before_open = function(results, open, jump, method)
+--         -- filter out current line, if references
+--         if method == "references" then
+--           local curLn = vim.fn.line(".")
+--           local curUri = vim.uri_from_bufnr(0)
+--           results = vim.tbl_filter(function(result)
+--             local targetLine = result.range.start.line + 1 -- LSP counts off-by-one
+--             local targetUri = result.uri or result.targetUri
+--             local notCurrentLine = (targetLine ~= curLn) or (targetUri ~= curUri)
+--             return notCurrentLine
+--           end, results)
+--         end
+--
+--         -- jump directly if there is only one references
+--         if #results == 0 then
+--           vim.notify("No " .. method .. " found.")
+--         elseif #results == 1 then
+--           jump(results[1])
+--         else
+--           open(results)
+--         end
+--       end,
+--     },
+--   })
+-- end
 
 return LspController

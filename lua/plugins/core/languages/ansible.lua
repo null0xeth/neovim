@@ -1,6 +1,7 @@
 local spec = {
   {
     "pearofducks/ansible-vim",
+    enabled = false,
     dependencies = {
       "neovim/nvim-lspconfig",
     },
@@ -39,6 +40,7 @@ local spec = {
   },
   {
     "mfussenegger/nvim-ansible",
+    enabled = false,
     ft = {},
     keys = {
       {

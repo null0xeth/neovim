@@ -173,7 +173,7 @@ local spec = {
   },
   {
     "windwp/nvim-ts-autotag",
-    lazy = false,
+    event = "KindaLazy",
     config = function()
       vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
         vim.lsp.diagnostic.on_publish_diagnostics,
@@ -195,6 +195,26 @@ local spec = {
         },
       })
     end
+  },
+  {
+    "nvim-treesitter/nvim-treesitter-context",
+    event = "KindaLazy",
+    opts = function()
+      local tsc = require("treesitter-context")
+      Snacks.toggle({
+        name = "Treesitter Context",
+        get = tsc.enabled,
+        set = function(state)
+          if state then
+            tsc.enable()
+          else
+            tsc.disable()
+          end
+        end,
+      }):map("<leader>ut")
+      return { mode = "cursor", max_lines = 3 }
+    end,
+
   },
 }
 return spec

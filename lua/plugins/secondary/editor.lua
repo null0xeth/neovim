@@ -533,6 +533,7 @@ local spec = {
   },
   {
     "google/executor.nvim",
+    enabled = false,
     event = "KindaLazy",
     dependencies = {
       "MunifTanjim/nui.nvim",

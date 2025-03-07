@@ -55,7 +55,6 @@ return {
     dependencies = {
       "nvim-lua/plenary.nvim",
       "neovim/nvim-lspconfig",
-      --"williamboman/mason.nvim",
     },
     config = function()
       require("typescript-tools").setup({
@@ -79,7 +78,6 @@ return {
         end,
 
         settings = {
-          -- tsserver_path = tsserver_path .. "/node_modules/typescript/lib/tsserver.js",
           separate_diagnostic_server = true,
           publish_diagnostic_on = "insert_leave",
           expose_as_code_action = { "fix_all", "add_missing_imports", "remove_unused" },

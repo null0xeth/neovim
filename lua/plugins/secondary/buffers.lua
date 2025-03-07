@@ -40,6 +40,7 @@ local spec = {
   -- },
   {
     "echasnovski/mini.bufremove",
+    enabled = false,
     keys = {
       {
         "<leader>bd",
@@ -65,6 +66,7 @@ local spec = {
   },
   { -- auto-close inactive buffers
     "chrisgrieser/nvim-early-retirement",
+    enabled = false,
     event = "VeryLazy",
     opts = {
       retirementAgeMins = 10,
